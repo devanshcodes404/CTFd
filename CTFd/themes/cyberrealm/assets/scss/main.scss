@@ -1,0 +1,14 @@
+/**
+ * CyberRealm
+ * Main stylesheet entry point
+ */
+
+:root {
+  --cr-background: #070b17;
+  --cr-text: #f5f7fa;
+}
+
+body {
+  background: var(--cr-background);
+  color: var(--cr-text);
+}

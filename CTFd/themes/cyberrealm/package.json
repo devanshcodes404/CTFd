@@ -1,0 +1,17 @@
+{
+  "name": "cyberrealm",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "vite build",
+    "format": "prettier --write \"assets/**/*.{js,scss}\"",
+    "lint": "prettier --check \"assets/**/*.{js,scss}\"",
+    "verify": "vite build"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "sass": "^1.49.7",
+    "vite": "^3.0.5"
+  }
+}

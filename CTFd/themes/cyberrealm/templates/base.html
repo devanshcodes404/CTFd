@@ -1,21 +1,28 @@
-{% extends "core/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block stylesheets %}
-    {{ super() }}
+<head>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="UTF-8">
 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>CyberRealm</title>
 
-    <link rel="stylesheet" href="{{ url_for('views.themes', path='css/variables.css') }}">
-    <link rel="stylesheet" href="{{ url_for('views.themes', path='css/global.css') }}">
-    <link rel="stylesheet" href="{{ url_for('views.themes', path='css/animations.css') }}">
-{% endblock %}
+    {% block stylesheets %}
+        {{ Assets.css("assets/scss/main.scss") }}
+    {% endblock %}
 
+</head>
 
-{% block scripts %}
-    {{ super() }}
+<body>
 
-    <script src="{{ url_for('views.themes', path='js/main.js') }}"></script>
-{% endblock %}
+    <h1>CyberRealm Theme</h1>
+
+    <p>If you can read this, the custom theme is working.</p>
+
+    {% block scripts %}
+        {{ Assets.js("assets/js/page.js") }}
+    {% endblock %}
+
+</body>
+
+</html>
