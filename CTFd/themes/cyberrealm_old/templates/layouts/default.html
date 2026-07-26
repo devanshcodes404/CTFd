@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    {% include "components/navbar.html" %}
+
+    <main id="cyberrealm-app">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+    {% include "components/footer.html" %}
+
+{% endblock %}

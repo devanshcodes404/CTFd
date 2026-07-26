@@ -1,6 +1,7 @@
-/**
- * CyberRealm
- * Global entry point
- */
+import Alpine from "alpinejs";
+import CTFd from "./index";
 
-console.log("CyberRealm initialized");
+window.CTFd = CTFd;
+window.Alpine = Alpine;
+
+Alpine.start();
