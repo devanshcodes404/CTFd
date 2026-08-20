@@ -1,0 +1,48 @@
+html,
+body {
+  background: linear-gradient(180deg, #0b1020 0%, #12182d 100%);
+  color: var(--cr-text);
+}
+
+body {
+  min-height: 100vh;
+  font-family: Inter, sans-serif;
+  transition: var(--cr-transition);
+}
+
+/* Links */
+a {
+  color: var(--cr-secondary);
+  transition: var(--cr-transition);
+}
+
+a:hover {
+  color: var(--cr-primary);
+}
+
+/* Selection */
+::selection {
+  background: var(--cr-primary);
+  color: #fff;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--cr-text);
+  font-weight: 600;
+}
+
+/* Paragraphs */
+p {
+  color: var(--cr-muted);
+}
+
+/* Horizontal rule */
+hr {
+  border-color: var(--cr-border);
+}

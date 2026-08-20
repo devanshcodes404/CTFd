@@ -1,0 +1,695 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div
+  x-data="CyberRealmDashboard"
+>
+
+    <!-- =========================================
+         DASHBOARD HERO
+    ========================================== -->
+
+    <section class="cyberrealm-dashboard-hero">
+
+        <div class="container">
+
+            <div class="cyberrealm-dashboard-header">
+
+                <div>
+
+                    <div class="cyberrealm-dashboard-kicker">
+                        CYBERREALM COMMAND CENTER
+                    </div>
+
+                    <h1>
+                        Welcome back,
+                        <span>{{ User.name }}</span>
+                    </h1>
+
+                    <p>
+                        Continue your cybersecurity journey
+                        and increase your clearance level.
+                    </p>
+
+                </div>
+
+                <div class="cyberrealm-dashboard-status">
+
+                    <div class="dashboard-status-label">
+                        CURRENT RANK
+                    </div>
+
+                    <div
+                        class="dashboard-status-rank"
+                        x-text="profile.rank"
+                    >
+                        RECRUIT
+                    </div>
+
+                    <div
+                        class="dashboard-status-level"
+                    >
+                        LEVEL
+                        <strong x-text="profile.level">
+                            1
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         PLAYER PROGRESSION
+    ========================================== -->
+
+    <section class="cyberrealm-dashboard-section">
+
+        <div class="container">
+
+            <div class="cyberrealm-dashboard-panel">
+
+                <div class="cyberrealm-dashboard-panel-header">
+
+                    <div>
+
+                        <div class="cyberrealm-dashboard-label">
+                            PLAYER PROGRESSION
+                        </div>
+
+                        <h2>
+                            Clearance Progress
+                        </h2>
+
+                    </div>
+
+                    <div
+                        class="cyberrealm-dashboard-xp-total"
+                        x-text="`${profile.xp} XP`"
+                    >
+                        0 XP
+                    </div>
+
+                </div>
+
+
+                <div class="cyberrealm-dashboard-xp-row">
+
+                    <div>
+
+                        <div
+                            class="cyberrealm-dashboard-xp-current"
+                            x-text="`${profile.xpIntoLevel} / ${profile.xpPerLevel} XP`"
+                        >
+                            0 / 500 XP
+                        </div>
+
+                        <div
+                            class="cyberrealm-dashboard-xp-next"
+                            x-text="`${profile.xpToNext} XP TO NEXT LEVEL`"
+                        >
+                            500 XP TO NEXT LEVEL
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="cyberrealm-dashboard-xp-percent"
+                        x-text="`${profile.progress}%`"
+                    >
+                        0%
+                    </div>
+
+                </div>
+
+
+                <div class="cyberrealm-dashboard-progress">
+
+                    <div
+                        class="cyberrealm-dashboard-progress-fill"
+                        :style="{ width: `${profile.progress}%` }"
+                    ></div>
+
+                </div>
+
+
+                <div class="cyberrealm-dashboard-metrics">
+
+                    <div class="dashboard-metric">
+
+                        <span>
+                            🔥
+                        </span>
+
+                        <div>
+                            <strong
+                                x-text="profile.streak"
+                            >
+                                0
+                            </strong>
+
+                            <small>
+                                DAY STREAK
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="dashboard-metric">
+
+                        <span>
+                            🧩
+                        </span>
+
+                        <div>
+                            <strong
+                                x-text="profile.totalSolves"
+                            >
+                                0
+                            </strong>
+
+                            <small>
+                                SOLVES
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="dashboard-metric">
+
+                        <span>
+                            🏆
+                        </span>
+
+                        <div>
+                            <strong
+                                x-text="`${profile.achievementsUnlocked}/${profile.achievementsTotal}`"
+                            >
+                                0/0
+                            </strong>
+
+                            <small>
+                                ACHIEVEMENTS
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="dashboard-metric">
+
+                        <span>
+                            🔥
+                        </span>
+
+                        <div>
+                            <strong
+                                x-text="profile.longestStreak"
+                            >
+                                0
+                            </strong>
+
+                            <small>
+                                BEST STREAK
+                            </small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         DAILY MISSION
+    ========================================== -->
+
+    <section class="cyberrealm-dashboard-section">
+
+  <div class="container">
+
+    <div class="cyberrealm-dashboard-panel">
+
+      <div class="cyberrealm-dashboard-panel-header">
+
+        <div>
+
+          <div class="cyberrealm-dashboard-label">
+            DAILY OBJECTIVES
+          </div>
+
+          <h2>
+            Today's Operations
+          </h2>
+
+        </div>
+
+        <div class="dashboard-objective-date">
+          TODAY
+        </div>
+
+      </div>
+
+
+      <div class="dashboard-objective-list">
+
+        <template
+          x-for="objective in dailyObjectives"
+          :key="objective.id"
+        >
+
+          <div
+            class="dashboard-objective-item"
+            :class="{
+              'is-complete':
+                objective.completed
+            }"
+          >
+
+            <div class="dashboard-objective-icon">
+
+              <span
+                x-text="objective.icon"
+              >
+                🎯
+              </span>
+
+            </div>
+
+
+            <div class="dashboard-objective-content">
+
+              <div class="dashboard-objective-title-row">
+
+                <strong
+                  x-text="objective.name"
+                >
+                  Objective
+                </strong>
+
+                <span
+                  class="dashboard-objective-reward"
+                  x-text="`+${objective.xp_reward} XP`"
+                >
+                  +0 XP
+                </span>
+
+              </div>
+
+
+              <span
+                class="dashboard-objective-description"
+                x-text="objective.description"
+              >
+                Objective description
+              </span>
+
+
+              <div class="dashboard-objective-progress">
+
+                <div class="dashboard-objective-progress-track">
+
+                  <div
+                    class="dashboard-objective-progress-fill"
+                    :style="{
+                      width:
+                        `${Math.min(
+                          100,
+                          (objective.progress /
+                            objective.target_value) *
+                            100
+                        )}%`
+                    }"
+                  ></div>
+
+                </div>
+
+
+                <span
+                  class="dashboard-objective-progress-text"
+                  x-text="
+                    objective.completed
+                      ? 'COMPLETE'
+                      : `${objective.progress} / ${objective.target_value}`
+                  "
+                >
+                  0 / 1
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div class="dashboard-objective-status">
+
+              <template x-if="objective.completed">
+
+                <span class="objective-complete-badge">
+                  ✓ COMPLETE
+                </span>
+
+              </template>
+
+              <template x-if="!objective.completed">
+
+                <span class="objective-active-badge">
+                  ACTIVE
+                </span>
+
+              </template>
+
+            </div>
+
+          </div>
+
+        </template>
+
+
+        <div
+          class="dashboard-empty"
+          x-show="dailyObjectives.length === 0"
+        >
+          No daily objectives available.
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+    <!-- =========================================
+         RECENT ACTIVITY
+    ========================================== -->
+
+    <section class="cyberrealm-dashboard-section">
+
+        <div class="container">
+
+            <div class="cyberrealm-dashboard-grid">
+
+                <div class="cyberrealm-dashboard-panel">
+
+                    <div class="cyberrealm-dashboard-panel-header">
+
+                        <div>
+
+                            <div class="cyberrealm-dashboard-label">
+                                ACTIVITY
+                            </div>
+
+                            <h2>
+                                Recent Solves
+                            </h2>
+
+                        </div>
+
+                        <a
+                            href="/challenges"
+                            class="dashboard-view-link"
+                        >
+                            VIEW ALL
+                        </a>
+
+                    </div>
+
+
+                    <div class="dashboard-activity-list">
+
+                        <template
+                            x-for="solve in recentSolves"
+                            :key="`${solve.challenge_id}-${solve.date}`"
+                        >
+
+                            <div class="dashboard-activity-item">
+
+                                <div class="dashboard-activity-icon">
+                                    ✓
+                                </div>
+
+                                <div class="dashboard-activity-content">
+
+                                    <strong
+                                        x-text="solve.challenge_name"
+                                    >
+                                        Challenge
+                                    </strong>
+
+                                    <span
+                                        x-text="`${solve.category} • ${solve.points} pts`"
+                                    >
+                                        Category • 0 pts
+                                    </span>
+
+                                </div>
+
+                                <div
+                                    class="dashboard-activity-status"
+                                >
+                                    CLEARED
+                                </div>
+
+                            </div>
+
+                        </template>
+
+
+                        <div
+                            class="dashboard-empty"
+                            x-show="recentSolves.length === 0"
+                        >
+                            No recent solves.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="cyberrealm-dashboard-panel">
+
+                    <div class="cyberrealm-dashboard-panel-header">
+
+                        <div>
+
+                            <div class="cyberrealm-dashboard-label">
+                                PROGRESSION
+                            </div>
+
+                            <h2>
+                                Achievements
+                            </h2>
+
+                        </div>
+
+                        <a
+                            href="/user"
+                            class="dashboard-view-link"
+                        >
+                            PROFILE
+                        </a>
+
+                    </div>
+
+
+                    <div class="dashboard-achievement-list">
+
+                        <template
+                            x-for="achievement in recentAchievements"
+                            :key="achievement.id"
+                        >
+
+                            <div class="dashboard-achievement-item">
+
+                                <div class="dashboard-achievement-icon">
+                                    <span
+                                        x-text="achievement.icon"
+                                    >
+                                        🏆
+                                    </span>
+                                </div>
+
+                                <div class="dashboard-achievement-content">
+
+                                    <strong
+                                        x-text="achievement.name"
+                                    >
+                                        Achievement
+                                    </strong>
+
+                                    <span
+                                        x-text="achievement.description"
+                                    >
+                                        Achievement description
+                                    </span>
+
+                                </div>
+
+                                <div class="dashboard-achievement-reward">
+
+                                    <span
+                                        x-text="`+${achievement.xp_reward} XP`"
+                                    >
+                                        +0 XP
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </template>
+
+
+                        <div
+                            class="dashboard-empty"
+                            x-show="recentAchievements.length === 0"
+                        >
+                            No achievements unlocked yet.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         MISSION AREAS
+    ========================================== -->
+
+    <section class="cyberrealm-dashboard-section">
+
+        <div class="container">
+
+            <div class="cyberrealm-dashboard-section-heading">
+
+                <div class="cyberrealm-dashboard-label">
+                    TRAINING NETWORK
+                </div>
+
+                <h2>
+                    Mission Areas
+                </h2>
+
+            </div>
+
+
+            <div class="cyberrealm-mission-grid">
+
+                <a
+                    href="/challenges#Web"
+                    class="cyberrealm-mission-card"
+                >
+
+                    <span class="mission-icon">
+                        🌐
+                    </span>
+
+                    <span class="mission-name">
+                        Web Security
+                    </span>
+
+                    <span class="mission-description">
+                        Application and web exploitation.
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/challenges#Cryptography"
+                    class="cyberrealm-mission-card"
+                >
+
+                    <span class="mission-icon">
+                        🔐
+                    </span>
+
+                    <span class="mission-name">
+                        Cryptography
+                    </span>
+
+                    <span class="mission-description">
+                        Ciphers, encoding and cryptographic attacks.
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/challenges#Forensics"
+                    class="cyberrealm-mission-card"
+                >
+
+                    <span class="mission-icon">
+                        🔎
+                    </span>
+
+                    <span class="mission-name">
+                        Forensics
+                    </span>
+
+                    <span class="mission-description">
+                        Investigate evidence and hidden artifacts.
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="/challenges#OSINT"
+                    class="cyberrealm-mission-card"
+                >
+
+                    <span class="mission-icon">
+                        🛰️
+                    </span>
+
+                    <span class="mission-name">
+                        OSINT
+                    </span>
+
+                    <span class="mission-description">
+                        Intelligence gathering and investigation.
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+
+  {{ Assets.js("assets/js/dashboard.js") }}
+
+  {{ Assets.js("assets/js/page.js") }}
+
+{% endblock %}

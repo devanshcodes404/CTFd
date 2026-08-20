@@ -1,61 +1,106 @@
-{% extends "base.html" %}
-
 {% block content %}
-  <div class="jumbotron">
-    <div class="container">
-      <h1>
-        {% trans %}Login{% endtrans %}
-      </h1>
+
+<div class="login-page">
+
+    <div class="container-fluid">
+
+        <div class="row min-vh-100">
+
+            <!-- Left Side -->
+
+            <div class="col-lg-6 login-left d-none d-lg-flex">
+
+                <div class="login-brand">
+
+                    <img
+                        src="{{ url_for('views.themes', path='img/esecurityin-logo.jpeg') }}"
+                        class="img-fluid mb-5"
+                        style="max-width:260px;">
+
+                    <h1>Cybersecurity AI Simplified</h1>
+
+                    <p>
+                        Learn. Practice. Defend.
+                        Build practical cybersecurity skills through
+                        enterprise-grade Capture The Flag challenges.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Right Side -->
+
+            <div class="col-lg-6 login-right">
+
+                <div class="login-card">
+
+                    <h2 class="mb-4">Welcome Back</h2>
+
+                    {% include "components/errors.html" %}
+
+                    {% with form = Forms.auth.LoginForm() %}
+
+                    <form method="post">
+
+                        <div class="mb-4">
+
+                            {{ form.name.label(class="form-label") }}
+
+                            {{ form.name(
+                                class="form-control",
+                                value=name,
+                                autocomplete="username email"
+                            ) }}
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            {{ form.password.label(class="form-label") }}
+
+                            {{ form.password(
+                                class="form-control",
+                                value=password,
+                                autocomplete="current-password"
+                            ) }}
+
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-4">
+
+                            <a href="{{ url_for('auth.reset_password') }}">
+                                Forgot Password?
+                            </a>
+
+                        </div>
+
+                        {{ form.submit(class="btn btn-primary w-100") }}
+
+                        <div class="text-center mt-4">
+                            <span class="text-secondary">
+                               Don't have an account?
+                           </span>
+
+                           <a href="{{ url_for('auth.register') }}">
+                                  Register
+                           </a>
+                        </div>
+
+                        {{ form.nonce() }}
+
+                    </form>
+
+                    {% endwith %}
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-  </div>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-8 col offset-md-2 col-lg-6 offset-lg-3">
-        {% include "components/errors.html" %}
+</div>
 
-        {% if integrations.mlc() %}
-          <a class="btn btn-secondary btn-lg btn-block w-100" href="{{ url_for('auth.oauth_login') }}">
-            Login with Major League Cyber
-          </a>
-
-          <hr>
-        {% endif %}
-
-        {% with form = Forms.auth.LoginForm() %}
-          <form method="post" accept-charset="utf-8">
-            <div class="mb-3">
-              <b>
-                {{ form.name.label(class="form-label") }}
-                <span class="text-danger">*</span>
-              </b>
-              {{ form.name(class="form-control", value=name, autocomplete="username email") }}
-            </div>
-
-            <div class="mb-3">
-              <b>
-                {{ form.password.label(class="form-label") }}
-                <span class="text-danger">*</span>
-              </b>
-              {{ form.password(class="form-control", value=password, autocomplete="current-password") }}
-            </div>
-
-            <div class="row pt-3">
-              <div class="col-6 col-md-8">
-                <a class="align-middle" href="{{ url_for('auth.reset_password') }}">
-                  {% trans %}Forgot your password?{% endtrans %}
-                </a>
-              </div>
-
-              <div class="col-6 col-md-4">
-                {{ form.submit(class="btn btn-block btn-primary w-100") }}
-              </div>
-            </div>
-
-            {{ form.nonce() }}
-          </form>
-        {% endwith %}
-      </div>
-    </div>
-  </div>
 {% endblock %}

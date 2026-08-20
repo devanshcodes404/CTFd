@@ -55,6 +55,7 @@ export default defineConfig({
       input: {
         index: resolve(__dirname, "assets/js/index.js"),
         page: resolve(__dirname, "assets/js/page.js"),
+        dashboard: resolve(__dirname, "assets/js/dashboard.js"),
         setup: resolve(__dirname, "assets/js/setup.js"),
         settings: resolve(__dirname, "assets/js/settings.js"),
         challenges: resolve(__dirname, "assets/js/challenges.js"),

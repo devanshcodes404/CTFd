@@ -1,68 +1,808 @@
 {% extends "base.html" %}
 
 {% block content %}
+
   <div class="jumbotron">
+
     <div class="container">
+
       <h1>
         {% trans %}Scoreboard{% endtrans %}
       </h1>
+
     </div>
+
   </div>
+
+
   <div class="container">
+
     {% include "components/errors.html" %}
 
-    <div id="score-graph" class="align-items-center" :class="{'d-flex': show, 'd-none': !show}" x-data="ScoreboardDetail" x-ref="scoregraph" @bracket-change.window="activeBracket=$event.detail; update();">
-      <div class="col-md-12 text-center">
-        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+
+    <!-- =========================================
+         SCOREBOARD ANALYTICS
+    ========================================== -->
+
+    <div x-data="ScoreboardDetail">
+
+      <div
+        class="analytics-grid"
+        x-show="show"
+      >
+
+        <!-- PARTICIPANTS -->
+
+        <div class="analytics-card">
+
+          <i class="fas fa-users"></i>
+
+          <h2
+            x-text="
+              getParticipantCount()
+            "
+          >
+            0
+          </h2>
+
+          <p>
+            Participants
+          </p>
+
+        </div>
+
+
+        <!-- HIGHEST SCORE -->
+
+        <div class="analytics-card">
+
+          <i class="fas fa-trophy"></i>
+
+          <h2
+            x-text="
+              getHighestScore()
+            "
+          >
+            0
+          </h2>
+
+          <p>
+            Highest Score
+          </p>
+
+        </div>
+
+
+        <!-- AVERAGE SCORE -->
+
+        <div class="analytics-card">
+
+          <i class="fas fa-chart-line"></i>
+
+          <h2
+            x-text="
+              getAverageScore()
+            "
+          >
+            0
+          </h2>
+
+          <p>
+            Average Score
+          </p>
+
+        </div>
+
+
+        <!-- LIVE STATUS -->
+
+        <div class="analytics-card">
+
+          <i class="fas fa-fire"></i>
+
+          <h2>
+            LIVE
+          </h2>
+
+          <p>
+            Competition
+          </p>
+
+        </div>
+
+
+        <!-- SCORE GRAPH -->
+
+        <div
+          id="score-graph"
+          class="analytics-chart"
+          x-ref="scoregraph"
+          @bracket-change.window="
+            activeBracket = $event.detail;
+            update();
+          "
+        >
+
+          <div class="text-center w-100">
+
+            <i
+              class="
+                fas
+                fa-circle-notch
+                fa-spin
+                fa-3x
+                fa-fw
+                spinner
+              "
+            ></i>
+
+          </div>
+
+        </div>
+
       </div>
+
     </div>
 
-    <div id="scoreboard" class="row" x-data="ScoreboardList">
-      <template x-if="brackets.length && standings.length">
+
+    <!-- =========================================
+         LEADERBOARD
+    ========================================== -->
+
+    <div
+      id="scoreboard"
+      class="row"
+      x-data="ScoreboardList"
+    >
+
+
+      <!-- =========================================
+           BRACKETS
+      ========================================== -->
+
+      <template
+        x-if="
+          brackets.length &&
+          standings.length
+        "
+      >
+
         <div class="col-md-12 py-3">
-          <nav class="nav nav-pills nav-fill">
-            <button :class="{'nav-link': true, 'active': !activeBracket}" @click="activeBracket=null">{% trans %}All{% endtrans %}</button>
-            <template x-for="bracket in brackets">
-              <button :class="{'nav-link': true, 'active': activeBracket == bracket.id}" x-text="bracket.name" @click="activeBracket=bracket.id"></button>
+
+          <nav
+            class="nav nav-pills nav-fill"
+          >
+
+            <button
+              :class="{
+                'nav-link': true,
+                'active':
+                  !activeBracket
+              }"
+              @click="
+                activeBracket = null
+              "
+            >
+              {% trans %}All{% endtrans %}
+            </button>
+
+
+            <template
+              x-for="bracket in brackets"
+              :key="bracket.id"
+            >
+
+              <button
+                :class="{
+                  'nav-link': true,
+                  'active':
+                    activeBracket ==
+                    bracket.id
+                }"
+                x-text="bracket.name"
+                @click="
+                  activeBracket =
+                    bracket.id
+                "
+              >
+                BRACKET
+              </button>
+
             </template>
+
           </nav>
+
         </div>
+
       </template>
 
-      <div class="col-md-12" x-show="standings.length">
-        <table class="table table-striped align-middle">
-          <thead>
-          <tr>
-            <th style="width: 10px">{% trans %}Place{% endtrans %}</th>
-            <th class="text-start ps-3">{{ get_mode_as_word(capitalize=True) }}</th>
-            <th>{% trans %}Score{% endtrans %}</th>
-          </tr>
-          </thead>
 
-          <tbody>
-            <template x-for="(standing, index) in standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true)">
+      <!-- =========================================
+           SEARCH + TABLE
+      ========================================== -->
+
+      <div
+        class="col-md-12"
+        x-show="!loading"
+      >
+
+        <div class="leaderboard-search">
+
+          <i class="fas fa-search"></i>
+
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search participant..."
+            x-model="search"
+          >
+
+        </div>
+
+
+        <div class="leaderboard-card">
+
+          <table
+            class="
+              table
+              leaderboard-table
+              align-middle
+            "
+          >
+
+            <thead>
+
               <tr>
-                <th scope="row" class="text-center" x-text="index + 1"></th>
-                <td class="text-start">
-                  <a :href="standing.account_url" x-text="standing.name"></a>
-                  <template x-if="standing.bracket_name">
-                    <span class="badge bg-secondary ms-2" x-text="standing.bracket_name"></span>
-                  </template>
-                </td>
-                <td x-text="standing.score"></td>
+
+                <th width="70">
+                  Rank
+                </th>
+
+                <th>
+                  Participant
+                </th>
+
+                <th width="100">
+                  Level
+                </th>
+
+                <th width="150">
+                  CyberRank
+                </th>
+
+                <th width="100">
+                  Streak
+                </th>
+
+                <th width="120">
+                  XP
+                </th>
+
+                <th width="140">
+                  Score
+                </th>
+
               </tr>
-            </template>
-          </tbody>
-        </table>
+
+            </thead>
+
+
+            <tbody>
+
+              <template
+                x-for="
+                  standing in
+                  getVisibleStandings()
+                "
+                :key="
+                  standing.account_id
+                "
+              >
+
+                <tr
+                  :class="{
+                    'top-one':
+                      standing.pos === 1,
+
+                    'top-two':
+                      standing.pos === 2,
+
+                    'top-three':
+                      standing.pos === 3,
+
+                    'current-user':
+                      isCurrentUser(
+                        standing
+                      ),
+                  }"
+                >
+
+
+                  <!-- RANK -->
+
+                  <td class="rank-cell">
+
+                    <template
+                      x-if="
+                        standing.pos === 1
+                      "
+                    >
+
+                      <span
+                        class="
+                          rank
+                          rank-gold
+                        "
+                      >
+                        🥇
+                      </span>
+
+                    </template>
+
+
+                    <template
+                      x-if="
+                        standing.pos === 2
+                      "
+                    >
+
+                      <span
+                        class="
+                          rank
+                          rank-silver
+                        "
+                      >
+                        🥈
+                      </span>
+
+                    </template>
+
+
+                    <template
+                      x-if="
+                        standing.pos === 3
+                      "
+                    >
+
+                      <span
+                        class="
+                          rank
+                          rank-bronze
+                        "
+                      >
+                        🥉
+                      </span>
+
+                    </template>
+
+
+                    <template
+                      x-if="
+                        standing.pos > 3
+                      "
+                    >
+
+                      <span
+                        x-text="
+                          standing.pos
+                        "
+                      >
+                        4
+                      </span>
+
+                    </template>
+
+                  </td>
+
+
+                  <!-- PARTICIPANT -->
+
+                  <td>
+
+                    <div class="participant">
+
+                      <div
+                        class="
+                          participant-avatar
+                        "
+                      >
+
+                        <i
+                          class="
+                            fas
+                            fa-user-secret
+                          "
+                        ></i>
+
+                      </div>
+
+
+                      <div>
+
+                        <a
+                          :href="
+                            standing.account_url
+                          "
+                          class="
+                            participant-name
+                          "
+                          x-text="
+                            standing.name
+                          "
+                        >
+                          Participant
+                        </a>
+
+
+                        <template
+                          x-if="
+                            isCurrentUser(
+                              standing
+                            )
+                          "
+                        >
+
+                          <span
+                            class="
+                              you-badge
+                            "
+                          >
+
+                            <i
+                              class="
+                                fas
+                                fa-star
+                              "
+                            ></i>
+
+                            You
+
+                          </span>
+
+                        </template>
+
+
+                        <div
+                          class="
+                            participant-rank
+                          "
+                        >
+
+                          <span
+                            x-text="
+                              standing
+                                .cyberrealm
+                                ?.rank ||
+                              'RECRUIT'
+                            "
+                          >
+                            RECRUIT
+                          </span>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </td>
+
+
+                  <!-- LEVEL -->
+
+                  <td>
+
+                    <span
+                      class="score-badge"
+                      x-text="
+                        `LVL ${
+                          standing
+                            .cyberrealm
+                            ?.level || 1
+                        }`
+                      "
+                    >
+                      LVL 1
+                    </span>
+
+                  </td>
+
+
+                  <!-- CYBERRANK -->
+
+                  <td>
+
+                    <span
+                      class="
+                        participant-rank
+                      "
+                      x-text="
+                        standing
+                          .cyberrealm
+                          ?.rank ||
+                        'RECRUIT'
+                      "
+                    >
+                      RECRUIT
+                    </span>
+
+                  </td>
+
+
+                  <!-- STREAK -->
+
+                  <td>
+
+                    <span
+                      class="score-badge"
+                      x-text="
+                        `🔥 ${
+                          standing
+                            .cyberrealm
+                            ?.streak || 0
+                        }`
+                      "
+                    >
+                      🔥 0
+                    </span>
+
+                  </td>
+
+
+                  <!-- XP -->
+
+                  <td>
+
+                    <span
+                      class="score-badge"
+                      x-text="
+                        `${
+                          standing
+                            .cyberrealm
+                            ?.xp || 0
+                        } XP`
+                      "
+                    >
+                      0 XP
+                    </span>
+
+                  </td>
+
+
+                  <!-- CTF SCORE -->
+
+                  <td>
+
+                    <span
+                      class="score-badge"
+                      x-text="
+                        `${standing.score || 0} pts`
+                      "
+                    >
+                      0 pts
+                    </span>
+
+                  </td>
+
+                </tr>
+
+              </template>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+
+        <!-- EMPTY STATE -->
+
+        <div
+          x-show="
+            !loading &&
+            getVisibleStandings()
+              .length === 0
+          "
+        >
+
+          <h3
+            class="
+              text-center
+              text-muted
+            "
+          >
+
+            {% trans %}
+              Scoreboard is empty
+            {% endtrans %}
+
+          </h3>
+
+        </div>
+
       </div>
 
-      <div class="col-md-12" x-show="! standings.length">
-        <h3 class="text-center text-muted">{% trans %}Scoreboard is empty{% endtrans %}</h3>
+
+      <!-- =========================================
+           PODIUM
+      ========================================== -->
+
+      <div class="leaderboard-podium">
+
+        <template
+          x-if="
+            getVisibleStandings()
+              .length >= 3
+          "
+        >
+
+          <div class="podium">
+
+
+            <!-- SECOND -->
+
+            <div
+              class="
+                podium-card
+                second
+              "
+            >
+
+              <div class="podium-medal">
+                🥈
+              </div>
+
+
+              <div class="podium-avatar">
+
+                <i
+                  class="
+                    fas
+                    fa-user-secret
+                  "
+                ></i>
+
+              </div>
+
+
+              <h4
+                x-text="
+                  getVisibleStandings()[1].name
+                "
+              >
+                ---
+              </h4>
+
+
+              <span
+                class="podium-score"
+                x-text="
+                  `${
+                    getVisibleStandings()[1]
+                      .score
+                  } pts`
+                "
+              >
+                0 pts
+              </span>
+
+            </div>
+
+
+            <!-- FIRST -->
+
+            <div
+              class="
+                podium-card
+                first
+              "
+            >
+
+              <div class="podium-medal">
+                🥇
+              </div>
+
+
+              <div class="podium-avatar">
+
+                <i
+                  class="
+                    fas
+                    fa-crown
+                  "
+                ></i>
+
+              </div>
+
+
+              <h3
+                x-text="
+                  getVisibleStandings()[0].name
+                "
+              >
+                ---
+              </h3>
+
+
+              <span
+                class="podium-score"
+                x-text="
+                  `${
+                    getVisibleStandings()[0]
+                      .score
+                  } pts`
+                "
+              >
+                0 pts
+              </span>
+
+            </div>
+
+
+            <!-- THIRD -->
+
+            <div
+              class="
+                podium-card
+                third
+              "
+            >
+
+              <div class="podium-medal">
+                🥉
+              </div>
+
+
+              <div class="podium-avatar">
+
+                <i
+                  class="
+                    fas
+                    fa-user-secret
+                  "
+                ></i>
+
+              </div>
+
+
+              <h4
+                x-text="
+                  getVisibleStandings()[2].name
+                "
+              >
+                ---
+              </h4>
+
+
+              <span
+                class="podium-score"
+                x-text="
+                  `${
+                    getVisibleStandings()[2]
+                      .score
+                  } pts`
+                "
+              >
+                0 pts
+              </span>
+
+            </div>
+
+          </div>
+
+        </template>
+
       </div>
+
     </div>
+
   </div>
+
 {% endblock %}
 
+
 {% block scripts %}
+
   {{ Assets.js("assets/js/scoreboard.js") }}
+
 {% endblock %}

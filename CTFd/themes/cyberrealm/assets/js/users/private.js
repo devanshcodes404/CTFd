@@ -79,4 +79,302 @@ Alpine.data("UserGraphs", () => ({
   },
 }));
 
+Alpine.data("CyberRealmProfile", () => ({
+  profile: {
+    xp: 0,
+    level: 1,
+    rank: "RECRUIT",
+
+    xpPerLevel: 500,
+    xpIntoLevel: 0,
+    xpToNext: 500,
+    progress: 0,
+
+    streak: 0,
+    longestStreak: 0,
+    totalSolves: 0,
+
+    achievementsUnlocked: 0,
+    achievementsTotal: 0,
+
+    achievements: [],
+  },
+
+  async init() {
+    if (!window.init || !window.init.userId) {
+      console.log(
+        "[CyberRealm] No logged-in user for profile.",
+      );
+
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `/api/v1/esecurityin/profile/${window.init.userId}`,
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `HTTP ${response.status}`,
+        );
+      }
+
+      const data = await response.json();
+
+      console.log(
+        "[CyberRealm] Profile:",
+        data,
+      );
+
+      this.updateProfile(data);
+
+    } catch (error) {
+      console.error(
+        "[CyberRealm] Failed to fetch profile:",
+        error,
+      );
+    }
+  },
+
+  updateProfile(data) {
+    const progression =
+      data.progression || {};
+
+    const achievements =
+      data.achievements || {};
+
+    const XP_PER_LEVEL = 500;
+
+    const xp =
+      progression.xp || 0;
+
+    const level =
+      progression.level || 1;
+
+    const xpIntoLevel =
+      xp % XP_PER_LEVEL;
+
+    const progress =
+      Number(
+        (
+          xpIntoLevel /
+          XP_PER_LEVEL
+        ) * 100
+      ).toFixed(1);
+
+    const xpToNext =
+      XP_PER_LEVEL -
+      xpIntoLevel;
+
+    this.profile = {
+      xp,
+      level,
+
+      rank:
+        this.getPlayerRank(level),
+
+      xpPerLevel:
+        XP_PER_LEVEL,
+
+      xpIntoLevel,
+      xpToNext,
+      progress,
+
+      streak:
+        progression.streak || 0,
+
+      longestStreak:
+        progression.longest_streak || 0,
+
+      totalSolves:
+        progression.total_solves || 0,
+
+      achievementsUnlocked:
+        achievements.unlocked || 0,
+
+      achievementsTotal:
+        achievements.total || 0,
+
+      achievements:
+        achievements.items || [],
+    };
+  },
+
+  getPlayerRank(level) {
+    if (level >= 50) {
+      return "CYBER LEGEND";
+    }
+
+    if (level >= 30) {
+      return "SHADOW AGENT";
+    }
+
+    if (level >= 20) {
+      return "ELITE";
+    }
+
+    if (level >= 10) {
+      return "SPECIALIST";
+    }
+
+    if (level >= 5) {
+      return "OPERATIVE";
+    }
+
+    return "RECRUIT";
+  },
+}));
+Alpine.data("CyberRealmStats", () => ({
+  stats: {
+    solves: 0,
+    fails: 0,
+    solveRate: "0.00",
+    longestStreak: 0,
+    categories: [],
+  },
+
+  async init() {
+    if (!window.init || !window.init.userId) {
+      console.log(
+        "[CyberRealm] No logged-in user for stats.",
+      );
+
+      return;
+    }
+
+    try {
+      const solvesResponse = await fetch(
+        `/api/v1/users/me/solves`,
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        },
+      );
+
+      const failsResponse = await fetch(
+        `/api/v1/users/me/fails`,
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        },
+      );
+
+      if (
+        !solvesResponse.ok ||
+        !failsResponse.ok
+      ) {
+        throw new Error(
+          "Unable to load solve statistics",
+        );
+      }
+
+      const solvesData =
+        await solvesResponse.json();
+
+      const failsData =
+        await failsResponse.json();
+
+      const solves =
+        solvesData.data || [];
+
+      const fails =
+        failsData.data || [];
+
+      const solveCount =
+        solves.length;
+
+      const failCount =
+        fails.length;
+
+      const totalAttempts =
+        solveCount + failCount;
+
+      const solveRate =
+        totalAttempts > 0
+          ? (
+              (solveCount / totalAttempts) *
+              100
+            ).toFixed(2)
+          : "0.00";
+
+      const categories = {};
+
+      for (const solve of solves) {
+
+        const category =
+          solve.challenge?.category ||
+          "Unknown";
+
+        if (!categories[category]) {
+          categories[category] = 0;
+        }
+
+        categories[category]++;
+      }
+
+      const categoryTotal =
+        solveCount || 1;
+
+      const categoryData =
+        Object.entries(categories)
+          .map(([name, count]) => ({
+            name,
+            count,
+            percent:
+              (
+                (count / categoryTotal) *
+                100
+              ).toFixed(1),
+          }))
+          .sort(
+            (a, b) =>
+              b.count - a.count,
+          );
+
+      const profileResponse =
+        await fetch(
+          `/api/v1/esecurityin/profile/${window.init.userId}`,
+          {
+            headers: {
+              Accept:
+                "application/json",
+            },
+          },
+        );
+
+      let longestStreak = 0;
+
+      if (profileResponse.ok) {
+        const profileData =
+          await profileResponse.json();
+
+        longestStreak =
+          profileData.progression
+            ?.longest_streak || 0;
+      }
+
+      this.stats = {
+        solves: solveCount,
+        fails: failCount,
+        solveRate,
+        longestStreak,
+        categories: categoryData,
+      };
+
+    } catch (error) {
+      console.error(
+        "[CyberRealm] Failed to load progression statistics:",
+        error,
+      );
+    }
+  },
+}));
 Alpine.start();

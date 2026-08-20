@@ -1,3 +1,6 @@
+import "./toast";
+import "./sound";
+import "./xp";
 import CTFd from "@ctfdio/ctfd-js";
 
 import dayjs from "dayjs";

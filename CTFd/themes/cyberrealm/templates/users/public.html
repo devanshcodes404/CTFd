@@ -1,154 +1,193 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="jumbotron">
+{% set solves = user.solves %}
+{% set awards = user.awards %}
+  <div class="profile-hero">
+
     <div class="container">
-      <h1>{{ user.name }}</h1>
 
-      {% if user.team_id %}
-        <h2>
-          <a href="{{ url_for('teams.public', team_id=user.team_id) }}">
-            <span class="badge bg-secondary">
-              {{ user.team.name }}
-            </span>
-          </a>
-        </h2>
-      {% endif %}
+        <div class="profile-header">
 
-      <div class="pt-2">
-        {% if user.oauth_id %}
-          <a href="https://majorleaguecyber.org/u/{{ user.name }}">
-            <h3 class="d-inline-block mx-1"><span class="badge rounded-pill bg-primary">{% trans %}Official{% endtrans %}</span></h3>
-          </a>
-        {% endif %}
+            <div class="profile-avatar">
 
-        {% if user.affiliation %}
-          <h3 class="d-inline-block mx-1">
-            <span class="badge rounded-pill bg-primary">{{ user.affiliation }}</span>
-          </h3>
-        {% endif %}
+                <i class="fas fa-user-secret"></i>
 
-        {% if user.country %}
-          <h3 class="d-inline-block mx-1">
-            <span class="badge rounded-pill bg-primary">
-                <i class="flag-{{ user.country.lower() }}"></i>
-                {{ lookup_country_code(user.country) }}
-            </span>
-          </h3>
-        {% endif %}
-      </div>
+            </div>
 
-      {% if user.bracket_id %}
-        <div class="pt-2">
-          <h2>
-            <span class="badge text-bg-light">
-              {{ user.bracket.name }}
-            </span>
-          </h2>
+            <div class="profile-info">
+
+                <h1>{{ user.name }}</h1>
+
+                <p>Cybersecurity Competitor</p>
+
+            </div>
+
         </div>
-      {% endif %}
 
-      <div class="pt-2">
-        {% for field in user.fields %}
-          <h3 class="d-block">
-            {{ field.name }}: {{ field.value }}
-          </h3>
-        {% endfor %}
-      </div>
+        <div class="profile-stats">
 
-      {% if user.fields %}
-        <hr class="w-50 mx-auto">
-      {% endif %}
+            <div class="profile-stat">
 
-      <div>
-        <h2 class="text-center">
-          {% if account.place %}
-            {{ account.place }} <small>place</small>
-          {% endif %}
-        </h2>
-        <h2 class="text-center">
-          {% if account.place %}
-            {{ account.score }} <small>points</small>
-          {% endif %}
-        </h2>
-      </div>
+                <h2>
 
-      <div class="pt-3">
-        {% if user.website %}
-          <a href="{{ user.website }}" target="_blank" style="color: inherit;" rel="noopener">
-            <i
-                class="fas fa-external-link-alt fa-2x px-2" data-toggle="tooltip" data-placement="top"
-                title="{{ user.website }}"
-            ></i>
-          </a>
-        {% endif %}
-      </div>
+                    {% if account.place %}
+                        #{{ account.place }}
+                    {% else %}
+                        --
+                    {% endif %}
+
+                </h2>
+
+                <p>Rank</p>
+
+            </div>
+
+            <div class="profile-stat">
+
+                <h2>
+
+                    {{ account.score or 0 }}
+
+                </h2>
+
+                <p>Points</p>
+
+            </div>
+
+            <div class="profile-stat">
+
+                <h2>
+
+                    {{ solves|length }}
+
+                </h2>
+
+                <p>Solves</p>
+
+            </div>
+
+            <div class="profile-stat">
+
+                <h2>
+
+                    {{ awards|length }}
+
+                </h2>
+
+                <p>Awards</p>
+
+            </div>
+
+        </div>
+
     </div>
-  </div>
+ </div>
   <div class="container">
     {% include "components/errors.html" %}
-
-    {% set solves = user.solves %}
-    {% set awards = user.awards %}
     {% if solves or awards %}
 
       {% if awards %}
-        <div class="row">
-          <div class="col-md-12">
-            <h3>{% trans %}Awards{% endtrans %}</h3>
-          </div>
-          {% for award in awards %}
-            <div class="col-md-3 col-sm-6">
-              <p class="text-center">
-                <i class="award-icon award-{{ award.icon }} fa-2x"></i>
-                <br>
-                <strong>{{ award.name }}</strong>
-              </p>
-              <p class="text-center">{{ award.category or "" }}</p>
-              <p class="text-center">{{ award.description or "" }}</p>
-              <p class="text-center">{{ award.value }}</p>
+      <div class="row g-4">
+           <div class="col-12">
+              <h2 class="section-title">
+                <i class="fas fa-trophy"></i>
+                Achievements
+              </h2>
+           </div>
+           {% for award in awards %}
+           <div class="col-lg-3 col-md-6">
+               <div class="achievement-card">
+                 <div class="achievement-icon">
+                    <i class="award-icon award-{{ award.icon }}"></i>
+                 </div>
+                 <h4>{{ award.name }}</h4>
+                 <small>{{ award.category or "Achievement" }}</small>
+                <p>
+                   {{ award.description or "No description available." }}
+                </p>
+                <span class="achievement-value">
+                    +{{ award.value }}
+                </span>
+
             </div>
-          {% endfor %}
-        </div>
-      {% endif %}
 
-      <br>
+            </div>
 
-      <div class="row">
-        <div class="col-md-12">
-          <h3>Solves</h3>
-          <table class="table table-striped align-middle">
-            <thead>
-            <tr>
-              <th>{% trans %}Challenge{% endtrans %}</th>
-              <th class="d-none d-md-block d-lg-block">{% trans %}Category{% endtrans %}</th>
-              <th>{% trans %}Value{% endtrans %}</th>
-              <th>{% trans %}Time{% endtrans %}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for solve in solves %}
-              <tr>
-                <td>
-                  <a href="{{ url_for('challenges.listing') }}#{{ solve.challenge.name }}-{{ solve.challenge.id }}">
-                    {{ solve.challenge.name }}
-                  </a>
-                </td>
-                <td class="d-none d-md-block d-lg-block">{{ solve.challenge.category }}</td>
-                <td>{{ solve.challenge.value }}</td>
-                <td class="solve-time">
-                  <span data-time="{{ solve.date | isoformat }}"></span>
-                </td>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-        </div>
+         {% endfor %}
+
       </div>
+      {% endif %}
+      <div class="row mt-5"></div>
+
+    <div class="col-12">
+
+        <h2 class="section-title">
+            <i class="fas fa-flag-checkered"></i>
+            Recent Solves
+        </h2>
+
+        <div class="solve-list">
+
+            {% for solve in solves %}
+
+            <div class="solve-card">
+
+                <div class="solve-left">
+
+                    <div class="solve-icon">
+                        <i class="fas fa-flag"></i>
+                    </div>
+
+                    <div>
+
+                        <h5>
+
+                            <a href="{{ url_for('challenges.listing') }}#{{ solve.challenge.name }}-{{ solve.challenge.id }}">
+                                {{ solve.challenge.name }}
+                            </a>
+
+                        </h5>
+
+                        <small class="solve-time">
+                            <span data-time="{{ solve.date | isoformat }}"></span>
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="solve-right">
+
+                    <span class="category-pill">
+                        {{ solve.challenge.category }}
+                    </span>
+
+                    <span class="value-pill">
+                        +{{ solve.challenge.value }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
 
       <div class="clearfix"></div>
 
       <div class="row" x-data="UserGraphs">
+        <div class="col-12">
+    <h2 class="section-title">
+        <i class="fas fa-chart-line"></i>
+        Performance Analytics
+    </h2>
+</div>
         <div class="col-md-6 d-none d-md-block d-lg-block py-4">
           <div class="progress">
             <div 
@@ -178,6 +217,7 @@
           </div>
         </div>
         <div class="col-md-6 d-none d-md-block d-lg-block py-4">
+          <div class="analytics-card">
           <div class="progress">
             <template x-for="category in getCategoryBreakdown()" :key="category.name">
               <div 
@@ -196,16 +236,19 @@
               <small x-text="`${category.name} (${category.percent}%)`"></small>
             </div>
           </template>
+          </div>
         </div>
 
         <br class="clearfix">
 
         <div class="col-md-12 d-none d-md-block d-lg-block py-4">
+          <div class="analytics-card">
           <div id="score-graph" x-ref="scoregraph" class="w-100 d-flex align-items-center">
             <div class="text-center w-100">
               <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
             </div>
           </div>
+        </div>
         </div>
       </div>
     {% else %}

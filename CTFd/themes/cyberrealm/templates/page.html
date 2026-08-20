@@ -1,11 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="container">
-    {{ content | safe }}
-  </div>
+
+{% if request.path == "/" %}
+
+    {% if Session.id %}
+
+        {% include "dashboard.html" %}
+
+    {% else %}
+
+        {% include "home/hero.html" %}
+
+    {% endif %}
+
+{% else %}
+
+    <div class="container py-5">
+        {{ content | safe }}
+    </div>
+
+{% endif %}
+
 {% endblock %}
 
+
 {% block scripts %}
-  {{ Assets.js("assets/js/page.js") }}
+
+    {% if request.path == "/" and Session.id %}
+        {{ Assets.js("assets/js/dashboard.js") }}
+    {% endif %}
+
+    {{ Assets.js("assets/js/page.js") }}
+
 {% endblock %}

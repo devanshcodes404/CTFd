@@ -47,14 +47,32 @@
       <div>
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane fade show active" id="challenge">
-            <h2 class="challenge-name text-center pt-3">
-              {{ challenge.name }}
-            </h2>
-            <h3 class="challenge-value text-center">
-              {{ challenge.value }}
-            </h3>
+           <div class="challenge-header">
 
+              <div class="challenge-icon">
+                <i class="fas fa-shield-halved"></i>
+              </div>
 
+               <h2 class="challenge-name">
+                  {{ challenge.name }}
+               </h2>
+
+               <div class="challenge-meta">
+
+                  <span class="challenge-points">
+                        ⭐ {{ challenge.value }} Points
+                  </span>
+
+                  {% if challenge.category %}
+                  <span class="challenge-category">
+                        {{ challenge.category }}
+                  </span>
+                      {% endif %}
+                  <span class="challenge-status">
+                     Active
+                  </span>
+             </div>
+            </div>
             {% if tags %}
               <div class="challenge-tags text-center pt-2 pb-3">
                 {% block tags %}
@@ -103,9 +121,17 @@
               </div>
             {% endif %}
 
-            {% if hints %}
-              <div class="challenge-hints hint-row row">
-                <div class="col-12 mb-3">
+   {% if hints %}
+
+               <div class="hint-section">
+
+                   <h3 class="section-title">
+                        <i class="fas fa-lightbulb"></i>
+                         Hints
+                   </h3>
+    <div class="hint-wrapper">
+        <div class="challenge-hints hint-row row">
+            <div class="col-12 mb-3">
                 {% for hint in hints | sort(attribute="cost") %}
                   <div x-data="Hint" x-init="id = {{ hint.id }}">
                     {% if hint.content %}
@@ -124,35 +150,61 @@
                     </details>
                     {% endif %}
                   </div>
-                {% endfor %}
-                </div>
-              </div>
-            {% endif %}
+                      {% endfor %}
+                   </div>
+               </div>
+           </div>
+      </div>
+
+  {% endif %}
 
             {% if files %}
-              <div class="row challenge-files text-center pb-3">
-                {% for file in files %}
-                  <div class="col-md-4 col-sm-4 col-xs-12 file-button-wrapper d-block">
-                    {% set segments = file.split('/') %}
-                    {% set token = file.split('?') | last %}
-                    {% if token %}
-                      {% set filename = segments | last | replace("?" + token, "") %}
-                    {% else %}
-                      {% set filename = segments | last %}
-                    {% endif %}
-                    <a
-                        class="btn btn-info btn-file mb-1 d-inline-block px-2 w-100 text-truncate"
-                        href="{{ file }}"
-                        title="{{ filename }}"
-                    >
-                      <i class="fas fa-download"></i>
-                      <small>
-                        {{ filename }}
-                      </small>
-                    </a>
-                  </div>
-                {% endfor %}
-              </div>
+              <div class="downloads-section">
+
+    <h3 class="section-title">
+
+        <i class="fas fa-download"></i>
+
+        Downloads
+
+    </h3>
+
+    <div class="row g-3">
+
+        {% for file in files %}
+
+        {% set segments = file.split('/') %}
+        {% set token = file.split('?') | last %}
+
+        {% if token %}
+            {% set filename = segments | last | replace("?" + token, "") %}
+        {% else %}
+            {% set filename = segments | last %}
+        {% endif %}
+
+        <div class="col-md-6">
+
+            <a href="{{ file }}" class="download-card">
+
+                <i class="fas fa-file-archive"></i>
+
+                <div>
+
+                    <strong>{{ filename }}</strong>
+
+                    <small>Download challenge files</small>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
             {% endif %}
 
             <template x-if="max_attempts > 0">
@@ -161,7 +213,14 @@
               </p>
             </template>
 
-            <div class="row submit-row">
+            <div class="flag-panel">
+
+    <h3 class="section-title">
+        <i class="fas fa-flag"></i>
+        Submit Flag
+    </h3>
+
+    <div class="row submit-row">
               <div class="col-12 col-sm-8">
                 {% block input %}
                   <input
@@ -172,7 +231,7 @@
                       id="challenge-input" class="challenge-input form-control"
                       type="text" name="submission"
                       @keyup.enter="submitChallenge()"
-                      placeholder="{% trans %}Flag{% endtrans %}" x-model="submission"
+                      placeholder="Enter the challenge flag..." x-model="submission"
                   >
                 {% endblock %}
               </div>
@@ -181,13 +240,14 @@
                 {% block submit %}
                   <button
                       id="challenge-submit"
-                      class="challenge-submit btn btn-outline-secondary w-100 h-100" type="submit"
+                      class="challenge-submit btn btn-primary w-100 h-100" type="submit"
                       @click.debounce.500ms="submitChallenge()"
                   >
                     {% trans %}Submit{% endtrans %}
                   </button>
                 {% endblock %}
               </div>
+            </div>
             </div>
 
             <div class="row notification-row">

@@ -1,0 +1,5239 @@
+/* =========================================
+   CYBERREALM XP HUD
+   ========================================= */
+
+.esecurityin-xp-hud {
+  position: fixed;
+
+  top: 76px;
+  right: 24px;
+
+  z-index: 1000;
+
+  width: 290px;
+
+  padding: 16px 18px;
+
+  border: 1px solid rgba(0, 255, 200, 0.25);
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8, 14, 24, 0.96),
+      rgba(5, 9, 16, 0.94)
+    );
+
+  box-shadow:
+    0 0 24px rgba(0, 255, 200, 0.08),
+    inset 0 0 20px rgba(0, 255, 200, 0.025);
+
+  backdrop-filter: blur(14px);
+
+  color: #ffffff;
+
+  overflow: hidden;
+}
+
+
+/* Top accent line */
+
+.esecurityin-xp-hud::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #00ffc8,
+      #00aaff,
+      transparent
+    );
+}
+
+
+/* Header */
+
+.xp-hud-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 12px;
+}
+
+
+/* Level area */
+
+.xp-hud-level-wrap {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+
+.xp-hud-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  border: 1px solid rgba(0, 255, 200, 0.25);
+  border-radius: 8px;
+
+  background: rgba(0, 255, 200, 0.06);
+
+  color: #00ffc8;
+
+  font-size: 15px;
+
+  box-shadow:
+    0 0 12px rgba(0, 255, 200, 0.12);
+}
+
+
+/* Level */
+
+.xp-hud-level {
+  display: block;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+
+  color: #00ffc8;
+}
+
+
+/* Next level */
+
+.xp-hud-next {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 1px;
+
+  color: #64748b;
+}
+
+
+/* XP value */
+
+.xp-hud-value {
+  font-size: 15px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+
+  color: #ffffff;
+}
+
+
+/* Progress background */
+
+.xp-hud-progress {
+  width: 100%;
+  height: 8px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+
+/* Progress fill */
+
+.xp-hud-progress-fill {
+  position: relative;
+
+  width: 0%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00ffc8,
+      #00d9ff
+    );
+
+  box-shadow:
+    0 0 10px rgba(0, 255, 200, 0.45);
+
+  transition:
+    width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+
+/* Moving highlight */
+
+.xp-hud-progress-fill::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: -40%;
+
+  width: 40%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.45),
+      transparent
+    );
+
+  animation: xpProgressShimmer 2.2s linear infinite;
+}
+
+
+@keyframes xpProgressShimmer {
+
+  0% {
+    left: -40%;
+  }
+
+  100% {
+    left: 120%;
+  }
+
+}
+
+
+/* Footer */
+
+.xp-hud-footer {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 9px;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 0.8px;
+
+  color: #64748b;
+}
+
+
+#esecurityin-xp-current {
+  color: #94a3b8;
+}
+/* =========================================
+   XP GAIN ANIMATION
+   ========================================= */
+
+.esecurityin-xp-gain {
+  position: fixed;
+
+  top: 145px;
+  right: 70px;
+
+  z-index: 2000;
+
+  pointer-events: none;
+
+  font-size: 22px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #00ffc8;
+
+  text-shadow:
+    0 0 8px rgba(0, 255, 200, 0.8),
+    0 0 20px rgba(0, 255, 200, 0.5);
+
+  animation: xpGainFloat 1.8s ease-out forwards;
+}
+
+
+@keyframes xpGainFloat {
+
+  0% {
+    opacity: 0;
+    transform:
+      translateY(20px)
+      scale(0.7);
+  }
+
+  15% {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1.15);
+  }
+
+  70% {
+    opacity: 1;
+    transform:
+      translateY(-45px)
+      scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translateY(-80px)
+      scale(0.9);
+  }
+
+}
+
+/* =========================================
+CYBERREALM LEVEL UP
+========================================= */
+
+.esecurityin-level-up {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(2, 6, 12, 0.82);
+
+    backdrop-filter: blur(8px);
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: opacity 0.3s ease;
+}
+
+.esecurityin-level-up.show {
+    opacity: 1;
+}
+
+.level-up-content {
+    position: relative;
+
+    width: min(440px, calc(100vw - 40px));
+
+    padding: 48px 32px;
+
+    text-align: center;
+
+    border: 1px solid rgba(0, 255, 200, 0.4);
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8, 18, 30, 0.98),
+            rgba(3, 8, 16, 0.98)
+        );
+
+    box-shadow:
+        0 0 40px rgba(0, 255, 200, 0.15),
+        0 0 100px rgba(0, 180, 255, 0.08);
+
+    transform: scale(0.7) translateY(30px);
+
+    transition:
+        transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.esecurityin-level-up.show .level-up-content {
+    transform: scale(1) translateY(0);
+}
+
+.level-up-content::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 10%;
+
+    width: 80%;
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00ffc8,
+            #00aaff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 15px rgba(0, 255, 200, 0.6);
+}
+
+.level-up-icon {
+    font-size: 48px;
+
+    margin-bottom: 16px;
+
+    color: #00ffc8;
+
+    animation:
+        levelUpPulse
+        1s
+        ease-in-out
+        infinite;
+}
+
+.level-up-title {
+    font-size: 14px;
+
+    font-weight: 800;
+
+    letter-spacing: 5px;
+
+    color: #94a3b8;
+}
+
+.level-up-level {
+    margin-top: 10px;
+
+    font-size: 42px;
+
+    font-weight: 900;
+
+    letter-spacing: 3px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 0 10px rgba(0, 255, 200, 0.5),
+        0 0 30px rgba(0, 255, 200, 0.2);
+}
+
+@keyframes levelUpPulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+    .esecurityin-xp-hud {
+        top: auto;
+        right: 12px;
+        bottom: 12px;
+
+        width: calc(100vw - 24px);
+        max-width: 360px;
+    }
+}
+/* =========================================
+CYBERREALM PLAYER RANK
+========================================= */
+
+.xp-hud-rank {
+display: block;
+
+margin-top: 3px;
+
+font-size: 10px;
+font-weight: 800;
+
+letter-spacing: 2px;
+
+color: #00ffc8;
+
+opacity: 0.85;
+
+text-transform: uppercase;
+
+text-shadow:
+  0 0 8px rgba(0, 255, 200, 0.35);
+}
+/* =========================================
+   CYBERREALM STREAK
+========================================= */
+
+#esecurityin-streak {
+  color: #ffb347;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+
+  text-shadow:
+    0 0 8px rgba(255, 179, 71, 0.35);
+
+  transition:
+    color 0.3s ease,
+    text-shadow 0.3s ease;
+}
+/* =========================================
+CYBERREALM ACHIEVEMENT POPUP
+========================================= */
+
+.esecurityin-achievement-popup {
+  position: fixed;
+
+  top: 24px;
+  right: 24px;
+
+  z-index: 10000;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  width: 360px;
+
+  padding: 16px 18px;
+
+  border: 1px solid
+    rgba(255, 194, 71, 0.45);
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18, 18, 25, 0.97),
+      rgba(7, 10, 18, 0.97)
+    );
+
+  box-shadow:
+    0 0 30px
+      rgba(255, 194, 71, 0.12),
+
+    inset 0 0 20px
+      rgba(255, 194, 71, 0.025);
+
+  backdrop-filter: blur(14px);
+
+  color: #ffffff;
+
+  opacity: 0;
+
+  transform:
+    translateX(120px)
+    scale(0.92);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.5s
+      cubic-bezier(
+        0.16,
+        1,
+        0.3,
+        1
+      );
+}
+
+
+.esecurityin-achievement-popup.show {
+  opacity: 1;
+
+  transform:
+    translateX(0)
+    scale(1);
+}
+
+
+/* Achievement icon */
+
+.achievement-popup-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 58px;
+  height: 58px;
+
+  border: 1px solid
+    rgba(255, 194, 71, 0.35);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 194, 71, 0.08);
+
+  font-size: 28px;
+
+  box-shadow:
+    0 0 18px
+      rgba(255, 194, 71, 0.12);
+}
+
+
+/* Popup content */
+
+.achievement-popup-body {
+  min-width: 0;
+}
+
+
+/* Label */
+
+.achievement-popup-label {
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #ffca5c;
+}
+
+
+/* Achievement name */
+
+.achievement-popup-name {
+  margin-top: 3px;
+
+  font-size: 16px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.8px;
+
+  color: #ffffff;
+}
+
+
+/* Description */
+
+.achievement-popup-description {
+  margin-top: 4px;
+
+  font-size: 11px;
+
+  line-height: 1.4;
+
+  color: #94a3b8;
+}
+
+
+/* XP reward */
+
+.achievement-popup-reward {
+  margin-top: 7px;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #00ffc8;
+
+  text-shadow:
+    0 0 8px
+      rgba(0, 255, 200, 0.35);
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .esecurityin-achievement-popup {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+
+    width: auto;
+  }
+
+}
+/* =========================================
+   ACHIEVEMENT COUNTER
+========================================= */
+
+.esecurityin-achievement-counter {
+  margin-top: 10px;
+
+  width: 100%;
+
+  padding: 7px 10px;
+
+  border: 1px solid
+    rgba(255, 194, 71, 0.25);
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 194, 71, 0.05);
+
+  color: #ffca5c;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.esecurityin-achievement-counter:hover {
+  background:
+    rgba(255, 194, 71, 0.1);
+
+  border-color:
+    rgba(255, 194, 71, 0.45);
+}
+
+
+/* =========================================
+   ACHIEVEMENT PANEL
+========================================= */
+
+.esecurityin-achievement-panel {
+  position: fixed;
+
+  top: 76px;
+  right: 24px;
+
+  z-index: 1100;
+
+  width: 380px;
+  max-height: 70vh;
+
+  padding: 18px;
+
+  overflow-y: auto;
+
+  border: 1px solid
+    rgba(0, 255, 200, 0.25);
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8, 14, 24, 0.98),
+      rgba(4, 8, 16, 0.98)
+    );
+
+  box-shadow:
+    0 0 40px
+      rgba(0, 255, 200, 0.12);
+
+  backdrop-filter: blur(16px);
+
+  opacity: 0;
+  visibility: hidden;
+
+  transform:
+    translateY(-10px)
+    scale(0.97);
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s ease;
+}
+
+.esecurityin-achievement-panel.show {
+  opacity: 1;
+  visibility: visible;
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+
+/* Panel header */
+
+.achievement-panel-header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 15px;
+}
+
+.achievement-panel-title {
+  font-size: 15px;
+
+  font-weight: 900;
+
+  letter-spacing: 3px;
+
+  color: #00ffc8;
+}
+
+.achievement-panel-progress {
+  margin-top: 4px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  color: #64748b;
+}
+
+.achievement-panel-close {
+  border: none;
+
+  background: transparent;
+
+  color: #64748b;
+
+  font-size: 24px;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.achievement-panel-close:hover {
+  color: #ffffff;
+}
+
+
+/* Achievement list */
+
+.achievement-panel-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+/* Achievement card */
+
+.achievement-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 12px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.05);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.achievement-card.unlocked {
+  border-color:
+    rgba(255, 194, 71, 0.2);
+
+  background:
+    rgba(255, 194, 71, 0.04);
+}
+
+.achievement-card.locked {
+  opacity: 0.48;
+}
+
+
+/* Card icon */
+
+.achievement-card-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 44px;
+  height: 44px;
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  font-size: 22px;
+}
+
+.achievement-card.unlocked
+.achievement-card-icon {
+  background:
+    rgba(255, 194, 71, 0.08);
+}
+
+
+/* Card body */
+
+.achievement-card-body {
+  min-width: 0;
+}
+
+.achievement-card-name {
+  font-size: 13px;
+
+  font-weight: 800;
+
+  color: #ffffff;
+}
+
+.achievement-card-description {
+  margin-top: 3px;
+
+  font-size: 10px;
+
+  line-height: 1.4;
+
+  color: #64748b;
+}
+
+.achievement-card-reward {
+  margin-top: 5px;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #00ffc8;
+}
+
+
+@media (max-width: 768px) {
+
+  .esecurityin-achievement-panel {
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+
+    width: auto;
+
+    max-height: 70vh;
+  }
+
+}
+/* =========================================
+   CYBERREALM PROFILE
+========================================= */
+
+.cyberrealm-profile-wrapper {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+
+/* Main progression panel */
+
+.cyberrealm-profile-panel {
+  position: relative;
+
+  padding: 24px;
+
+  overflow: hidden;
+
+  border: 1px solid
+    rgba(0, 255, 200, 0.2);
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8, 14, 24, 0.96),
+      rgba(5, 9, 16, 0.96)
+    );
+
+  box-shadow:
+    0 0 30px
+      rgba(0, 255, 200, 0.06),
+
+    inset 0 0 25px
+      rgba(0, 255, 200, 0.02);
+}
+
+
+.cyberrealm-profile-panel::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 8%;
+
+  width: 84%;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #00ffc8,
+      #00aaff,
+      transparent
+    );
+
+  box-shadow:
+    0 0 12px
+      rgba(0, 255, 200, 0.5);
+}
+
+
+/* Header */
+
+.cyberrealm-profile-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 22px;
+}
+
+
+.cyberrealm-profile-identity {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+
+.cyberrealm-profile-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  border: 1px solid
+    rgba(0, 255, 200, 0.25);
+
+  border-radius: 12px;
+
+  background:
+    rgba(0, 255, 200, 0.06);
+
+  color: #00ffc8;
+
+  font-size: 22px;
+
+  box-shadow:
+    0 0 18px
+      rgba(0, 255, 200, 0.1);
+}
+
+
+.cyberrealm-profile-label {
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 2.5px;
+
+  color: #64748b;
+}
+
+
+.cyberrealm-profile-rank {
+  margin-top: 4px;
+
+  font-size: 18px;
+
+  font-weight: 900;
+
+  letter-spacing: 2px;
+
+  color: #00ffc8;
+
+  text-shadow:
+    0 0 10px
+      rgba(0, 255, 200, 0.3);
+}
+
+
+.cyberrealm-profile-level {
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #64748b;
+
+  text-align: right;
+}
+
+
+.cyberrealm-profile-level strong {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 30px;
+
+  letter-spacing: 1px;
+
+  color: #ffffff;
+}
+
+
+/* XP row */
+
+.cyberrealm-profile-xp-row {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+.cyberrealm-profile-xp-value {
+  font-size: 20px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  color: #ffffff;
+}
+
+
+.cyberrealm-profile-xp-next {
+  margin-top: 3px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+
+  color: #64748b;
+}
+
+
+.cyberrealm-profile-xp-percentage {
+  font-size: 12px;
+
+  font-weight: 800;
+
+  color: #00ffc8;
+}
+
+
+/* Progress */
+
+.cyberrealm-profile-progress {
+  width: 100%;
+  height: 10px;
+
+  margin-top: 12px;
+
+  overflow: hidden;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.05);
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+}
+
+
+.cyberrealm-profile-progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00ffc8,
+      #00d9ff
+    );
+
+  box-shadow:
+    0 0 12px
+      rgba(0, 255, 200, 0.4);
+
+  transition:
+    width 0.8s
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      );
+}
+
+
+.cyberrealm-profile-progress-label {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 7px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+
+  color: #64748b;
+}
+
+
+/* Metrics */
+
+.cyberrealm-profile-metrics {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+
+.cyberrealm-profile-metric {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  min-width: 0;
+
+  padding: 11px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.05);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+
+.cyberrealm-profile-metric .metric-icon {
+  flex-shrink: 0;
+
+  font-size: 18px;
+}
+
+
+.cyberrealm-profile-metric strong {
+  display: block;
+
+  font-size: 14px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+
+.cyberrealm-profile-metric span:last-child {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.7px;
+
+  color: #64748b;
+}
+
+
+/* Achievement section */
+
+.cyberrealm-profile-achievements {
+  margin-top: 22px;
+
+  padding: 22px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 16px;
+
+  background:
+    rgba(5, 10, 18, 0.75);
+}
+
+
+.cyberrealm-profile-section-header {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 16px;
+}
+
+
+.cyberrealm-profile-section-label {
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #64748b;
+}
+
+
+.cyberrealm-profile-section-header h2 {
+  margin: 4px 0 0;
+
+  font-size: 20px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+
+.cyberrealm-profile-achievement-count {
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #00ffc8;
+}
+
+
+/* Achievement grid */
+
+.cyberrealm-profile-achievement-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 10px;
+}
+
+
+.cyberrealm-profile-achievement {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 13px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.05);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.cyberrealm-profile-achievement.unlocked {
+  border-color:
+    rgba(255, 194, 71, 0.2);
+
+  background:
+    rgba(255, 194, 71, 0.035);
+}
+
+
+.cyberrealm-profile-achievement.unlocked:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(255, 194, 71, 0.4);
+}
+
+
+.cyberrealm-profile-achievement.locked {
+  opacity: 0.45;
+}
+
+
+/* Achievement icon */
+
+.profile-achievement-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  font-size: 20px;
+}
+
+
+.cyberrealm-profile-achievement.unlocked
+.profile-achievement-icon {
+  background:
+    rgba(255, 194, 71, 0.08);
+}
+
+
+/* Achievement content */
+
+.profile-achievement-content {
+  min-width: 0;
+}
+
+
+.profile-achievement-name {
+  font-size: 12px;
+
+  font-weight: 800;
+
+  color: #ffffff;
+}
+
+
+.profile-achievement-description {
+  margin-top: 3px;
+
+  font-size: 9px;
+
+  line-height: 1.4;
+
+  color: #64748b;
+}
+
+
+.profile-achievement-reward {
+  margin-top: 5px;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+
+  color: #00ffc8;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .cyberrealm-profile-header {
+    align-items: flex-start;
+  }
+
+  .cyberrealm-profile-metrics {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .cyberrealm-profile-achievement-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .cyberrealm-profile-panel {
+    padding: 17px;
+  }
+
+  .cyberrealm-profile-achievements {
+    padding: 17px;
+  }
+
+  .cyberrealm-profile-level strong {
+    font-size: 24px;
+  }
+
+  .cyberrealm-profile-rank {
+    font-size: 15px;
+  }
+
+  .cyberrealm-profile-metric {
+    padding: 9px;
+  }
+
+}
+/* =========================================
+   CYBERREALM PROGRESSION STATISTICS
+========================================= */
+
+.cyberrealm-stats-panel {
+  margin-top: 22px;
+
+  padding: 22px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 16px;
+
+  background:
+    rgba(5, 10, 18, 0.75);
+}
+
+
+.cyberrealm-stats-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 10px;
+
+  margin-top: 16px;
+}
+
+
+.cyberrealm-stat-box {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 13px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.05);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+
+.cyberrealm-stat-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  border: 1px solid
+    rgba(0, 255, 200, 0.16);
+
+  border-radius: 8px;
+
+  background:
+    rgba(0, 255, 200, 0.04);
+
+  color: #00ffc8;
+
+  font-size: 14px;
+}
+
+
+.cyberrealm-stat-box strong {
+  display: block;
+
+  font-size: 18px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+
+.cyberrealm-stat-box span {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+
+  color: #64748b;
+}
+
+
+/* Category activity */
+
+.cyberrealm-category-panel {
+  margin-top: 20px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid
+    rgba(255, 255, 255, 0.05);
+}
+
+
+.cyberrealm-category-title {
+  margin-bottom: 13px;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #64748b;
+}
+
+
+.cyberrealm-category-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+.cyberrealm-category-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+
+.cyberrealm-category-info {
+  display: flex;
+
+  flex-direction: column;
+
+  width: 150px;
+
+  flex-shrink: 0;
+}
+
+
+.cyberrealm-category-name {
+  font-size: 11px;
+
+  font-weight: 800;
+
+  color: #ffffff;
+}
+
+
+.cyberrealm-category-count {
+  margin-top: 2px;
+
+  font-size: 8px;
+
+  color: #64748b;
+}
+
+
+.cyberrealm-category-track {
+  flex: 1;
+
+  height: 6px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+}
+
+
+.cyberrealm-category-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00ffc8,
+      #00aaff
+    );
+
+  box-shadow:
+    0 0 8px
+      rgba(0, 255, 200, 0.3);
+
+  transition:
+    width 0.6s
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      );
+}
+
+
+@media (max-width: 768px) {
+
+  .cyberrealm-stats-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .cyberrealm-stats-panel {
+    padding: 17px;
+  }
+
+  .cyberrealm-stats-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .cyberrealm-category-info {
+    width: 110px;
+  }
+
+}
+/* =========================================
+   CYBERREALM DASHBOARD
+========================================= */
+
+.cyberrealm-dashboard {
+  min-height: 100%;
+}
+
+
+/* Hero */
+
+.cyberrealm-dashboard-hero {
+  position: relative;
+
+  padding:
+    70px 0
+    40px;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(0, 255, 200, 0.08),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(0, 170, 255, 0.07),
+      transparent 35%
+    );
+}
+
+
+.cyberrealm-dashboard-header {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 30px;
+}
+
+
+.cyberrealm-dashboard-kicker {
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 3px;
+
+  color: #00ffc8;
+}
+
+
+.cyberrealm-dashboard-header h1 {
+  margin-top: 8px;
+
+  font-size:
+    clamp(30px, 4vw, 52px);
+
+  font-weight: 900;
+
+  letter-spacing: -1px;
+
+  color: #ffffff;
+}
+
+
+.cyberrealm-dashboard-header h1 span {
+  color: #00ffc8;
+
+  text-shadow:
+    0 0 20px
+      rgba(0, 255, 200, 0.25);
+}
+
+
+.cyberrealm-dashboard-header p {
+  max-width: 650px;
+
+  margin-top: 10px;
+
+  color: #94a3b8;
+}
+
+
+.cyberrealm-dashboard-status {
+  min-width: 150px;
+
+  padding: 15px;
+
+  border: 1px solid
+    rgba(0, 255, 200, 0.15);
+
+  border-radius: 12px;
+
+  background:
+    rgba(5, 10, 18, 0.65);
+
+  text-align: right;
+}
+
+
+.dashboard-status-label {
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #64748b;
+}
+
+
+.dashboard-status-rank {
+  margin-top: 4px;
+
+  font-size: 14px;
+
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+
+  color: #00ffc8;
+}
+
+
+.dashboard-status-level {
+  margin-top: 8px;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #64748b;
+}
+
+
+.dashboard-status-level strong {
+  color: #ffffff;
+}
+
+
+/* Sections */
+
+.cyberrealm-dashboard-section {
+  padding:
+    0 0
+    24px;
+}
+
+
+/* Panels */
+
+.cyberrealm-dashboard-panel {
+  padding: 22px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 16px;
+
+  background:
+    rgba(5, 10, 18, 0.78);
+
+  box-shadow:
+    0 0 30px
+      rgba(0, 255, 200, 0.025);
+}
+
+
+.cyberrealm-dashboard-panel-header {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 18px;
+}
+
+
+.cyberrealm-dashboard-label {
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #64748b;
+}
+
+
+.cyberrealm-dashboard-panel-header h2,
+.cyberrealm-dashboard-section-heading h2,
+.cyberrealm-dashboard-mission h2 {
+  margin: 4px 0 0;
+
+  font-size: 21px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+
+.dashboard-view-link {
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #00ffc8;
+
+  text-decoration: none;
+}
+
+
+/* XP */
+
+.cyberrealm-dashboard-xp-row {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+.cyberrealm-dashboard-xp-total {
+  font-size: 16px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+
+.cyberrealm-dashboard-xp-current {
+  font-size: 18px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+
+.cyberrealm-dashboard-xp-next {
+  margin-top: 3px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  color: #64748b;
+}
+
+
+.cyberrealm-dashboard-xp-percent {
+  font-size: 12px;
+
+  font-weight: 800;
+
+  color: #00ffc8;
+}
+
+
+.cyberrealm-dashboard-progress {
+  height: 10px;
+
+  margin-top: 12px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+}
+
+
+.cyberrealm-dashboard-progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00ffc8,
+      #00d9ff
+    );
+
+  box-shadow:
+    0 0 12px
+      rgba(0, 255, 200, 0.4);
+
+  transition:
+    width 0.8s
+      cubic-bezier(
+        0.22,
+        1,
+        0.36,
+        1
+      );
+}
+
+
+/* Metrics */
+
+.cyberrealm-dashboard-metrics {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+
+.dashboard-metric {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 11px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.05);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.02);
+}
+
+
+.dashboard-metric > span {
+  font-size: 18px;
+}
+
+
+.dashboard-metric strong {
+  display: block;
+
+  font-size: 14px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+
+.dashboard-metric small {
+  display: block;
+
+  margin-top: 2px;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.7px;
+
+  color: #64748b;
+}
+
+
+/* Mission */
+
+.cyberrealm-dashboard-mission {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  padding: 20px;
+
+  border: 1px solid
+    rgba(0, 255, 200, 0.14);
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0, 255, 200, 0.04),
+      rgba(0, 170, 255, 0.03)
+    );
+}
+
+
+.dashboard-mission-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 12px;
+
+  background:
+    rgba(0, 255, 200, 0.08);
+
+  font-size: 21px;
+}
+
+
+.cyberrealm-dashboard-mission p {
+  margin: 5px 0 0;
+
+  font-size: 11px;
+
+  color: #64748b;
+}
+
+
+.dashboard-mission-content {
+  flex: 1;
+}
+
+
+.dashboard-mission-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 160px;
+
+  padding: 10px 15px;
+
+  border: 1px solid
+    rgba(0, 255, 200, 0.3);
+
+  border-radius: 8px;
+
+  background:
+    rgba(0, 255, 200, 0.06);
+
+  color: #00ffc8;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.dashboard-mission-button:hover {
+  background:
+    rgba(0, 255, 200, 0.12);
+
+  border-color:
+    rgba(0, 255, 200, 0.5);
+
+  color: #00ffc8;
+}
+
+
+/* Two-column content */
+
+.cyberrealm-dashboard-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 20px;
+}
+
+
+/* Activity */
+
+.dashboard-activity-list,
+.dashboard-achievement-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+
+.dashboard-activity-item,
+.dashboard-achievement-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.04);
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.02);
+}
+
+
+.dashboard-activity-icon,
+.dashboard-achievement-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(0, 255, 200, 0.05);
+}
+
+
+.dashboard-activity-content,
+.dashboard-achievement-content {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.dashboard-activity-content strong,
+.dashboard-achievement-content strong {
+  display: block;
+
+  overflow: hidden;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+
+  color: #ffffff;
+}
+
+
+.dashboard-activity-content span,
+.dashboard-achievement-content span {
+  display: block;
+
+  margin-top: 2px;
+
+  overflow: hidden;
+
+  font-size: 8px;
+
+  color: #64748b;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+}
+
+
+.dashboard-activity-status {
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #00ffc8;
+}
+
+
+.dashboard-achievement-reward {
+  font-size: 9px;
+
+  font-weight: 800;
+
+  color: #00ffc8;
+}
+
+
+.dashboard-empty {
+  padding: 20px;
+
+  font-size: 10px;
+
+  color: #64748b;
+
+  text-align: center;
+}
+
+
+/* Mission areas */
+
+.cyberrealm-dashboard-section-heading {
+  margin-bottom: 15px;
+}
+
+
+.cyberrealm-mission-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 12px;
+}
+
+
+.cyberrealm-mission-card {
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 150px;
+
+  padding: 17px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8, 14, 24, 0.9),
+      rgba(4, 8, 16, 0.9)
+    );
+
+  text-decoration: none;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.cyberrealm-mission-card:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(0, 255, 200, 0.25);
+
+  box-shadow:
+    0 0 20px
+      rgba(0, 255, 200, 0.05);
+}
+
+
+.mission-icon {
+  font-size: 24px;
+}
+
+
+.mission-name {
+  margin-top: 12px;
+
+  font-size: 13px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+
+.mission-description {
+  margin-top: 5px;
+
+  font-size: 9px;
+
+  line-height: 1.5;
+
+  color: #64748b;
+}
+
+
+@media (max-width: 992px) {
+
+  .cyberrealm-dashboard-metrics {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .cyberrealm-mission-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .cyberrealm-dashboard-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .cyberrealm-dashboard-status {
+    width: 100%;
+
+    text-align: left;
+  }
+
+  .cyberrealm-dashboard-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .cyberrealm-dashboard-mission {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .dashboard-mission-button {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .cyberrealm-dashboard-metrics {
+    grid-template-columns:
+      1fr;
+  }
+
+  .cyberrealm-mission-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+/* =========================================
+   CYBERREALM CHALLENGE BOARD
+========================================= */
+
+.cyberrealm-challenges-page {
+  min-height: 100%;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.cyberrealm-challenges-hero {
+  padding:
+    55px 0
+    35px;
+
+  border-bottom: 1px solid
+    rgba(0, 255, 200, 0.08);
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(0, 255, 200, 0.06),
+      transparent 35%
+    );
+}
+
+.cyberrealm-challenges-kicker {
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 3px;
+
+  color: #00ffc8;
+}
+
+.cyberrealm-challenges-heading {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-top: 7px;
+}
+
+.cyberrealm-challenges-heading h1 {
+  margin: 0;
+
+  font-size:
+    clamp(32px, 5vw, 52px);
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+.cyberrealm-challenges-heading p {
+  max-width: 600px;
+
+  margin: 8px 0 0;
+
+  font-size: 12px;
+
+  color: #64748b;
+}
+
+.cyberrealm-challenges-status {
+  padding: 8px 12px;
+
+  border: 1px solid
+    rgba(0, 255, 200, 0.2);
+
+  border-radius: 999px;
+
+  background:
+    rgba(0, 255, 200, 0.04);
+
+  color: #00ffc8;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================
+   CATEGORY
+========================================= */
+
+.cyberrealm-category {
+  padding:
+    34px 0
+    5px;
+}
+
+.cyberrealm-category-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-bottom: 17px;
+}
+
+.cyberrealm-category-kicker {
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #64748b;
+}
+
+.cyberrealm-category-header h2 {
+  margin: 3px 0 0;
+
+  font-size: 20px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+.cyberrealm-category-line {
+  flex: 1;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 255, 200, 0.18),
+      transparent
+    );
+}
+
+
+/* =========================================
+   GRID
+========================================= */
+
+.cyberrealm-challenge-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 15px;
+}
+
+
+/* =========================================
+   CARD WRAPPER
+========================================= */
+
+.cyberrealm-challenge-wrapper {
+  min-width: 0;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.cyberrealm-challenge-card {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 245px;
+
+  padding: 17px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10, 17, 29, 0.98),
+      rgba(5, 10, 19, 0.98)
+    );
+
+  color: #ffffff;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 25px
+      rgba(0, 0, 0, 0.18);
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
+}
+
+.cyberrealm-challenge-card:hover {
+  transform:
+    translateY(-5px);
+
+  border-color:
+    rgba(0, 255, 200, 0.3);
+
+  box-shadow:
+    0 14px 35px
+      rgba(0, 0, 0, 0.28),
+
+    0 0 25px
+      rgba(0, 255, 200, 0.06);
+}
+
+.cyberrealm-challenge-card:focus-visible {
+  outline: 2px solid #00ffc8;
+
+  outline-offset: 3px;
+}
+
+
+/* =========================================
+   SOLVED CARD
+========================================= */
+
+.cyberrealm-challenge-card.is-solved {
+  border-color:
+    rgba(0, 255, 200, 0.18);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(5, 28, 28, 0.98),
+      rgba(5, 15, 21, 0.98)
+    );
+}
+
+.cyberrealm-challenge-card.is-solved::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0, 255, 200, 0.04),
+      transparent 50%
+    );
+}
+
+
+/* =========================================
+   CARD TOP
+========================================= */
+
+.challenge-card-top {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.challenge-card-index {
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+
+  color: #475569;
+}
+
+.challenge-card-state {
+  padding: 4px 7px;
+
+  border-radius: 999px;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+.state-available {
+  border: 1px solid
+    rgba(255, 255, 255, 0.07);
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  color: #94a3b8;
+}
+
+.state-solved {
+  border: 1px solid
+    rgba(0, 255, 200, 0.18);
+
+  background:
+    rgba(0, 255, 200, 0.06);
+
+  color: #00ffc8;
+}
+
+
+/* =========================================
+   ICON
+========================================= */
+
+.challenge-card-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  margin-top: 19px;
+
+  border:
+    1px solid
+    rgba(0, 255, 200, 0.18);
+
+  border-radius: 11px;
+
+  background:
+    rgba(0, 255, 200, 0.04);
+
+  color: #00ffc8;
+
+  font-size: 20px;
+
+  box-shadow:
+    0 0 15px
+      rgba(0, 255, 200, 0.06);
+}
+
+.is-solved .challenge-card-icon {
+  background:
+    rgba(0, 255, 200, 0.08);
+
+  border-color:
+    rgba(0, 255, 200, 0.25);
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.challenge-card-title {
+  margin-top: 15px;
+
+  font-size: 16px;
+
+  font-weight: 900;
+
+  line-height: 1.25;
+
+  color: #ffffff;
+}
+
+
+/* =========================================
+   CATEGORY
+========================================= */
+
+.challenge-card-category {
+  margin-top: 5px;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+
+  text-transform: uppercase;
+
+  color: #00ffc8;
+}
+
+
+/* =========================================
+   TAGS
+========================================= */
+
+.challenge-card-tags {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 5px;
+
+  margin-top: 12px;
+}
+
+.challenge-card-tag {
+  padding: 4px 6px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.05);
+
+  border-radius: 5px;
+
+  background:
+    rgba(255, 255, 255, 0.03);
+
+  color: #64748b;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.6px;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.challenge-card-footer {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-top: auto;
+
+  padding-top: 18px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.05);
+}
+
+.challenge-card-value {
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 4px;
+}
+
+.challenge-card-value-icon {
+  font-size: 11px;
+}
+
+.challenge-card-value strong {
+  font-size: 15px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+.challenge-card-value span:last-child {
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #64748b;
+}
+
+.challenge-card-action {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  color: #00ffc8;
+}
+
+.challenge-card-arrow {
+  font-size: 12px;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.cyberrealm-challenge-card:hover
+.challenge-card-arrow {
+  transform:
+    translateX(3px);
+}
+
+
+/* =========================================
+   BOTTOM GLOW
+========================================= */
+
+.challenge-card-glow {
+  position: absolute;
+
+  left: 10%;
+  right: 10%;
+  bottom: -20px;
+
+  height: 35px;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(0, 255, 200, 0.18),
+      transparent 65%
+    );
+
+  transition:
+    opacity 0.25s ease;
+}
+
+.cyberrealm-challenge-card:hover
+.challenge-card-glow {
+  opacity: 1;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.cyberrealm-challenge-loading {
+  min-height: 45vh;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+.cyberrealm-loader-core {
+  display: flex;
+
+  gap: 6px;
+}
+
+.cyberrealm-loader-core span {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #00ffc8;
+
+  animation:
+    cyberRealmLoader
+    1s
+    ease-in-out
+    infinite;
+}
+
+.cyberrealm-loader-core span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.cyberrealm-loader-core span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.cyberrealm-loading-label {
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+
+  color: #64748b;
+}
+
+@keyframes cyberRealmLoader {
+
+  0%,
+  100% {
+    opacity: 0.25;
+
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform:
+      translateY(-5px);
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1200px) {
+
+  .cyberrealm-challenge-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+}
+
+@media (max-width: 900px) {
+
+  .cyberrealm-challenge-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .cyberrealm-challenges-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  .cyberrealm-challenge-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .cyberrealm-category-header {
+    align-items: flex-start;
+  }
+
+  .cyberrealm-category-line {
+    display: none;
+  }
+
+}
+/* =========================================
+   CHALLENGE DIFFICULTY + XP
+========================================= */
+
+.challenge-card-meta-row {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  margin-top: 9px;
+}
+
+.challenge-card-difficulty {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 4px 7px;
+
+  border-radius: 999px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.08);
+
+  background:
+    rgba(255, 255, 255, 0.03);
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.8px;
+}
+
+/* Easy */
+
+.difficulty-easy {
+  color: #4ade80;
+
+  border-color:
+    rgba(74, 222, 128, 0.2);
+
+  background:
+    rgba(74, 222, 128, 0.05);
+}
+
+/* Medium */
+
+.difficulty-medium {
+  color: #facc15;
+
+  border-color:
+    rgba(250, 204, 21, 0.2);
+
+  background:
+    rgba(250, 204, 21, 0.05);
+}
+
+/* Hard */
+
+.difficulty-hard {
+  color: #fb923c;
+
+  border-color:
+    rgba(251, 146, 60, 0.2);
+
+  background:
+    rgba(251, 146, 60, 0.05);
+}
+
+/* Insane */
+
+.difficulty-insane {
+  color: #f87171;
+
+  border-color:
+    rgba(248, 113, 113, 0.2);
+
+  background:
+    rgba(248, 113, 113, 0.05);
+}
+
+/* No difficulty tag */
+
+.difficulty-unrated {
+  color: #64748b;
+
+  border-color:
+    rgba(255, 255, 255, 0.06);
+
+  background:
+    rgba(255, 255, 255, 0.02);
+}
+
+.challenge-card-xp {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 3px;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.4px;
+
+  color: #00ffc8;
+}
+
+.challenge-card-xp strong {
+  font-size: 10px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+/* =========================================
+   CHALLENGE SOLVE STATES
+========================================= */
+
+.cyberrealm-challenge-card {
+  transform: translateZ(0);
+}
+
+.cyberrealm-challenge-card.is-solved {
+  animation:
+    challengeSolvedGlow
+    0.7s
+    ease-out;
+}
+
+.cyberrealm-challenge-card.is-solved
+.challenge-card-icon {
+  animation:
+    challengeSolvedIcon
+    0.45s
+    ease-out;
+}
+
+.cyberrealm-challenge-card:not(.is-solved)
+.challenge-card-icon {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.cyberrealm-challenge-card:not(.is-solved):hover
+.challenge-card-icon {
+  transform:
+    scale(1.08);
+
+  box-shadow:
+    0 0 20px
+      rgba(0, 255, 200, 0.18);
+}
+
+.challenge-card-state {
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.state-solved {
+  box-shadow:
+    0 0 10px
+      rgba(0, 255, 200, 0.12);
+}
+
+@keyframes challengeSolvedGlow {
+
+  0% {
+    box-shadow:
+      0 0 0
+        rgba(0, 255, 200, 0);
+  }
+
+  35% {
+    box-shadow:
+      0 0 35px
+        rgba(0, 255, 200, 0.28);
+  }
+
+  100% {
+    box-shadow:
+      0 8px 25px
+        rgba(0, 0, 0, 0.18);
+  }
+
+}
+
+@keyframes challengeSolvedIcon {
+
+  0% {
+    transform:
+      scale(0.7);
+  }
+
+  55% {
+    transform:
+      scale(1.2);
+  }
+
+  100% {
+    transform:
+      scale(1);
+  }
+
+}
+/* =========================================
+   CATEGORY VISUAL HIERARCHY
+========================================= */
+
+.cyberrealm-category-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  min-height: 42px;
+
+  margin-bottom: 18px;
+}
+
+.cyberrealm-category-title-wrap {
+  flex-shrink: 0;
+}
+
+.cyberrealm-category-kicker {
+  margin-bottom: 3px;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  letter-spacing: 2.4px;
+
+  color: #64748b;
+}
+
+.cyberrealm-category-title-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.cyberrealm-category-title-row h2 {
+  margin: 0;
+
+  font-size: 21px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.2px;
+
+  color: #ffffff;
+}
+
+.cyberrealm-category-status {
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #00ffc8;
+
+  box-shadow:
+    0 0 8px
+      rgba(0, 255, 200, 0.75);
+}
+
+.cyberrealm-category-line {
+  flex: 1;
+
+  height: 1px;
+
+  min-width: 20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 255, 200, 0.2),
+      rgba(255, 255, 255, 0.04),
+      transparent
+    );
+}
+
+.cyberrealm-category-count {
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 5px;
+
+  flex-shrink: 0;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+
+  color: #00ffc8;
+}
+
+.cyberrealm-category-count span:first-child {
+  font-size: 14px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+.challenge-card-xp {
+  display: inline-flex;
+
+  align-items: baseline;
+
+  gap: 3px;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+
+  color: #00ffc8;
+}
+
+.challenge-card-xp strong {
+  font-size: 12px;
+
+  font-weight: 900;
+
+  color: #ffffff;
+}
+/* =========================================
+   CHALLENGE OPEN FEEDBACK
+========================================= */
+
+.challenge-card-opening {
+  transform:
+    translateY(-3px)
+    scale(0.985);
+
+  border-color:
+    rgba(0, 255, 200, 0.5) !important;
+
+  box-shadow:
+    0 0 30px
+      rgba(0, 255, 200, 0.12),
+    inset 0 0 20px
+      rgba(0, 255, 200, 0.04);
+
+  animation:
+    challengeCardOpen
+    0.35s
+    ease-out;
+}
+
+@keyframes challengeCardOpen {
+
+  0% {
+    transform:
+      translateY(0)
+      scale(1);
+
+    box-shadow:
+      0 0 0
+        rgba(0, 255, 200, 0);
+  }
+
+  50% {
+    transform:
+      translateY(-4px)
+      scale(1.015);
+
+    box-shadow:
+      0 0 30px
+        rgba(0, 255, 200, 0.2);
+  }
+
+  100% {
+    transform:
+      translateY(-3px)
+      scale(0.985);
+  }
+
+}
+.cyberrealm-challenge-card.is-solved
+.challenge-card-state {
+  animation:
+    solvedStateAppear
+    0.45s
+    ease-out;
+}
+
+@keyframes solvedStateAppear {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      scale(0.7);
+  }
+
+  60% {
+    opacity: 1;
+
+    transform:
+      scale(1.08);
+  }
+
+  100% {
+    transform:
+      scale(1);
+  }
+
+}
+/* =========================================
+   CYBERREALM CATEGORY FILTERS
+========================================= */
+
+.cyberrealm-category-filter {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin:
+    25px 0
+    5px;
+
+  padding-bottom: 5px;
+
+  overflow-x: auto;
+
+  scrollbar-width: thin;
+}
+
+.cyberrealm-filter-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  flex-shrink: 0;
+
+  padding:
+    8px 11px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color: #64748b;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.cyberrealm-filter-button strong {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 18px;
+  height: 18px;
+
+  padding: 0 4px;
+
+  border-radius: 5px;
+
+  background:
+    rgba(255, 255, 255, 0.05);
+
+  color: #94a3b8;
+
+  font-size: 8px;
+}
+
+.cyberrealm-filter-button:hover {
+  transform:
+    translateY(-1px);
+
+  border-color:
+    rgba(0, 255, 200, 0.2);
+
+  color: #ffffff;
+}
+
+.cyberrealm-filter-button.is-active {
+  border-color:
+    rgba(0, 255, 200, 0.3);
+
+  background:
+    rgba(0, 255, 200, 0.07);
+
+  color: #00ffc8;
+
+  box-shadow:
+    0 0 16px
+      rgba(0, 255, 200, 0.05);
+}
+
+.cyberrealm-filter-button.is-active strong {
+  background:
+    rgba(0, 255, 200, 0.12);
+
+  color: #00ffc8;
+}
+/* =========================================
+   DAILY OBJECTIVES
+========================================= */
+
+.dashboard-objective-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.dashboard-objective-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 14px 16px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.02);
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.dashboard-objective-item:hover {
+  transform:
+    translateY(-1px);
+
+  border-color:
+    rgba(0, 255, 200, 0.15);
+}
+
+.dashboard-objective-item.is-complete {
+  border-color:
+    rgba(0, 255, 200, 0.22);
+
+  background:
+    rgba(0, 255, 200, 0.035);
+}
+
+.dashboard-objective-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  border: 1px solid
+    rgba(0, 255, 200, 0.15);
+
+  border-radius: 10px;
+
+  background:
+    rgba(0, 255, 200, 0.04);
+
+  font-size: 19px;
+}
+
+.dashboard-objective-content {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.dashboard-objective-title-row {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+.dashboard-objective-title-row strong {
+  color: #ffffff;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+.dashboard-objective-reward {
+  flex-shrink: 0;
+
+  color: #00ffc8;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.8px;
+}
+
+.dashboard-objective-description {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #64748b;
+
+  font-size: 9px;
+}
+
+.dashboard-objective-progress {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-top: 8px;
+}
+
+.dashboard-objective-progress-track {
+  flex: 1;
+
+  height: 5px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+}
+
+.dashboard-objective-progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #00ffc8,
+      #00aaff
+    );
+
+  transition:
+    width 0.6s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dashboard-objective-progress-text {
+  min-width: 48px;
+
+  text-align: right;
+
+  color: #94a3b8;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+}
+
+.dashboard-objective-status {
+  flex-shrink: 0;
+}
+
+.objective-complete-badge,
+.objective-active-badge {
+  display: inline-flex;
+
+  padding: 5px 7px;
+
+  border-radius: 6px;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.8px;
+}
+
+.objective-complete-badge {
+  color: #00ffc8;
+
+  border: 1px solid
+    rgba(0, 255, 200, 0.18);
+
+  background:
+    rgba(0, 255, 200, 0.06);
+}
+
+.objective-active-badge {
+  color: #64748b;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.06);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.dashboard-objective-date {
+  color: #64748b;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+/* =========================================
+   CYBERREALM // CRACK-THE-LAB INTERACTION
+========================================= */
+
+
+/* =========================================
+   CHALLENGE CARD HOVER
+========================================= */
+
+.cyberrealm-challenge-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
+}
+
+
+.cyberrealm-challenge-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0%,
+      rgba(0, 255, 200, 0.00) 35%,
+      rgba(0, 255, 200, 0.14) 50%,
+      rgba(0, 255, 200, 0.00) 65%,
+      transparent 100%
+    );
+  transform: translateX(-120%);
+  transition:
+    transform 0.65s ease;
+  z-index: 1;
+}
+
+
+.cyberrealm-challenge-card:hover {
+  transform:
+    translateY(-6px)
+    scale(1.01);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.35),
+    0 0 24px rgba(0, 255, 200, 0.10);
+}
+
+
+.cyberrealm-challenge-card:hover::before {
+  transform:
+    translateX(120%);
+}
+
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.cyberrealm-challenge-card
+.challenge-card-top,
+.cyberrealm-challenge-card
+.challenge-card-icon,
+.cyberrealm-challenge-card
+.challenge-card-title,
+.cyberrealm-challenge-card
+.challenge-card-meta-row,
+.cyberrealm-challenge-card
+.challenge-card-tags,
+.cyberrealm-challenge-card
+.challenge-card-footer {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* =========================================
+   AVAILABLE STATE
+========================================= */
+
+.cyberrealm-challenge-card:not(.is-solved) {
+  cursor: pointer;
+}
+
+
+.cyberrealm-challenge-card:not(.is-solved):hover
+.challenge-card-icon {
+  transform:
+    scale(1.12)
+    rotate(8deg);
+}
+
+
+.challenge-card-icon {
+  transition:
+    transform 0.22s ease,
+    opacity 0.22s ease;
+}
+
+
+/* =========================================
+   SCANNING LINE
+========================================= */
+
+.cyberrealm-challenge-card.challenge-card-opening::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -15%;
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 255, 200, 0.2),
+      rgba(0, 255, 200, 1),
+      rgba(0, 255, 200, 0.2),
+      transparent
+    );
+
+  box-shadow:
+    0 0 12px rgba(0, 255, 200, 0.9),
+    0 0 28px rgba(0, 255, 200, 0.35);
+
+  z-index: 10;
+
+  animation:
+    cyberrealmCardScan
+    0.35s
+    ease-out
+    forwards;
+}
+
+
+@keyframes cyberrealmCardScan {
+
+  0% {
+    top: -10%;
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 110%;
+    opacity: 0;
+  }
+
+}
+
+
+/* =========================================
+   CARD BREACH FLASH
+========================================= */
+
+.cyberrealm-challenge-card.challenge-card-opening {
+  animation:
+    cyberrealmCardBreach
+    0.35s
+    ease-out;
+}
+
+
+@keyframes cyberrealmCardBreach {
+
+  0% {
+    transform: scale(1);
+    box-shadow:
+      0 0 0 rgba(0, 255, 200, 0);
+  }
+
+  45% {
+    transform:
+      scale(1.025);
+    box-shadow:
+      0 0 36px rgba(0, 255, 200, 0.28);
+  }
+
+  100% {
+    transform:
+      scale(1);
+  }
+
+}
+
+
+/* =========================================
+   SOLVED CARD
+========================================= */
+
+.cyberrealm-challenge-card.is-solved {
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.cyberrealm-challenge-card.is-solved:hover {
+  transform:
+    translateY(-3px);
+}
+
+
+/* =========================================
+   CHALLENGE MODAL ENTRANCE
+========================================= */
+
+#challenge-window {
+  opacity: 0;
+  transform:
+    scale(0.96)
+    translateY(14px);
+  transition:
+    opacity 0.24s ease,
+    transform 0.24s ease;
+}
+
+
+#challenge-window.show {
+  opacity: 1;
+  transform:
+    scale(1)
+    translateY(0);
+}
+
+
+/* =========================================
+   MODAL CONTENT
+========================================= */
+
+#challenge-window .modal-content {
+  animation:
+    cyberrealmModalBoot
+    0.28s
+    ease-out;
+}
+
+
+@keyframes cyberrealmModalBoot {
+
+  0% {
+    opacity: 0;
+    transform:
+      scale(0.97)
+      translateY(10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform:
+      scale(1)
+      translateY(0);
+  }
+
+}
+
+
+/* =========================================
+   MODAL TOP GLOW
+========================================= */
+
+#challenge-window .modal-content::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 255, 200, 0.9),
+      transparent
+    );
+
+  box-shadow:
+    0 0 16px rgba(0, 255, 200, 0.45);
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   ACCESS TEXT
+========================================= */
+
+.cyberrealm-challenge-card
+.challenge-card-action span {
+  transition:
+    letter-spacing 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.cyberrealm-challenge-card:hover
+.challenge-card-action span:first-child {
+  letter-spacing: 0.08em;
+}
+
+
+.cyberrealm-challenge-card:hover
+.challenge-card-arrow {
+  transform:
+    translateX(5px);
+}
+
+
+.challenge-card-arrow {
+  display: inline-block;
+  transition:
+    transform 0.2s ease;
+}
+
+
+/* =========================================
+   FOCUS ACCESSIBILITY
+========================================= */
+
+.cyberrealm-challenge-card:focus-visible {
+  outline: 2px solid rgba(0, 255, 200, 0.9);
+  outline-offset: 4px;
+
+  box-shadow:
+    0 0 0 4px rgba(0, 255, 200, 0.12),
+    0 0 28px rgba(0, 255, 200, 0.18);
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .cyberrealm-challenge-card,
+  .challenge-card-icon,
+  .challenge-card-arrow,
+  #challenge-window,
+  #challenge-window .modal-content {
+    transition: none !important;
+    animation: none !important;
+  }
+
+}
+/* =========================================
+   CYBERREALM // GLOBAL MICROINTERACTIONS
+========================================= */
+
+
+/* =========================================
+   PAGE CONTENT ENTRANCE
+========================================= */
+
+main[role="main"] {
+  animation:
+    cyberrealmPageIn
+    0.35s
+    ease-out;
+}
+
+
+@keyframes cyberrealmPageIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* =========================================
+   PANELS
+========================================= */
+
+.dashboard-card,
+.dashboard-panel,
+.cyberrealm-dashboard-panel,
+.analytics-card,
+.leaderboard-card,
+.feature-card,
+.stat-card {
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+
+.dashboard-card:hover,
+.dashboard-panel:hover,
+.cyberrealm-dashboard-panel:hover,
+.analytics-card:hover,
+.feature-card:hover,
+.stat-card:hover {
+  transform: translateY(-3px);
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.btn,
+button,
+.cyberrealm-filter-button,
+.dashboard-mission-button {
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    opacity 0.16s ease;
+}
+
+
+.btn:hover,
+button:hover,
+.cyberrealm-filter-button:hover,
+.dashboard-mission-button:hover {
+  transform: translateY(-2px);
+}
+
+
+.btn:active,
+button:active,
+.cyberrealm-filter-button:active,
+.dashboard-mission-button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   XP HUD
+========================================= */
+
+.esecurityin-xp-hud {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.esecurityin-xp-hud:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 0 28px rgba(0, 255, 200, 0.12),
+    inset 0 0 20px rgba(0, 255, 200, 0.04);
+}
+
+
+/* =========================================
+   XP VALUE PULSE
+========================================= */
+
+.esecurityin-xp-hud.xp-updated {
+  animation:
+    cyberrealmXPPulse
+    0.45s
+    ease-out;
+}
+
+
+@keyframes cyberrealmXPPulse {
+
+  0% {
+    transform: scale(1);
+  }
+
+  35% {
+    transform: scale(1.025);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+
+}
+
+
+/* =========================================
+   XP GAIN POPUP
+========================================= */
+
+.esecurityin-xp-gain {
+  animation:
+    cyberrealmXPGain
+    1.8s
+    ease-out
+    forwards;
+}
+
+
+@keyframes cyberrealmXPGain {
+
+  0% {
+    opacity: 0;
+    transform:
+      translateY(8px)
+      scale(0.92);
+  }
+
+  15% {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+  75% {
+    opacity: 1;
+    transform:
+      translateY(-18px)
+      scale(1.02);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translateY(-32px)
+      scale(0.98);
+  }
+
+}
+
+
+/* =========================================
+   ACHIEVEMENT PANEL
+========================================= */
+
+.esecurityin-achievement-panel {
+  opacity: 0;
+  transform:
+    translateY(-8px)
+    scale(0.98);
+
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+
+.esecurityin-achievement-panel.show {
+  opacity: 1;
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+
+/* =========================================
+   ACHIEVEMENT CARDS
+========================================= */
+
+.achievement-card {
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
+}
+
+
+.achievement-card:hover {
+  transform:
+    translateX(4px);
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.20);
+}
+
+
+/* =========================================
+   ACHIEVEMENT POPUP
+========================================= */
+
+.esecurityin-achievement-popup {
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+
+.esecurityin-achievement-popup.show {
+  animation:
+    cyberrealmAchievementEnter
+    0.35s
+    ease-out;
+}
+
+
+@keyframes cyberrealmAchievementEnter {
+
+  from {
+    opacity: 0;
+    transform:
+      translateX(30px)
+      scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateX(0)
+      scale(1);
+  }
+
+}
+
+
+/* =========================================
+   NAVIGATION LINKS
+========================================= */
+
+.navbar a,
+.nav-link {
+  transition:
+    color 0.18s ease,
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+.navbar a:hover,
+.nav-link:hover {
+  transform: translateY(-1px);
+}
+
+
+/* =========================================
+   SEARCH FIELD
+========================================= */
+
+input,
+select,
+textarea {
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+  box-shadow:
+    0 0 0 3px rgba(0, 255, 200, 0.08);
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  main[role="main"],
+  .dashboard-card,
+  .dashboard-panel,
+  .cyberrealm-dashboard-panel,
+  .analytics-card,
+  .leaderboard-card,
+  .feature-card,
+  .stat-card,
+  .btn,
+  button,
+  .cyberrealm-filter-button,
+  .dashboard-mission-button,
+  .esecurityin-xp-hud,
+  .esecurityin-xp-gain,
+  .esecurityin-achievement-panel,
+  .achievement-card,
+  .esecurityin-achievement-popup,
+  .navbar a,
+  .nav-link,
+  input,
+  select,
+  textarea {
+    animation: none !important;
+    transition: none !important;
+  }
+
+}
+/* =========================================
+   CYBERREALM // RESPONSIVE DESIGN
+========================================= */
+
+
+/* =========================================
+   TABLET
+   <= 991px
+========================================= */
+
+@media (max-width: 991px) {
+
+  /* XP HUD */
+
+  .esecurityin-xp-hud {
+    top: 70px;
+    right: 12px;
+    width: 260px;
+    padding: 14px 15px;
+  }
+
+
+  .xp-hud-level {
+    font-size: 0.9rem;
+  }
+
+
+  .xp-hud-rank {
+    font-size: 0.7rem;
+  }
+
+
+  .xp-hud-next {
+    font-size: 0.62rem;
+  }
+
+
+  .xp-hud-value {
+    font-size: 1rem;
+  }
+
+
+  /* Dashboard */
+
+  .cyberrealm-dashboard-header {
+    gap: 24px;
+  }
+
+
+  .cyberrealm-dashboard-metrics {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  /* Mission cards */
+
+  .cyberrealm-mission-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  /* Challenge grid */
+
+  .cyberrealm-challenge-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  /* Scoreboard */
+
+  .leaderboard-card {
+    overflow-x: auto;
+  }
+
+
+  .leaderboard-table {
+    min-width: 850px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+   <= 767px
+========================================= */
+
+@media (max-width: 767px) {
+
+  /* -----------------------------------------
+     GLOBAL
+  ----------------------------------------- */
+
+  body {
+    overflow-x: hidden;
+  }
+
+
+  .container {
+    width: 100%;
+  }
+
+
+  /* -----------------------------------------
+     XP HUD
+  ----------------------------------------- */
+
+  .esecurityin-xp-hud {
+    position: fixed;
+
+    top: auto;
+    bottom: 12px;
+
+    left: 12px;
+    right: 12px;
+
+    width: auto;
+
+    padding: 12px 14px;
+
+    border-radius: 12px;
+
+    z-index: 1050;
+  }
+
+
+  .xp-hud-header {
+    gap: 10px;
+  }
+
+
+  .xp-hud-level-wrap {
+    min-width: 0;
+  }
+
+
+  .xp-hud-icon {
+    font-size: 1rem;
+  }
+
+
+  .xp-hud-level {
+    font-size: 0.82rem;
+  }
+
+
+  .xp-hud-rank {
+    font-size: 0.65rem;
+  }
+
+
+  .xp-hud-next {
+    display: none;
+  }
+
+
+  .xp-hud-value {
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+
+  .xp-hud-footer {
+    font-size: 0.68rem;
+  }
+
+
+  /* Achievement counter */
+
+  .esecurityin-achievement-counter {
+    font-size: 0.7rem;
+    padding: 5px 8px;
+  }
+
+
+  /* -----------------------------------------
+     DASHBOARD HERO
+  ----------------------------------------- */
+
+  .cyberrealm-dashboard-hero {
+    padding:
+      45px
+      0
+      35px;
+  }
+
+
+  .cyberrealm-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+
+  .cyberrealm-dashboard-header h1 {
+    font-size: 2rem;
+  }
+
+
+  .cyberrealm-dashboard-status {
+    width: 100%;
+  }
+
+
+  /* -----------------------------------------
+     DASHBOARD METRICS
+  ----------------------------------------- */
+
+  .cyberrealm-dashboard-metrics {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+  }
+
+
+  .dashboard-metric {
+    padding: 12px;
+  }
+
+
+  .dashboard-metric strong {
+    font-size: 1.1rem;
+  }
+
+
+  .dashboard-metric small {
+    font-size: 0.58rem;
+  }
+
+
+  /* -----------------------------------------
+     DASHBOARD GRID
+  ----------------------------------------- */
+
+  .cyberrealm-dashboard-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /* -----------------------------------------
+     MISSION AREAS
+  ----------------------------------------- */
+
+  .cyberrealm-mission-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /* -----------------------------------------
+     CHALLENGES
+  ----------------------------------------- */
+
+  .cyberrealm-challenges-hero {
+    padding:
+      40px
+      0
+      30px;
+  }
+
+
+  .cyberrealm-challenges-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+
+  .cyberrealm-challenge-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .cyberrealm-category-header {
+    gap: 12px;
+  }
+
+
+  .cyberrealm-category-count {
+    display: none;
+  }
+
+
+  /* Category filters */
+
+  .cyberrealm-category-filter {
+    display: flex;
+
+    overflow-x: auto;
+
+    gap: 8px;
+
+    padding-bottom: 8px;
+
+    scrollbar-width: none;
+  }
+
+
+  .cyberrealm-category-filter::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .cyberrealm-filter-button {
+    flex: 0 0 auto;
+  }
+
+
+  /* -----------------------------------------
+     CHALLENGE MODAL
+  ----------------------------------------- */
+
+  #challenge-window {
+    padding: 8px;
+  }
+
+
+  #challenge-window .modal-dialog {
+    margin:
+      8px
+      auto;
+
+    max-width:
+      calc(100% - 16px);
+  }
+
+
+  #challenge-window .modal-body {
+    max-height:
+      calc(100vh - 180px);
+
+    overflow-y: auto;
+  }
+
+
+  /* -----------------------------------------
+     SCOREBOARD
+  ----------------------------------------- */
+
+  .analytics-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .analytics-card {
+    min-width: 0;
+  }
+
+
+  .analytics-chart {
+    min-height: 260px;
+  }
+
+
+  .leaderboard-search {
+    width: 100%;
+  }
+
+
+  .leaderboard-card {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+
+  .leaderboard-table {
+    min-width: 850px;
+  }
+
+
+  .leaderboard-podium {
+    overflow-x: auto;
+  }
+
+
+  .podium {
+    min-width: 620px;
+  }
+
+
+  /* -----------------------------------------
+     PROFILE
+  ----------------------------------------- */
+
+  .dashboard-stats {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .dashboard-stats .stat-card {
+    min-width: 0;
+  }
+
+
+  .dashboard-section {
+    margin-bottom: 25px;
+  }
+
+
+  .dashboard-table {
+    overflow-x: auto;
+  }
+
+
+  .dashboard-table table {
+    min-width: 650px;
+  }
+
+
+  /* -----------------------------------------
+     LEVEL-UP
+  ----------------------------------------- */
+
+  .esecurityin-level-up {
+    padding: 20px;
+  }
+
+
+  .level-up-title {
+    font-size: 0.85rem;
+  }
+
+
+  .level-up-level {
+    font-size: 2.5rem;
+  }
+
+
+  /* -----------------------------------------
+     ACHIEVEMENT POPUP
+  ----------------------------------------- */
+
+  .esecurityin-achievement-popup {
+    left: 12px;
+    right: 12px;
+
+    width: auto;
+
+    max-width: none;
+  }
+
+
+  /* -----------------------------------------
+     ACHIEVEMENT PANEL
+  ----------------------------------------- */
+
+  .esecurityin-achievement-panel {
+    width:
+      calc(100vw - 24px);
+
+    max-width: none;
+
+    right: 12px;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   <= 480px
+========================================= */
+
+@media (max-width: 480px) {
+
+  /* XP HUD */
+
+  .esecurityin-xp-hud {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+
+  .xp-hud-header {
+    align-items: center;
+  }
+
+
+  .xp-hud-footer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+
+  /* Analytics */
+
+  .analytics-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /* Dashboard */
+
+  .cyberrealm-dashboard-metrics {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .dashboard-stats {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  /* Challenge category */
+
+  .cyberrealm-category-title-row h2 {
+    font-size: 1.25rem;
+  }
+
+
+  /* Buttons */
+
+  .dashboard-mission-button {
+    width: 100%;
+    text-align: center;
+  }
+
+
+  /* Achievement popup */
+
+  .esecurityin-achievement-popup {
+    font-size: 0.85rem;
+  }
+
+
+  /* Level up */
+
+  .level-up-level {
+    font-size: 2rem;
+  }
+
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  * {
+    scroll-behavior: auto !important;
+  }
+
+}
