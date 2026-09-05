@@ -1,36 +1,52 @@
 :root {
 
-  /* ========= Brand ========= */
+  /* =========================================
+     CYBERREALM // BRAND
+  ========================================== */
 
-  --cr-primary:#2196F3;
-  --cr-primary-dark:#1565C0;
-  --cr-secondary:#4FC3F7;
+  --cr-primary: #2196F3;
+  --cr-primary-dark: #1565C0;
+  --cr-secondary: #4FC3F7;
 
-  --cr-success:#00C853;
-  --cr-danger:#F44336;
-  --cr-warning:#FFB300;
+  --cr-success: #00C853;
+  --cr-danger: #F44336;
+  --cr-warning: #FFB300;
 
-  /* ========= Background ========= */
 
-  --cr-bg:#080B14;
-  --cr-surface:#111827;
-  --cr-card:#182234;
+  /* =========================================
+     CYBERREALM // BACKGROUND
+  ========================================== */
 
-  /* ========= Text ========= */
+  --cr-bg: #080B14;
+  --cr-surface: #111827;
+  --cr-card: #182234;
 
-  --cr-text:#F5F7FA;
-  --cr-muted:#9FB3C8;
 
-  /* ========= Borders ========= */
+  /* =========================================
+     CYBERREALM // TEXT
+  ========================================== */
 
-  --cr-border:#26364C;
+  --cr-text: #F5F7FA;
+  --cr-muted: #9FB3C8;
 
-  /* ========= Radius ========= */
 
-  --cr-radius:18px;
+  /* =========================================
+     CYBERREALM // BORDERS
+  ========================================== */
 
-  /* ========= Animation ========= */
+  --cr-border: #26364C;
 
-  --cr-speed:.30s ease;
+
+  /* =========================================
+     CYBERREALM // UI
+  ========================================== */
+
+  --cr-radius: 18px;
+
+  --cr-speed: 0.30s ease;
+
+  --cr-transition:
+    all
+    var(--cr-speed);
 
 }

@@ -11,6 +11,7 @@ from CTFd.utils.user import get_current_user
 from .api import api
 from .services.achievement_service import AchievementService
 from .services.daily_objective_service import DailyObjectiveService
+from .services.notification_service import NotificationService
 
 
 def load(app):
@@ -84,6 +85,7 @@ def award_xp_after_flush(session, flush_context):
     - Daily objectives
     - Daily-objective XP
     - Achievements
+    - CyberRealm notifications
     """
 
     solves = session.info.pop(
@@ -99,18 +101,24 @@ def award_xp_after_flush(session, flush_context):
         user_id = solve["user_id"]
         challenge_id = solve["challenge_id"]
 
+        # Used later to determine whether the final solve
+        # caused a level-up.
+        previous_level = None
+
         print("🔥🔥 eSecurityIn XP EVENT 🔥🔥")
         print(f"🔥 User ID: {user_id}")
         print(f"🔥 Challenge ID: {challenge_id}")
 
         # ---------------------------------------------------------
-        # 1. Get challenge points
+        # 1. Get challenge name + points
         # ---------------------------------------------------------
 
         result = session.execute(
             text(
                 """
-                SELECT value
+                SELECT
+                    name,
+                    value
                 FROM challenges
                 WHERE id = :challenge_id
                 """
@@ -126,7 +134,8 @@ def award_xp_after_flush(session, flush_context):
             print("❌ Challenge not found")
             continue
 
-        points = challenge[0] or 0
+        challenge_name = challenge[0] or "Challenge"
+        points = challenge[1] or 0
 
         # Current eSecurityIn rule:
         # 100 CTF points = 50 XP
@@ -136,8 +145,13 @@ def award_xp_after_flush(session, flush_context):
         )
 
         print(
+            f"🔥 Challenge: {challenge_name}"
+        )
+
+        print(
             f"🔥 Challenge points: {points}"
         )
+
         print(
             f"🔥 XP to award: {xp}"
         )
@@ -178,6 +192,9 @@ def award_xp_after_flush(session, flush_context):
 
             current_xp = user_xp[0] or 0
             current_level = user_xp[1] or 1
+
+            previous_level = current_level
+
             current_streak = user_xp[2] or 0
             current_longest_streak = user_xp[3] or 0
             current_total_solves = user_xp[4] or 0
@@ -287,6 +304,8 @@ def award_xp_after_flush(session, flush_context):
 
         else:
 
+            previous_level = 1
+
             new_xp = xp
 
             new_level = (
@@ -360,7 +379,22 @@ def award_xp_after_flush(session, flush_context):
             )
 
         # ---------------------------------------------------------
-        # 6. Daily objectives
+        # 6. XP notification
+        # ---------------------------------------------------------
+
+        NotificationService.xp_gained(
+            user_id=user_id,
+            amount=xp,
+            challenge_name=challenge_name,
+        )
+
+        print(
+            "🔔 CyberRealm notification: "
+            f"+{xp} XP"
+        )
+
+        # ---------------------------------------------------------
+        # 7. Daily objectives
         # ---------------------------------------------------------
 
         completed_objectives = (
@@ -372,7 +406,7 @@ def award_xp_after_flush(session, flush_context):
         )
 
         # ---------------------------------------------------------
-        # 7. Award daily-objective XP
+        # 8. Award daily-objective XP
         # ---------------------------------------------------------
 
         objective_reward_xp = sum(
@@ -443,7 +477,7 @@ def award_xp_after_flush(session, flush_context):
                 )
 
         # ---------------------------------------------------------
-        # 8. Log completed objectives
+        # 9. Daily objective notifications
         # ---------------------------------------------------------
 
         for objective in completed_objectives:
@@ -458,8 +492,18 @@ def award_xp_after_flush(session, flush_context):
                 f"+{objective['xp_reward']} XP"
             )
 
+            NotificationService.objective_completed(
+                user_id=user_id,
+                objective=objective,
+            )
+
+            print(
+                "🔔 CyberRealm notification: "
+                f"{objective['name']}"
+            )
+
         # ---------------------------------------------------------
-        # 9. Achievements
+        # 10. Achievements
         # ---------------------------------------------------------
 
         unlocked_achievements = (
@@ -475,3 +519,68 @@ def award_xp_after_flush(session, flush_context):
                 "🏆 eSecurityIn unlocked: "
                 f"{achievement['name']}"
             )
+
+            NotificationService.achievement_unlocked(
+                user_id=user_id,
+                achievement=achievement,
+            )
+
+            print(
+                "🔔 CyberRealm achievement "
+                "notification created: "
+                f"{achievement['name']}"
+            )
+
+        # ---------------------------------------------------------
+        # 11. Final level-up detection
+        # ---------------------------------------------------------
+        #
+        # Important:
+        # Challenge XP and daily-objective XP can both
+        # increase the level during one solve.
+        #
+        # Therefore, check the FINAL level from the
+        # database rather than only the challenge XP level.
+
+        result = session.execute(
+            text(
+                """
+                SELECT
+                    xp,
+                    level
+                FROM user_xp
+                WHERE user_id = :user_id
+                """
+            ),
+            {
+                "user_id": user_id,
+            },
+        )
+
+        final_user_xp = result.fetchone()
+
+        if final_user_xp:
+
+            final_xp = final_user_xp[0] or 0
+            final_level = final_user_xp[1] or 1
+
+            print(
+                "🔥 Final progression: "
+                f"{final_xp} XP / Level {final_level}"
+            )
+
+            if (
+                previous_level is not None
+                and final_level > previous_level
+            ):
+
+                NotificationService.level_up(
+                    user_id=user_id,
+                    level=final_level,
+                )
+
+                print(
+                    "🔔 CyberRealm level-up "
+                    "notification created: "
+                    f"Level {final_level}"
+                )

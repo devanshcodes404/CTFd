@@ -1,48 +1,187 @@
 html,
 body {
-  background: linear-gradient(180deg, #0b1020 0%, #12182d 100%);
-  color: var(--cr-text);
+
+  background:
+    linear-gradient(
+      180deg,
+      #0b1020 0%,
+      #12182d 100%
+    );
+
+  color:
+    var(--cr-text);
+
 }
+
 
 body {
+
   min-height: 100vh;
-  font-family: Inter, sans-serif;
-  transition: var(--cr-transition);
+
+  font-family:
+    Inter,
+    sans-serif;
+
 }
 
-/* Links */
+
+/* =========================================
+   LINKS
+========================================= */
+
 a {
-  color: var(--cr-secondary);
-  transition: var(--cr-transition);
+
+  color:
+    var(--cr-secondary);
+
+  transition:
+    var(--cr-transition);
+
 }
+
 
 a:hover {
-  color: var(--cr-primary);
+
+  color:
+    var(--cr-primary);
+
 }
 
-/* Selection */
+
+/* =========================================
+   SELECTION
+========================================= */
+
 ::selection {
-  background: var(--cr-primary);
-  color: #fff;
+
+  background:
+    var(--cr-primary);
+
+  color:
+    #ffffff;
+
 }
 
-/* Headings */
+
+/* =========================================
+   HEADINGS
+========================================= */
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: var(--cr-text);
-  font-weight: 600;
+
+  color:
+    var(--cr-text);
+
+  font-weight:
+    600;
+
 }
 
-/* Paragraphs */
+
+/* =========================================
+   PARAGRAPHS
+========================================= */
+
 p {
-  color: var(--cr-muted);
+
+  color:
+    var(--cr-muted);
+
 }
 
-/* Horizontal rule */
+
+/* =========================================
+   HORIZONTAL RULE
+========================================= */
+
 hr {
-  border-color: var(--cr-border);
+
+  border-color:
+    var(--cr-border);
+
+}
+
+
+/* =========================================
+   FORM CONTROLS
+========================================= */
+
+input,
+select,
+textarea {
+
+  color:
+    var(--cr-text);
+
+  background:
+    var(--cr-surface);
+
+  border-color:
+    var(--cr-border);
+
+}
+
+
+input::placeholder,
+textarea::placeholder {
+
+  color:
+    var(--cr-muted);
+
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+
+  border-color:
+    var(--cr-primary);
+
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+
+.card {
+
+  background:
+    var(--cr-surface);
+
+  color:
+    var(--cr-text);
+
+  border-color:
+    var(--cr-border);
+
+}
+
+
+/* =========================================
+   TABLES
+========================================= */
+
+.table {
+
+  color:
+    var(--cr-text);
+
+}
+
+
+.table > :not(caption) > * > * {
+
+  color:
+    var(--cr-text);
+
+  border-color:
+    var(--cr-border);
+
 }

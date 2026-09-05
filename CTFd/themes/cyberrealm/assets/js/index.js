@@ -1,6 +1,7 @@
 import "./toast";
 import "./sound";
 import "./xp";
+import "./notifications";
 import CTFd from "@ctfdio/ctfd-js";
 
 import dayjs from "dayjs";
