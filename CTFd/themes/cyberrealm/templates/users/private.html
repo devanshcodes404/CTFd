@@ -3,175 +3,166 @@
 {% block content %}
 {% set solves = user.solves %}
 {% set awards = user.awards %}
-  <div class="dashboard-hero">
 
-    <div class="container">
+<div class="dashboard-hero">
+  <div class="container">
+    <div class="dashboard-header">
+      <div class="dashboard-avatar">
+        <i class="fas fa-user-secret"></i>
+      </div>
 
-        <div class="dashboard-header">
+      <div>
+        <h1>
+          Welcome back,
+          {{ user.name }}
+        </h1>
 
-            <div class="dashboard-avatar">
-
-                <i class="fas fa-user-secret"></i>
-
-            </div>
-
-            <div>
-
-                <h1>
-
-                    Welcome back,
-                    {{ user.name }}
-
-                </h1>
-
-                <p>
-
-                    Continue your cybersecurity journey on
-                    <strong>eSecurityIn</strong>
-
-                </p>
-
-            </div>
-
-        </div>
-
-        <div class="dashboard-stats">
-
-            <div class="stat-card">
-
-                <h2>
-
-                    {% if account.place %}
-                        #{{ account.place }}
-                    {% else %}
-                        --
-                    {% endif %}
-
-                </h2>
-
-                <p>Rank</p>
-
-            </div>
-
-            <div class="stat-card">
-
-                <h2>
-
-                    {% if account %}
-                        {{ account.get_score(admin=True) }}
-                    {% endif %}
-
-                </h2>
-
-                <p>Points</p>
-
-            </div>
-
-            <div class="stat-card">
-
-                <h2>
-
-                    {{ solves|length }}
-
-                </h2>
-
-                <p>Solved</p>
-
-            </div>
-
-            <div class="stat-card">
-
-                <h2>
-
-                    {{ awards|length }}
-
-                </h2>
-
-                <p>Awards</p>
-
-            </div>
-
-        </div>
-
+        <p>
+          Continue your cybersecurity journey on
+          <strong>eSecurityIn</strong>
+        </p>
+      </div>
     </div>
 
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <h2>
+          {% if account.place %}
+            #{{ account.place }}
+          {% else %}
+            --
+          {% endif %}
+        </h2>
+        <p>Rank</p>
+      </div>
+
+      <div class="stat-card">
+        <h2>
+          {% if account %}
+            {{ account.get_score(admin=True) }}
+          {% endif %}
+        </h2>
+        <p>Points</p>
+      </div>
+
+      <div class="stat-card">
+        <h2>
+          {{ solves|length }}
+        </h2>
+        <p>Solved</p>
+      </div>
+
+      <div class="stat-card">
+        <h2>
+          {{ awards|length }}
+        </h2>
+        <p>Awards</p>
+      </div>
+    </div>
   </div>
-  <div class="container cyberrealm-profile-wrapper"
-     x-data="CyberRealmProfile"
-     x-init="init()">
+</div>
 
+<div
+  class="container cyberrealm-profile-wrapper"
+  x-data="CyberRealmProfile"
+  x-init="init()"
+>
   <div class="cyberrealm-profile-panel">
-
     <div class="cyberrealm-profile-header">
-
       <div class="cyberrealm-profile-identity">
-
         <div class="cyberrealm-profile-icon">
           ⚡
         </div>
 
         <div>
-
           <div class="cyberrealm-profile-label">
             CYBERREALM PROFILE
+          </div>
+
+          <div class="cyberrealm-profile-name">
+            {{ user.name }}
           </div>
 
           <div class="cyberrealm-profile-rank">
             <span x-text="profile.rank">RECRUIT</span>
           </div>
 
+          <div
+            class="cyberrealm-profile-next-rank"
+            x-show="profile.nextRank !== 'MAX RANK'"
+          >
+            NEXT:
+            <span x-text="profile.nextRank">OPERATIVE</span>
+            <span>
+              · LVL <span x-text="profile.nextRankLevel">5</span>
+            </span>
+          </div>
+
+          <div
+            class="cyberrealm-profile-next-rank"
+            x-show="profile.nextRank === 'MAX RANK'"
+          >
+            MAX RANK REACHED
+          </div>
+        </div>
+      </div>
+
+      <div class="cyberrealm-profile-meta">
+        <div class="cyberrealm-profile-position">
+          GLOBAL
+          <strong>
+            {% if account.place %}
+              #{{ account.place }}
+            {% else %}
+              --
+            {% endif %}
+          </strong>
         </div>
 
+        <div class="cyberrealm-profile-level">
+          LEVEL
+          <strong x-text="profile.level">1</strong>
+        </div>
       </div>
-
-      <div class="cyberrealm-profile-level">
-        LEVEL
-        <strong x-text="profile.level">1</strong>
-      </div>
-
     </div>
-
 
     <div class="cyberrealm-profile-xp-row">
-
-      <div>
-
-        <div class="cyberrealm-profile-xp-value">
-          <span x-text="profile.xp">0</span>
-          XP
-        </div>
-
-        <div
-          class="cyberrealm-profile-xp-next"
-          x-text="`${profile.xpToNext} XP TO NEXT LEVEL`"
-        >
-          500 XP TO NEXT LEVEL
-        </div>
-
-      </div>
-
-      <div
-        class="cyberrealm-profile-xp-percentage"
-        x-text="`${profile.progress}%`"
-      >
-        0%
-      </div>
-
+  <div>
+    <div class="cyberrealm-profile-xp-label">
+      TOTAL XP
     </div>
 
+    <div class="cyberrealm-profile-xp-value">
+      <span x-text="profile.xp">0</span>
+      XP
+    </div>
+  </div>
+
+  <div class="cyberrealm-profile-xp-status">
+    <div
+      class="cyberrealm-profile-xp-percentage"
+      x-text="`${profile.progress}%`"
+    >
+      0%
+    </div>
+
+    <div
+      class="cyberrealm-profile-xp-next"
+      x-text="`${profile.xpToNext} XP TO NEXT LEVEL`"
+    >
+      500 XP TO NEXT LEVEL
+    </div>
+  </div>
+</div>
 
     <div class="cyberrealm-profile-progress">
-
       <div
         class="cyberrealm-profile-progress-fill"
         :style="{ width: `${profile.progress}%` }"
       ></div>
-
     </div>
 
-
     <div class="cyberrealm-profile-progress-label">
-
       <span
         x-text="`${profile.xpIntoLevel} / ${profile.xpPerLevel} XP`"
       >
@@ -181,98 +172,89 @@
       <span>
         NEXT: LVL UP
       </span>
-
     </div>
 
-
     <div class="cyberrealm-profile-metrics">
-
       <div class="cyberrealm-profile-metric">
-
-        <span class="metric-icon">
+        <div class="metric-icon">
           🔥
-        </span>
+        </div>
 
-        <div>
-          <strong x-text="profile.streak">
+        <div class="metric-content">
+          <span
+            class="metric-value"
+            x-text="profile.streak"
+          >
             0
-          </strong>
+          </span>
 
-          <span>
+          <span class="metric-label">
             DAY STREAK
           </span>
         </div>
-
       </div>
 
-
       <div class="cyberrealm-profile-metric">
-
-        <span class="metric-icon">
+        <div class="metric-icon">
           🧩
-        </span>
+        </div>
 
-        <div>
-          <strong x-text="profile.totalSolves">
+        <div class="metric-content">
+          <span
+            class="metric-value"
+            x-text="profile.totalSolves"
+          >
             0
-          </strong>
+          </span>
 
-          <span>
+          <span class="metric-label">
             SOLVES
           </span>
         </div>
-
       </div>
 
-
       <div class="cyberrealm-profile-metric">
-
-        <span class="metric-icon">
+        <div class="metric-icon">
           🏆
-        </span>
+        </div>
 
-        <div>
-          <strong
+        <div class="metric-content">
+          <span
+            class="metric-value"
             x-text="`${profile.achievementsUnlocked}/${profile.achievementsTotal}`"
           >
             0/0
-          </strong>
+          </span>
 
-          <span>
+          <span class="metric-label">
             ACHIEVEMENTS
           </span>
         </div>
-
       </div>
 
-
       <div class="cyberrealm-profile-metric">
-
-        <span class="metric-icon">
+        <div class="metric-icon">
           🔥
-        </span>
+        </div>
 
-        <div>
-          <strong x-text="profile.longestStreak">
+        <div class="metric-content">
+          <span
+            class="metric-value"
+            x-text="profile.longestStreak"
+          >
             0
-          </strong>
+          </span>
 
-          <span>
+          <span class="metric-label">
             BEST STREAK
           </span>
         </div>
-
       </div>
-
     </div>
-
   </div>
 
-
   <div class="cyberrealm-profile-achievements">
-
     <div class="cyberrealm-profile-section-header">
-
       <div>
         <div class="cyberrealm-profile-section-label">
           PROGRESSION
@@ -289,24 +271,17 @@
       >
         0 / 0
       </span>
-
     </div>
 
-
-    <div
-      class="cyberrealm-profile-achievement-grid"
-    >
-
+    <div class="cyberrealm-profile-achievement-grid">
       <template
         x-for="achievement in profile.achievements"
         :key="achievement.id"
       >
-
         <div
           class="cyberrealm-profile-achievement"
           :class="achievement.unlocked ? 'unlocked' : 'locked'"
         >
-
           <div class="profile-achievement-icon">
             <span
               x-text="achievement.unlocked ? achievement.icon : '🔒'"
@@ -315,9 +290,7 @@
             </span>
           </div>
 
-
           <div class="profile-achievement-content">
-
             <div
               class="profile-achievement-name"
               x-text="achievement.name"
@@ -338,324 +311,297 @@
             >
               +0 XP
             </div>
-
           </div>
-
         </div>
-
       </template>
-
     </div>
-
   </div>
-
-</div>
-  <div class="container">
-    {% include "components/errors.html" %}
-
-
-    {% if solves or awards %}
-      {% if awards %}
-        <div class="dashboard-section">
-           <h2 class="section-title">
-
-        🏆 Achievements
-
-    </h2>
-
-    <div class="row">
-
-        {% for award in awards %}
-
-        <div class="col-md-4 col-lg-3 mb-4">
-
-            <div class="achievement-card">
-
-                <div class="achievement-icon">
-
-                    <i class="award-icon award-{{ award.icon }} fa-2x"></i>
-
-                </div>
-
-                <h5>
-
-                    {{ award.name }}
-
-                </h5>
-
-                <p>
-
-                    {{ award.description or "" }}
-
-                </p>
-
-                <span class="achievement-points">
-
-                    {{ award.value }} pts
-
-                </span>
-
-            </div>
-
-        </div>
-
-        {% endfor %}
-
-    </div>
-
 </div>
 
-{% endif %}
+<div class="container">
+  {% include "components/errors.html" %}
 
-      <br>
+  {% if solves %}
 
-      <div class="dashboard-section">
-         <h2 class="section-title">🚩 Recent Solves</h2>
-           <div class="dashboard-table">
-             <table class="table align-middle">
-                <thead>
-                  <tr>
-                   <th>Challenge</th>
-                   <th class="d-none d-md-table-cell">Category</th>
-                   <th>Points</th>
-                   <th>Completed</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    {% for solve in solves %}
-                    <tr>
-                      <td><a href="{{ url_for('challenges.listing') }}#{{ solve.challenge.name }}-{{ solve.challenge.id }}">{{ solve.challenge.name }}</a></td>
-                      <td class="d-none d-md-table-cell">{{ solve.challenge.category }}</td>
-                      <td><span class="points-badge">{{ solve.challenge.value }} pts</span></td>
-                      <td><span data-time="{{ solve.date | isoformat }}"></span></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-             </table>
-           </div>
-       </div>
-       <div
-  class="cyberrealm-stats-panel"
-  x-data="CyberRealmStats"
-  x-init="init()"
->
+    <br>
 
-  <div class="cyberrealm-profile-section-header">
-
-    <div>
-      <div class="cyberrealm-profile-section-label">
-        PERFORMANCE
-      </div>
-
-      <h2>
-        Progress Statistics
+    <div class="dashboard-section">
+      <h2 class="section-title">
+        🚩 Recent Solves
       </h2>
-    </div>
 
-  </div>
+      <div class="dashboard-table">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Challenge</th>
+              <th class="d-none d-md-table-cell">Category</th>
+              <th>Points</th>
+              <th>Completed</th>
+            </tr>
+          </thead>
 
+          <tbody>
+            {% for solve in solves %}
+              <tr>
+                <td>
+                  <a
+                    href="{{ url_for('challenges.listing') }}#{{ solve.challenge.name }}-{{ solve.challenge.id }}"
+                  >
+                    {{ solve.challenge.name }}
+                  </a>
+                </td>
 
-  <div class="cyberrealm-stats-grid">
+                <td class="d-none d-md-table-cell">
+                  {{ solve.challenge.category }}
+                </td>
 
-    <div class="cyberrealm-stat-box">
+                <td>
+                  <span class="points-badge">
+                    {{ solve.challenge.value }} pts
+                  </span>
+                </td>
 
-      <div class="cyberrealm-stat-icon">
-        ✓
+                <td>
+                  <span data-time="{{ solve.date | isoformat }}"></span>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
-
-      <div>
-        <strong x-text="stats.solves">
-          0
-        </strong>
-
-        <span>
-          SOLVES
-        </span>
-      </div>
-
-    </div>
-
-
-    <div class="cyberrealm-stat-box">
-
-      <div class="cyberrealm-stat-icon">
-        ✕
-      </div>
-
-      <div>
-        <strong x-text="stats.fails">
-          0
-        </strong>
-
-        <span>
-          FAILS
-        </span>
-      </div>
-
-    </div>
-
-
-    <div class="cyberrealm-stat-box">
-
-      <div class="cyberrealm-stat-icon">
-        %
-      </div>
-
-      <div>
-        <strong x-text="`${stats.solveRate}%`">
-          0%
-        </strong>
-
-        <span>
-          SUCCESS RATE
-        </span>
-      </div>
-
-    </div>
-
-
-    <div class="cyberrealm-stat-box">
-
-      <div class="cyberrealm-stat-icon">
-        🔥
-      </div>
-
-      <div>
-        <strong x-text="stats.longestStreak">
-          0
-        </strong>
-
-        <span>
-          BEST STREAK
-        </span>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="cyberrealm-category-panel">
-
-    <div class="cyberrealm-category-title">
-      CHALLENGE ACTIVITY
     </div>
 
     <div
-      class="cyberrealm-category-list"
+      class="cyberrealm-stats-panel"
+      x-data="CyberRealmStats"
+      x-init="init()"
     >
-
-      <template
-        x-for="category in stats.categories"
-        :key="category.name"
-      >
-
-        <div class="cyberrealm-category-row">
-
-          <div class="cyberrealm-category-info">
-
-            <span
-              class="cyberrealm-category-name"
-              x-text="category.name"
-            >
-              Category
-            </span>
-
-            <span
-              class="cyberrealm-category-count"
-              x-text="`${category.count} solves`"
-            >
-              0 solves
-            </span>
-
+      <div class="cyberrealm-profile-section-header">
+        <div>
+          <div class="cyberrealm-profile-section-label">
+            PERFORMANCE
           </div>
 
-          <div class="cyberrealm-category-track">
-
-            <div
-              class="cyberrealm-category-fill"
-              :style="{ width: `${category.percent}%` }"
-            ></div>
-
-          </div>
-
+          <h2>
+            Progress Statistics
+          </h2>
         </div>
+      </div>
 
-      </template>
-
+      <div class="cyberrealm-stats-grid">
+  <div class="cyberrealm-stat-box">
+    <div class="cyberrealm-stat-icon">
+      ✕
     </div>
 
+    <div>
+      <strong x-text="stats.fails">
+        0
+      </strong>
+
+      <span>
+        FAILS
+      </span>
+    </div>
   </div>
 
+  <div class="cyberrealm-stat-box">
+    <div class="cyberrealm-stat-icon">
+      %
+    </div>
+
+    <div>
+      <strong x-text="`${stats.solveRate}%`">
+        0%
+      </strong>
+
+      <span>
+        SUCCESS RATE
+      </span>
+    </div>
+  </div>
+
+  <div class="cyberrealm-stat-box">
+    <div class="cyberrealm-stat-icon">
+      ↻
+    </div>
+
+    <div>
+      <strong x-text="stats.totalAttempts">
+        0
+      </strong>
+
+      <span>
+        TOTAL ATTEMPTS
+      </span>
+    </div>
+  </div>
 </div>
 
-      <div class="clearfix"></div>
-      <div class="row" x-data="UserGraphs">
-        <div class="col-md-6 d-none d-md-block d-lg-block py-4">
-          <div class="progress">
-            <div 
-              class="progress-bar" 
-              role="progressbar" 
-              :style="{ width: `${getSolvePercentage()}%`, 'background-color': 'rgb(0, 209, 64)' }" 
-            >
-            </div>
-            <div 
-              class="progress-bar" 
-              role="progressbar" 
-              :style="{ width: `${getFailPercentage()}%`, 'background-color': 'rgb(207, 38, 0)' }"
-            >
-            </div>
-          </div>
-          <div class="ps-2 float-start">
-            <svg height="16" width="16">
-              <circle cx="8" cy="8" r="5" fill="rgb(0, 209, 64)" />
-            </svg>
-            <small x-text="`Solves (${getSolvePercentage()}%)`"></small>
-          </div>
-          <div class="ps-2 float-start">
-            <svg height="16" width="16">
-              <circle cx="8" cy="8" r="5" fill="rgb(207, 38, 0)" />
-            </svg>
-            <small x-text="`Fails (${getFailPercentage()}%)`"></small>
-          </div>
+      <div class="cyberrealm-category-panel">
+        <div class="cyberrealm-category-title">
+          CHALLENGE ACTIVITY
         </div>
-        <div class="col-md-6 d-none d-md-block d-lg-block py-4">
-          <div class="progress">
-            <template x-for="category in getCategoryBreakdown()" :key="category.name">
-              <div 
-                class="progress-bar" 
-                role="progressbar" 
-                :style="{ width: `${category.percent}%`, 'background-color': category.color }"
-              >
+
+        <div class="cyberrealm-category-list">
+          <template
+            x-for="category in stats.categories"
+            :key="category.name"
+          >
+            <div class="cyberrealm-category-row">
+              <div class="cyberrealm-category-info">
+                <span
+                  class="cyberrealm-category-name"
+                  x-text="category.name"
+                >
+                  Category
+                </span>
+
+                <span
+                  class="cyberrealm-category-count"
+                  x-text="`${category.count} solves`"
+                >
+                  0 solves
+                </span>
               </div>
-            </template>
-          </div>
-          <template x-for="category in getCategoryBreakdown()" :key="category.name">
-            <div class="ps-2 float-start">
-              <svg height="16" width="16">
-                <circle cx="8" cy="8" r="5" :fill="category.color" />
-              </svg>
-              <small x-text="`${category.name} (${category.percent}%)`"></small>
+
+              <div class="cyberrealm-category-track">
+                <div
+                  class="cyberrealm-category-fill"
+                  :style="{ width: `${category.percent}%` }"
+                ></div>
+              </div>
             </div>
           </template>
         </div>
-        <br class="clearfix">
-        <div class="col-md-12 d-none d-md-block d-lg-block py-4">
-          <div id="score-graph" x-ref="scoregraph" class="w-100 d-flex align-items-center">
-            <div class="text-center w-100">
-              <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
-            </div>
-          </div>
+      </div>
+    </div>
+
+    <div
+  class="cyberrealm-analytics"
+  x-data="UserGraphs"
+>
+  <div class="cyberrealm-analytics-header">
+    <div>
+      <div class="cyberrealm-profile-section-label">
+        ANALYTICS
+      </div>
+
+      <h2>
+        Performance Breakdown
+      </h2>
+    </div>
+  </div>
+
+  <div class="cyberrealm-analytics-grid">
+    <div class="cyberrealm-analytics-card">
+      <div class="cyberrealm-analytics-card-header">
+        <span>SOLVE SUCCESS</span>
+      </div>
+
+      <div class="cyberrealm-analytics-progress">
+        <div
+          class="cyberrealm-analytics-progress-track"
+        >
+          <div
+            class="cyberrealm-analytics-progress-solve"
+            :style="{ width: `${getSolvePercentage()}%` }"
+          ></div>
+
+          <div
+            class="cyberrealm-analytics-progress-fail"
+            :style="{ width: `${getFailPercentage()}%` }"
+          ></div>
         </div>
       </div>
-    {% else %}
-      <div class="row min-vh-25">
-        <h3 class="opacity-50 text-center w-100 justify-content-center align-self-center">
-          {% trans %}No solves yet{% endtrans %}
-        </h3>
+
+      <div class="cyberrealm-analytics-legend">
+        <span>
+          <i class="analytics-dot analytics-dot-solve"></i>
+          <span x-text="`Solves ${getSolvePercentage()}%`">
+            Solves 0%
+          </span>
+        </span>
+
+        <span>
+          <i class="analytics-dot analytics-dot-fail"></i>
+          <span x-text="`Fails ${getFailPercentage()}%`">
+            Fails 0%
+          </span>
+        </span>
       </div>
-    {% endif %}
+    </div>
+
+    <div class="cyberrealm-analytics-card">
+      <div class="cyberrealm-analytics-card-header">
+        <span>CATEGORY DISTRIBUTION</span>
+      </div>
+
+      <div class="cyberrealm-analytics-progress">
+        <div class="cyberrealm-analytics-progress-track">
+          <template
+            x-for="category in getCategoryBreakdown()"
+            :key="category.name"
+          >
+            <div
+              class="cyberrealm-analytics-category-segment"
+              :style="{
+                width: `${category.percent}%`,
+                'background-color': category.color
+              }"
+            ></div>
+          </template>
+        </div>
+      </div>
+
+      <div class="cyberrealm-analytics-legend analytics-category-legend">
+        <template
+          x-for="category in getCategoryBreakdown()"
+          :key="category.name"
+        >
+          <span>
+            <i
+              class="analytics-dot"
+              :style="{ background: category.color }"
+            ></i>
+
+            <span
+              x-text="`${category.name} ${category.percent}%`"
+            >
+              Category 0%
+            </span>
+          </span>
+        </template>
+      </div>
+    </div>
   </div>
+
+  <div class="cyberrealm-analytics-chart">
+    <div class="cyberrealm-analytics-card-header">
+      <span>SCORE OVER TIME</span>
+    </div>
+
+    <div
+      id="score-graph"
+      x-ref="scoregraph"
+      class="cyberrealm-score-graph"
+    >
+      <div class="text-center w-100">
+        <i class="fas fa-circle-notch fa-spin fa-2x fa-fw spinner"></i>
+      </div>
+    </div>
+  </div>
+</div>
+  {% else %}
+    <div class="row min-vh-25">
+      <h3 class="opacity-50 text-center w-100 justify-content-center align-self-center">
+        {% trans %}No solves yet{% endtrans %}
+      </h3>
+    </div>
+  {% endif %}
+</div>
+
 {% endblock %}
 
 {% block scripts %}

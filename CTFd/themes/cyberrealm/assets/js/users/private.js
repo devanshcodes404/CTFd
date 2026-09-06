@@ -84,6 +84,8 @@ Alpine.data("CyberRealmProfile", () => ({
     xp: 0,
     level: 1,
     rank: "RECRUIT",
+    nextRank: "OPERATIVE",
+nextRankLevel: 5,
 
     xpPerLevel: 500,
     xpIntoLevel: 0,
@@ -172,12 +174,16 @@ Alpine.data("CyberRealmProfile", () => ({
       XP_PER_LEVEL -
       xpIntoLevel;
 
-    this.profile = {
-      xp,
-      level,
+    const nextRank = this.getNextRank(level);
 
-      rank:
-        this.getPlayerRank(level),
+this.profile = {
+  xp,
+  level,
+
+  rank: this.getPlayerRank(level),
+
+  nextRank: nextRank.name,
+  nextRankLevel: nextRank.level,
 
       xpPerLevel:
         XP_PER_LEVEL,
@@ -207,38 +213,80 @@ Alpine.data("CyberRealmProfile", () => ({
   },
 
   getPlayerRank(level) {
-    if (level >= 50) {
-      return "CYBER LEGEND";
-    }
+  if (level >= 50) {
+    return "CYBER LEGEND";
+  }
 
-    if (level >= 30) {
-      return "SHADOW AGENT";
-    }
+  if (level >= 30) {
+    return "SHADOW AGENT";
+  }
 
-    if (level >= 20) {
-      return "ELITE";
-    }
+  if (level >= 20) {
+    return "ELITE";
+  }
 
-    if (level >= 10) {
-      return "SPECIALIST";
-    }
+  if (level >= 10) {
+    return "SPECIALIST";
+  }
 
-    if (level >= 5) {
-      return "OPERATIVE";
-    }
+  if (level >= 5) {
+    return "OPERATIVE";
+  }
 
-    return "RECRUIT";
-  },
+  return "RECRUIT";
+},
+
+getNextRank(level) {
+  if (level >= 50) {
+    return {
+      name: "MAX RANK",
+      level: 50,
+    };
+  }
+
+  if (level >= 30) {
+    return {
+      name: "CYBER LEGEND",
+      level: 50,
+    };
+  }
+
+  if (level >= 20) {
+    return {
+      name: "SHADOW AGENT",
+      level: 30,
+    };
+  }
+
+  if (level >= 10) {
+    return {
+      name: "ELITE",
+      level: 20,
+    };
+  }
+
+  if (level >= 5) {
+    return {
+      name: "SPECIALIST",
+      level: 10,
+    };
+  }
+
+  return {
+    name: "OPERATIVE",
+    level: 5,
+  };
+},
 }));
 Alpine.data("CyberRealmStats", () => ({
   stats: {
-    solves: 0,
-    fails: 0,
-    solveRate: "0.00",
-    longestStreak: 0,
-    categories: [],
-  },
-
+  solves: 0,
+  fails: 0,
+  solveRate: "0.00",
+  totalAttempts: 0,
+  longestStreak: 0,
+  categories: [],
+},
   async init() {
     if (!window.init || !window.init.userId) {
       console.log(
@@ -362,12 +410,13 @@ Alpine.data("CyberRealmStats", () => ({
       }
 
       this.stats = {
-        solves: solveCount,
-        fails: failCount,
-        solveRate,
-        longestStreak,
-        categories: categoryData,
-      };
+  solves: solveCount,
+  fails: failCount,
+  solveRate,
+  totalAttempts,
+  longestStreak,
+  categories: categoryData,
+};
 
     } catch (error) {
       console.error(
