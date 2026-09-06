@@ -126,6 +126,7 @@ class Challenges(db.Model):
     decay = db.Column(db.Integer, nullable=True)
     position = db.Column(db.Integer, nullable=False, default=0)
     function = db.Column(db.String(32), default="static")
+    scheduled_at = db.Column(db.DateTime, nullable=True)
     module_id = db.Column(
         db.Integer, db.ForeignKey("modules.id", ondelete="SET NULL"), nullable=True
     )
@@ -372,7 +373,9 @@ class PageFiles(Files):
 
 class SolutionFiles(Files):
     __mapper_args__ = {"polymorphic_identity": "solution"}
-    solution_id = db.Column(db.Integer, db.ForeignKey("solutions.id"))
+    solution_id = db.Column(
+        db.Integer, db.ForeignKey("solutions.id", ondelete="CASCADE")
+    )
 
 
 class Flags(db.Model):
