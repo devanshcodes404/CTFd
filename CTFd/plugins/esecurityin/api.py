@@ -1,16 +1,17 @@
 from datetime import date
-
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from sqlalchemy import text
 
 from CTFd.models import db
 from CTFd.scoreboard import get_standings
+from CTFd.utils.decorators import authed_only
+from CTFd.utils.user import get_current_user
 
 from .services.daily_objective_service import (
     DailyObjectiveService,
 )
+from .services.mission_service import MissionService
 from .services.xp_service import XPService
-
 
 api = Blueprint(
     "esecurityin_api",
@@ -638,6 +639,33 @@ def get_daily_objectives(user_id):
         }
     )
 
+# =========================================================
+# MISSIONS
+# =========================================================
+
+@api.route(
+    "/missions",
+    methods=["GET"],
+)
+@authed_only
+def get_missions():
+    user = get_current_user()
+
+    mission_type = request.args.get(
+        "type"
+    )
+
+    missions = MissionService.get_player_missions(
+        user_id=user.id,
+        mission_type=mission_type,
+    )
+
+    return jsonify(
+        {
+            "user_id": user.id,
+            "missions": missions,
+        }
+    )
 
 # =========================================================
 # MANUAL XP

@@ -163,12 +163,57 @@ class MissionService:
             mission_type=mission_type
         )
 
+        current_date = date.today()
+
+        progress_rows = (
+            UserMission.query
+            .filter_by(
+                user_id=user_id,
+            )
+            .all()
+        )
+
+        progress_map = {}
+
+        for progress in progress_rows:
+            progress_map[
+                (
+                    progress.mission_id,
+                    progress.period_key,
+                )
+            ] = progress
+
         result = []
 
         for mission in missions:
-            progress = cls.get_or_create_progress(
-                user_id=user_id,
-                mission=mission,
+            period_key = cls.get_period_key(
+                mission.mission_type,
+                current_date,
+            )
+
+            progress = progress_map.get(
+                (
+                    mission.id,
+                    period_key,
+                )
+            )
+
+            current_progress = (
+                progress.progress
+                if progress
+                else 0
+            )
+
+            completed = (
+                progress.completed
+                if progress
+                else False
+            )
+
+            completed_at = (
+                progress.completed_at.isoformat()
+                if progress and progress.completed_at
+                else None
             )
 
             result.append(
@@ -182,18 +227,14 @@ class MissionService:
                     "objective_type": mission.objective_type,
                     "target_value": mission.target_value,
                     "xp_reward": mission.xp_reward,
-                    "period_key": progress.period_key,
-                    "progress": progress.progress,
-                    "completed": progress.completed,
+                    "period_key": period_key,
+                    "progress": current_progress,
+                    "completed": completed,
                     "remaining": max(
                         0,
-                        mission.target_value - progress.progress,
+                        mission.target_value - current_progress,
                     ),
-                    "completed_at": (
-                        progress.completed_at.isoformat()
-                        if progress.completed_at
-                        else None
-                    ),
+                    "completed_at": completed_at,
                 }
             )
 
