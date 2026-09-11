@@ -11,6 +11,7 @@ from CTFd.utils.user import get_current_user
 from .api import api
 from .services.achievement_service import AchievementService
 from .services.daily_objective_service import DailyObjectiveService
+from .services.mission_service import MissionService
 from .services.notification_service import NotificationService
 
 
@@ -49,6 +50,7 @@ def load(app):
     # Seed static definitions.
     AchievementService.seed_achievements()
     DailyObjectiveService.seed_objectives()
+    MissionService.seed_missions()
 
 
 @event.listens_for(Session, "before_flush")
@@ -503,7 +505,92 @@ def award_xp_after_flush(session, flush_context):
             )
 
         # ---------------------------------------------------------
-        # 10. Achievements
+        # 10. Missions
+        # ---------------------------------------------------------
+
+        completed_missions = (
+            MissionService.process_solve(
+                session=session,
+                user_id=user_id,
+                challenge_xp=xp,
+            )
+        )
+
+        mission_reward_xp = sum(
+            mission["xp_reward"]
+            for mission in completed_missions
+        )
+
+        if mission_reward_xp > 0:
+            result = session.execute(
+                text(
+                    """
+                    SELECT xp
+                    FROM user_xp
+                    WHERE user_id = :user_id
+                    """
+                ),
+                {
+                    "user_id": user_id,
+                },
+            )
+
+            current_user_xp = result.fetchone()
+
+            if current_user_xp:
+                current_xp = (
+                    current_user_xp[0] or 0
+                )
+
+                new_xp = (
+                    current_xp
+                    + mission_reward_xp
+                )
+
+                new_level = (
+                    new_xp // 500
+                ) + 1
+
+                session.execute(
+                    text(
+                        """
+                        UPDATE user_xp
+                        SET
+                            xp = :xp,
+                            level = :level
+                        WHERE user_id = :user_id
+                        """
+                    ),
+                    {
+                        "xp": new_xp,
+                        "level": new_level,
+                        "user_id": user_id,
+                    },
+                )
+
+                print(
+                    "🚀 Mission XP: "
+                    f"{current_xp} → {new_xp}"
+                )
+
+        for mission in completed_missions:
+            print(
+                "🚀 Mission completed: "
+                f"{mission['name']}"
+            )
+
+            print(
+                "🚀 Mission reward: "
+                f"+{mission['xp_reward']} XP"
+            )
+
+            NotificationService.mission_completed(
+                user_id=user_id,
+                mission=mission,
+            )
+
+        # ---------------------------------------------------------
+        # 11. Achievements
         # ---------------------------------------------------------
 
         unlocked_achievements = (
@@ -532,7 +619,7 @@ def award_xp_after_flush(session, flush_context):
             )
 
         # ---------------------------------------------------------
-        # 11. Final level-up detection
+        # 12. Final level-up detection
         # ---------------------------------------------------------
         #
         # Important:

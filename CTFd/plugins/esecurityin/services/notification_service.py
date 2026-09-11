@@ -124,3 +124,39 @@ class NotificationService:
                 f"**+{reward} XP**"
             ),
         )
+    @classmethod
+    def mission_completed(
+        cls,
+        user_id,
+        mission,
+    ):
+        name = mission.get(
+            "name",
+            "Mission",
+        )
+
+        description = mission.get(
+            "description",
+            "",
+        )
+
+        reward = mission.get(
+            "xp_reward",
+            0,
+        )
+
+        mission_type = mission.get(
+            "mission_type",
+            "special",
+        )
+
+        return cls._create(
+            user_id=user_id,
+            title="🚀 Mission Complete",
+            content=(
+                f"**{name}**\n\n"
+                f"{description}\n\n"
+                f"**{mission_type.title()} Mission**\n\n"
+                f"**+{reward} XP**"
+            ),
+        )
