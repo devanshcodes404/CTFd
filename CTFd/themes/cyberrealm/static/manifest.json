@@ -116,7 +116,7 @@
     ]
   },
   "assets/js/users/private.js": {
-    "file": "assets/users_private.e0cf587b.js",
+    "file": "assets/users_private.940a283b.js",
     "src": "assets/js/users/private.js",
     "isEntry": true,
     "imports": [
@@ -159,7 +159,7 @@
     ]
   },
   "assets/scss/main.scss": {
-    "file": "assets/main.a32bea54.css",
+    "file": "assets/main.60e11f78.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
   }

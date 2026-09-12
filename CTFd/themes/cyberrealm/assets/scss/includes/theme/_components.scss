@@ -1997,3 +1997,301 @@ margin-bottom:12px;
 margin:0;
 color:#CBD5E1;
 }
+/* ==================================
+   CyberRealm Missions
+   ================================== */
+
+.cyberrealm-missions-wrapper {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.cyberrealm-missions-panel {
+    background: #111827;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 22px;
+    padding: 30px;
+}
+
+.cyberrealm-missions-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 13px;
+    border-radius: 999px;
+    background: rgba(42, 159, 232, .12);
+    color: #2A9FE8;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
+
+.cyberrealm-missions-tabs {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+    padding-bottom: 2px;
+    overflow-x: auto;
+}
+
+.cyberrealm-mission-tab {
+    flex: 0 0 auto;
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: #0F172A;
+    color: #94A3B8;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .6px;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.cyberrealm-mission-tab:hover {
+    color: #fff;
+    border-color: rgba(42, 159, 232, .45);
+    background: rgba(42, 159, 232, .08);
+}
+
+.cyberrealm-mission-tab.active {
+    background: linear-gradient(135deg, #2A9FE8, #2563EB);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(42, 159, 232, .25);
+}
+
+.cyberrealm-missions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.cyberrealm-mission-card {
+    position: relative;
+    overflow: hidden;
+    background: #0F172A;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 18px;
+    padding: 22px;
+    transition: .35s;
+}
+
+.cyberrealm-mission-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #2A9FE8, #2563EB);
+    opacity: .75;
+}
+
+.cyberrealm-mission-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(42, 159, 232, .3);
+    box-shadow: 0 15px 35px rgba(42, 159, 232, .15);
+}
+
+.cyberrealm-mission-card.completed {
+    border-color: rgba(22, 163, 74, .28);
+    background: linear-gradient(
+        145deg,
+        rgba(22, 163, 74, .08),
+        #0F172A
+    );
+}
+
+.cyberrealm-mission-card.completed::before {
+    background: #16A34A;
+}
+
+.cyberrealm-mission-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.cyberrealm-mission-icon {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(42, 159, 232, .12);
+    border: 1px solid rgba(42, 159, 232, .18);
+    font-size: 1.35rem;
+}
+
+.cyberrealm-mission-card.completed .cyberrealm-mission-icon {
+    background: rgba(22, 163, 74, .12);
+    border-color: rgba(22, 163, 74, .2);
+}
+
+.cyberrealm-mission-heading {
+    min-width: 0;
+}
+
+.cyberrealm-mission-heading h3 {
+    margin: 0 0 5px;
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.cyberrealm-mission-type {
+    color: #94A3B8;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .7px;
+}
+
+.cyberrealm-mission-description {
+    min-height: 44px;
+    margin-bottom: 22px;
+    color: #CBD5E1;
+    font-size: .9rem;
+    line-height: 1.6;
+}
+
+.cyberrealm-mission-progress {
+    margin-bottom: 20px;
+}
+
+.cyberrealm-mission-progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 9px;
+    color: #94A3B8;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .4px;
+}
+
+.cyberrealm-mission-progress-header strong {
+    color: #fff;
+    font-size: .8rem;
+}
+
+.cyberrealm-mission-track {
+    width: 100%;
+    height: 9px;
+    overflow: hidden;
+    background: #1E293B;
+    border-radius: 999px;
+}
+
+.cyberrealm-mission-fill {
+    height: 100%;
+    min-width: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #2A9FE8, #2563EB);
+    transition: width .6s ease;
+}
+
+.cyberrealm-mission-card.completed .cyberrealm-mission-fill {
+    background: linear-gradient(90deg, #16A34A, #22C55E);
+}
+
+.cyberrealm-mission-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.cyberrealm-mission-remaining {
+    color: #94A3B8;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .35px;
+}
+
+.cyberrealm-mission-complete {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #22C55E;
+}
+
+.cyberrealm-mission-reward {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(42, 159, 232, .12);
+    color: #2A9FE8;
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+.cyberrealm-mission-card.completed .cyberrealm-mission-reward {
+    background: rgba(22, 163, 74, .12);
+    color: #22C55E;
+}
+
+.cyberrealm-missions-loading,
+.cyberrealm-missions-error,
+.cyberrealm-missions-empty {
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px dashed rgba(255, 255, 255, .08);
+    border-radius: 16px;
+    background: #0F172A;
+    color: #94A3B8;
+    font-size: .9rem;
+}
+
+.cyberrealm-missions-loading i {
+    color: #2A9FE8;
+}
+
+.cyberrealm-missions-error {
+    color: #F87171;
+}
+
+.cyberrealm-missions-error i {
+    color: #EF4444;
+}
+
+.cyberrealm-missions-empty i {
+    color: #2A9FE8;
+}
+
+@media (max-width: 991px) {
+    .cyberrealm-missions-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .cyberrealm-missions-wrapper {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .cyberrealm-missions-panel {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .cyberrealm-missions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cyberrealm-mission-card {
+        padding: 20px;
+    }
+
+    .cyberrealm-missions-tabs {
+        margin: 20px 0;
+    }
+}

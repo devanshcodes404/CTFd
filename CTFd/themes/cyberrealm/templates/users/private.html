@@ -318,6 +318,178 @@
   </div>
 </div>
 
+<div
+  class="container cyberrealm-missions-wrapper"
+  x-data="CyberRealmMissions"
+  x-init="init()"
+>
+  <div class="cyberrealm-missions-panel">
+    <div class="cyberrealm-profile-section-header">
+      <div>
+        <div class="cyberrealm-profile-section-label">
+          OBJECTIVES
+        </div>
+
+        <h2>
+          Missions
+        </h2>
+      </div>
+
+      <div
+        class="cyberrealm-missions-status"
+        x-show="!loading && !error"
+      >
+        <span x-text="`${activeMissions.length} MISSIONS`">
+  0 MISSIONS
+</span>
+      </div>
+    </div>
+
+    <div
+      class="cyberrealm-missions-tabs"
+      role="tablist"
+    >
+      <template
+        x-for="tab in tabs"
+        :key="tab.key"
+      >
+        <button
+          type="button"
+          class="cyberrealm-mission-tab"
+          :class="{ active: activeTab === tab.key }"
+          @click="setTab(tab.key)"
+          x-text="tab.label"
+        >
+          DAILY
+        </button>
+      </template>
+    </div>
+
+    <div
+      class="cyberrealm-missions-loading"
+      x-show="loading"
+      x-cloak
+    >
+      <i class="fas fa-circle-notch fa-spin"></i>
+      Loading missions...
+    </div>
+
+    <div
+      class="cyberrealm-missions-error"
+      x-show="error"
+      x-cloak
+    >
+      <i class="fas fa-triangle-exclamation"></i>
+      <span x-text="error"></span>
+    </div>
+
+    <div
+      class="cyberrealm-missions-grid"
+      x-show="!loading && !error"
+      x-cloak
+    >
+      <template
+        x-for="mission in activeMissions"
+        :key="mission.id"
+      >
+        <div
+          class="cyberrealm-mission-card"
+          :class="{ completed: mission.completed }"
+        >
+          <div class="cyberrealm-mission-header">
+            <div class="cyberrealm-mission-icon">
+              <span x-text="mission.icon">
+                🎯
+              </span>
+            </div>
+
+            <div class="cyberrealm-mission-heading">
+              <h3 x-text="mission.name">
+                Mission
+              </h3>
+
+              <span
+                class="cyberrealm-mission-type"
+                x-text="mission.mission_type.toUpperCase()"
+              >
+                DAILY
+              </span>
+            </div>
+          </div>
+
+          <div
+            class="cyberrealm-mission-description"
+            x-text="mission.description"
+          >
+            Mission description
+          </div>
+
+          <div class="cyberrealm-mission-progress">
+            <div class="cyberrealm-mission-progress-header">
+              <span>
+                PROGRESS
+              </span>
+
+              <strong
+                x-text="`${mission.progress} / ${mission.target_value}`"
+              >
+                0 / 0
+              </strong>
+            </div>
+
+            <div class="cyberrealm-mission-track">
+              <div
+                class="cyberrealm-mission-fill"
+                :style="{
+                  width: `${getProgressPercent(mission)}%`
+                }"
+              ></div>
+            </div>
+          </div>
+
+          <div class="cyberrealm-mission-footer">
+            <div class="cyberrealm-mission-remaining">
+              <template x-if="mission.completed">
+                <span class="cyberrealm-mission-complete">
+                  <i class="fas fa-check"></i>
+                  COMPLETED
+                </span>
+              </template>
+
+              <template x-if="!mission.completed">
+                <span
+                  x-text="`${mission.remaining} REMAINING`"
+                >
+                  0 REMAINING
+                </span>
+              </template>
+            </div>
+
+            <div
+              class="cyberrealm-mission-reward"
+              x-text="`+${mission.xp_reward} XP`"
+            >
+              +0 XP
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <div
+      class="cyberrealm-missions-empty"
+      x-show="!loading && !error && activeMissions.length === 0"
+      x-cloak
+    >
+      <i class="fas fa-crosshairs"></i>
+
+      <span>
+        No active missions in this category.
+      </span>
+    </div>
+  </div>
+</div>
+
 <div class="container">
   {% include "components/errors.html" %}
 

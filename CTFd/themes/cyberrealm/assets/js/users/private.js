@@ -426,4 +426,109 @@ Alpine.data("CyberRealmStats", () => ({
     }
   },
 }));
+
+Alpine.data("CyberRealmMissions", () => ({
+  missions: {
+    daily: [],
+    weekly: [],
+    special: [],
+  },
+
+  activeTab: "daily",
+
+  loading: true,
+
+  error: null,
+
+  tabs: [
+    {
+      key: "daily",
+      label: "DAILY",
+    },
+    {
+      key: "weekly",
+      label: "WEEKLY",
+    },
+    {
+      key: "special",
+      label: "SPECIAL",
+    },
+  ],
+
+  async init() {
+    this.loading = true;
+    this.error = null;
+
+    try {
+      const [daily, weekly, special] =
+        await Promise.all([
+          this.fetchMissions("daily"),
+          this.fetchMissions("weekly"),
+          this.fetchMissions("special"),
+        ]);
+
+      this.missions = {
+        daily,
+        weekly,
+        special,
+      };
+
+    } catch (error) {
+      console.error(
+        "[CyberRealm] Failed to load missions:",
+        error,
+      );
+
+      this.error =
+        "Unable to load missions.";
+    } finally {
+      this.loading = false;
+    }
+  },
+
+  async fetchMissions(type) {
+    const response = await fetch(
+      `/api/v1/esecurityin/missions?type=${type}`,
+      {
+        headers: {
+          Accept: "application/json",
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Mission API returned HTTP ${response.status}`,
+      );
+    }
+
+    const data = await response.json();
+
+    return data.missions || [];
+  },
+
+  get activeMissions() {
+    return this.missions[this.activeTab] || [];
+  },
+
+  setTab(tab) {
+    this.activeTab = tab;
+  },
+
+  getProgressPercent(mission) {
+    if (!mission.target_value) {
+      return 0;
+    }
+
+    return Math.min(
+      100,
+      (
+        (mission.progress /
+          mission.target_value) *
+        100
+      ).toFixed(1),
+    );
+  },
+}));
+
 Alpine.start();
