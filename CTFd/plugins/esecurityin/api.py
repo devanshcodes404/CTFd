@@ -261,9 +261,33 @@ def get_leaderboard():
         )
 
         level = (
-            progression["level"]
+        progression["level"]
         )
 
+        xp = progression["xp"]
+
+        current_level_xp = (
+             (level - 1) * 500
+        )
+
+        next_level_xp = (
+            level * 500
+        )
+
+        level_progress_xp = max(
+            0,
+            xp - current_level_xp,
+        )
+
+        level_progress_percent = min(
+            100,
+            round(
+              (
+                  level_progress_xp
+                  / 500
+              ) * 100
+            ),
+        )
         output.append(
             {
                 "pos": position,
@@ -290,10 +314,16 @@ def get_leaderboard():
                     score,
 
                 "xp":
-                    progression["xp"],
+                    xp,
 
                 "level":
                     level,
+
+                "level_progress_xp":
+                    level_progress_xp,
+
+                "level_progress_percent":
+                     level_progress_percent,
 
                 "rank":
                     get_player_rank(
@@ -578,6 +608,24 @@ def get_profile(user_id):
 
     total_achievements = len(achievements)
 
+    mission_result = db.session.execute(
+        text(
+            """
+            SELECT COUNT(*)
+            FROM esecurityin_user_missions
+            WHERE user_id = :user_id
+              AND completed = 1
+            """
+        ),
+        {
+            "user_id": user_id,
+        },
+    )
+
+    total_missions = (
+        mission_result.scalar() or 0
+    )
+
     return jsonify(
         {
             "user": {
@@ -592,6 +640,8 @@ def get_profile(user_id):
                     user.longest_streak,
                 "total_solves":
                     user.total_solves,
+                "total_missions":
+                   total_missions,
                 "last_solve_date": (
                     user.last_solve_date.isoformat()
                     if user.last_solve_date

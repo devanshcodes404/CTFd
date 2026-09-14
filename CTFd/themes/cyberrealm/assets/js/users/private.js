@@ -207,8 +207,107 @@ this.profile = {
       achievementsTotal:
         achievements.total || 0,
 
-      achievements:
-        achievements.items || [],
+            achievements:
+        (achievements.items || []).map(
+          achievement =>
+            this.enrichAchievementProgress(
+              achievement,
+              {
+                xp,
+                level,
+                streak:
+                  progression.streak || 0,
+                totalSolves:
+                  progression.total_solves || 0,
+                totalMissions:
+                 progression.total_missions || 0,
+              },
+            ),
+        ),
+    };
+  },
+
+    enrichAchievementProgress(
+    achievement,
+    progression,
+  ) {
+    let current = 0;
+
+    if (
+      achievement.requirement_type ===
+      "total_solves"
+    ) {
+      current =
+        progression.totalSolves;
+    }
+
+    else if (
+      achievement.requirement_type ===
+      "streak"
+    ) {
+      current =
+        progression.streak;
+    }
+
+    else if (
+      achievement.requirement_type ===
+      "level"
+    ) {
+      current =
+        progression.level;
+    }
+
+    else if (
+      achievement.requirement_type ===
+      "total_xp"
+    ) {
+      current =
+        progression.xp;
+    }
+
+    else if (
+      achievement.requirement_type ===
+      "total_missions"
+    ) {
+      current =
+        progression.totalMissions;
+    }
+
+    const target =
+      achievement.requirement_value || 1;
+
+    const progressPercent =
+      Math.min(
+        100,
+        Number(
+          (
+            (current / target) *
+            100
+          ).toFixed(1),
+        ),
+      );
+
+        const cappedCurrent =
+      Math.min(
+        current,
+        target,
+      );
+
+    return {
+      ...achievement,
+
+      progressCurrent:
+        cappedCurrent,
+
+      progressTarget:
+        target,
+
+      remaining: Math.max(
+        0,
+        target - current,
+      ),
+
+      progressPercent,
     };
   },
 

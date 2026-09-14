@@ -59,7 +59,7 @@
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.4fa51ca7.js",
+    "file": "assets/scoreboard.dd6ad0b5.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [
@@ -116,7 +116,7 @@
     ]
   },
   "assets/js/users/private.js": {
-    "file": "assets/users_private.940a283b.js",
+    "file": "assets/users_private.63b04f8d.js",
     "src": "assets/js/users/private.js",
     "isEntry": true,
     "imports": [
@@ -159,7 +159,7 @@
     ]
   },
   "assets/scss/main.scss": {
-    "file": "assets/main.60e11f78.css",
+    "file": "assets/main.89a459e2.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
   }

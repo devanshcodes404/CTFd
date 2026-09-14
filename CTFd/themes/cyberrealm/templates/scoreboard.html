@@ -155,6 +155,208 @@
       x-data="ScoreboardList"
     >
 
+      <!-- =========================================
+           CURRENT PLAYER POSITION
+      ========================================== -->
+
+      <template
+        x-if="
+          getCurrentUserStanding()
+        "
+      >
+
+        <div class="col-md-12 mb-4">
+
+          <div class="leaderboard-position-card">
+
+            <div class="leaderboard-position-header">
+
+              <div>
+
+                <span class="leaderboard-position-label">
+                  YOUR POSITION
+                </span>
+
+                <h3
+                  x-text="
+                    `#${getCurrentUserStanding().pos}`
+                  "
+                >
+                  #1
+                </h3>
+
+              </div>
+
+              <div class="leaderboard-position-score">
+
+                <strong
+                  x-text="
+                    `${getCurrentUserStanding().score || 0} pts`
+                  "
+                >
+                  0 pts
+                </strong>
+
+                <span>
+                  Official Score
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <div
+              class="leaderboard-position-neighbors"
+            >
+
+              <!-- AHEAD -->
+
+              <template
+                x-if="
+                  getCurrentUserNeighbors().above
+                "
+              >
+
+                <div class="leaderboard-position-neighbor">
+
+                  <span class="neighbor-label">
+                    AHEAD
+                  </span>
+
+                  <strong
+                    x-text="
+                      getCurrentUserNeighbors().above.name
+                    "
+                  >
+                    Participant
+                  </strong>
+
+                  <span
+                    class="neighbor-score"
+                    x-text="
+                      `${
+                        getCurrentUserNeighbors().above.score || 0
+                      } pts`
+                    "
+                  >
+                    0 pts
+                  </span>
+
+                </div>
+
+              </template>
+
+
+              <!-- PLAYER IS #1 -->
+
+              <template
+                x-if="
+                  !getCurrentUserNeighbors().above
+                "
+              >
+
+                <div
+                  class="
+                    leaderboard-position-neighbor
+                    leaderboard-position-neighbor-first
+                  "
+                >
+
+                  <span class="neighbor-label">
+                    STATUS
+                  </span>
+
+                  <strong>
+                    YOU ARE #1
+                  </strong>
+
+                  <span class="neighbor-score">
+                    TOP POSITION
+                  </span>
+
+                </div>
+
+              </template>
+
+
+              <!-- BEHIND -->
+
+              <template
+                x-if="
+                  getCurrentUserNeighbors().below
+                "
+              >
+
+                <div class="leaderboard-position-neighbor">
+
+                  <span class="neighbor-label">
+                    BEHIND
+                  </span>
+
+                  <strong
+                    x-text="
+                      getCurrentUserNeighbors().below.name
+                    "
+                  >
+                    Participant
+                  </strong>
+
+                  <span
+                    class="neighbor-score"
+                    x-text="
+                      `${
+                        getCurrentUserNeighbors().below.score || 0
+                      } pts`
+                    "
+                  >
+                    0 pts
+                  </span>
+
+                </div>
+
+              </template>
+
+
+              <!-- PLAYER IS LAST -->
+
+              <template
+                x-if="
+                  !getCurrentUserNeighbors().below
+                "
+              >
+
+                <div
+                  class="
+                    leaderboard-position-neighbor
+                    leaderboard-position-neighbor-last
+                  "
+                >
+
+                  <span class="neighbor-label">
+                    STATUS
+                  </span>
+
+                  <strong>
+                    LAST POSITION
+                  </strong>
+
+                  <span class="neighbor-score">
+                    KEEP PUSHING
+                  </span>
+
+                </div>
+
+              </template>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </template>
+
 
       <!-- =========================================
            BRACKETS
@@ -262,7 +464,7 @@
                   Participant
                 </th>
 
-                <th width="100">
+                <th width="120">
                   Level
                 </th>
 
@@ -316,7 +518,6 @@
                       ),
                   }"
                 >
-
 
                   <!-- RANK -->
 
@@ -492,18 +693,44 @@
 
                   <td>
 
-                    <span
-                      class="score-badge"
-                      x-text="
-                        `LVL ${
-                          standing
-                            .cyberrealm
-                            ?.level || 1
-                        }`
-                      "
-                    >
-                      LVL 1
-                    </span>
+                    <div class="leaderboard-level">
+
+                      <span
+                        class="score-badge"
+                        x-text="
+                          `LVL ${
+                            standing
+                              .cyberrealm
+                              ?.level || 1
+                          }`
+                        "
+                      >
+                        LVL 1
+                      </span>
+
+
+                      <div
+                        class="
+                          leaderboard-level-progress
+                        "
+                      >
+
+                        <div
+                          class="
+                            leaderboard-level-progress-bar
+                          "
+                          :style="
+                            `width: ${
+                              standing
+                                .cyberrealm
+                                ?.level_progress_percent || 0
+                            }%`
+                          "
+                        ></div>
+
+                      </div>
+
+                    </div>
 
                   </td>
 
@@ -625,6 +852,7 @@
 
       <!-- =========================================
            PODIUM
+           Uses official CTFd leaderboard order.
       ========================================== -->
 
       <div class="leaderboard-podium">
@@ -679,7 +907,7 @@
                 x-text="
                   `${
                     getVisibleStandings()[1]
-                      .score
+                      .score || 0
                   } pts`
                 "
               >
@@ -729,7 +957,7 @@
                 x-text="
                   `${
                     getVisibleStandings()[0]
-                      .score
+                      .score || 0
                   } pts`
                 "
               >
@@ -779,7 +1007,7 @@
                 x-text="
                   `${
                     getVisibleStandings()[2]
-                      .score
+                      .score || 0
                   } pts`
                 "
               >

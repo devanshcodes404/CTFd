@@ -1,6 +1,7 @@
 from datetime import date, datetime, timezone
 
 from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
 
 from CTFd.models import db
 
@@ -66,263 +67,110 @@ class MissionService:
         },
     ]
 
-    @classmethod
-    def seed_missions(cls):
-        for definition in cls.MISSIONS:
-            existing = Mission.query.filter_by(
-                key=definition["key"]
-            ).first()
-
-            if existing:
-                continue
-
-            mission = Mission(**definition)
-            db.session.add(mission)
-
-        db.session.commit()
 
     @classmethod
-    def get_active_missions(cls, mission_type=None):
-        query = Mission.query.filter_by(
-            active=True
-        )
+    def get_current_date(cls):
+        """
+        Return the current UTC calendar date.
 
-        if mission_type:
-            query = query.filter_by(
-                mission_type=mission_type
-            )
+        Mission periods must use the same timezone everywhere
+        so API reads and solve processing cannot disagree.
+        """
 
-        return query.order_by(
-            Mission.id.asc()
-        ).all()
-
-    @classmethod
-    def get_period_key(cls, mission_type, current_date=None):
-        if current_date is None:
-            current_date = date.today()
-
-        if mission_type == "daily":
-            return current_date.isoformat()
-
-        if mission_type == "weekly":
-            year, week, _ = current_date.isocalendar()
-            return f"{year}-W{week:02d}"
-
-        return "special"
-
-    @classmethod
-    def get_or_create_progress(
-        cls,
-        user_id,
-        mission,
-        current_date=None,
-        session=None,
-    ):
-        if current_date is None:
-            current_date = date.today()
-
-        period_key = cls.get_period_key(
-            mission.mission_type,
-            current_date,
-        )
-
-        query = (
-            UserMission.query
-            .filter_by(
-                user_id=user_id,
-                mission_id=mission.id,
-                period_key=period_key,
-            )
-            .first()
-        )
-
-        if query:
-            return query
-
-        progress = UserMission(
-            user_id=user_id,
-            mission_id=mission.id,
-            period_key=period_key,
-            progress=0,
-            completed=False,
-            completed_at=None,
-        )
-
-        if session is not None:
-            session.add(progress)
-            session.flush()
-        else:
-            db.session.add(progress)
-            db.session.flush()
-
-        return progress
-
-    @classmethod
-    def get_player_missions(cls, user_id, mission_type=None):
-        missions = cls.get_active_missions(
-            mission_type=mission_type
-        )
-
-        current_date = date.today()
-
-        progress_rows = (
-            UserMission.query
-            .filter_by(
-                user_id=user_id,
-            )
-            .all()
-        )
-
-        progress_map = {}
-
-        for progress in progress_rows:
-            progress_map[
-                (
-                    progress.mission_id,
-                    progress.period_key,
-                )
-            ] = progress
-
-        result = []
-
-        for mission in missions:
-            period_key = cls.get_period_key(
-                mission.mission_type,
-                current_date,
-            )
-
-            progress = progress_map.get(
-                (
-                    mission.id,
-                    period_key,
-                )
-            )
-
-            current_progress = (
-                progress.progress
-                if progress
-                else 0
-            )
-
-            completed = (
-                progress.completed
-                if progress
-                else False
-            )
-
-            completed_at = (
-                progress.completed_at.isoformat()
-                if progress and progress.completed_at
-                else None
-            )
-
-            result.append(
-                {
-                    "id": mission.id,
-                    "key": mission.key,
-                    "name": mission.name,
-                    "description": mission.description,
-                    "icon": mission.icon,
-                    "mission_type": mission.mission_type,
-                    "objective_type": mission.objective_type,
-                    "target_value": mission.target_value,
-                    "xp_reward": mission.xp_reward,
-                    "period_key": period_key,
-                    "progress": current_progress,
-                    "completed": completed,
-                    "remaining": max(
-                        0,
-                        mission.target_value - current_progress,
-                    ),
-                    "completed_at": completed_at,
-                }
-            )
-
-        return result
-
-    @classmethod
-    def process_solve(
-        cls,
-        session,
-        user_id,
-        challenge_xp,
-    ):
-        current_date = datetime.now(
+        return datetime.now(
             timezone.utc
         ).date()
 
-        missions = (
-            session.execute(
-                text(
-                    """
-                    SELECT
-                        id,
-                        `key`,
-                        name,
-                        description,
-                        icon,
-                        mission_type,
-                        objective_type,
-                        target_value,
-                        xp_reward
-                    FROM esecurityin_missions
-                    WHERE active = 1
-                    ORDER BY id ASC
-                    """
-                )
-            )
-            .fetchall()
+
+    @classmethod
+    def supports_row_locking(cls, session):
+        """
+        Return whether the current database supports SELECT ... FOR UPDATE.
+
+        SQLite does not support row-level FOR UPDATE locking, so the
+        development path remains compatible with it.
+        """
+
+        bind = session.get_bind()
+
+        if bind is None:
+            return False
+
+        return (
+            bind.dialect.name != "sqlite"
         )
 
-        newly_completed = []
 
-        for mission in missions:
-            (
-                mission_id,
-                key,
-                name,
-                description,
-                icon,
-                mission_type,
-                objective_type,
-                target_value,
-                xp_reward,
-            ) = mission
+    @classmethod
+    def select_progress(
+        cls,
+        session,
+        user_id,
+        mission_id,
+        period_key,
+        for_update=False,
+    ):
+        """
+        Load one mission progress row.
 
-            period_key = cls.get_period_key(
-                mission_type,
-                current_date,
+        On databases with row-level locking support, FOR UPDATE is
+        used when requested to serialize concurrent progression updates.
+        """
+
+        lock_clause = ""
+
+        if (
+            for_update
+            and cls.supports_row_locking(
+                session
             )
+        ):
+            lock_clause = " FOR UPDATE"
 
-            result = session.execute(
-                text(
-                    """
-                    SELECT
-                        id,
-                        progress,
-                        completed
-                    FROM esecurityin_user_missions
-                    WHERE user_id = :user_id
-                      AND mission_id = :mission_id
-                      AND period_key = :period_key
-                    """
-                ),
-                {
-                    "user_id": user_id,
-                    "mission_id": mission_id,
-                    "period_key": period_key,
-                },
-            )
+        result = session.execute(
+            text(
+                f"""
+                SELECT
+                    id,
+                    progress,
+                    completed
+                FROM esecurityin_user_missions
+                WHERE user_id = :user_id
+                  AND mission_id = :mission_id
+                  AND period_key = :period_key
+                {lock_clause}
+                """
+            ),
+            {
+                "user_id": user_id,
+                "mission_id": mission_id,
+                "period_key": period_key,
+            },
+        )
 
-            user_mission = result.fetchone()
+        return result.fetchone()
 
-            if user_mission:
-                user_mission_id = user_mission[0]
-                current_progress = user_mission[1] or 0
-                already_completed = bool(
-                    user_mission[2]
-                )
-            else:
+
+    @classmethod
+    def create_progress_safely(
+        cls,
+        session,
+        user_id,
+        mission_id,
+        period_key,
+    ):
+        """
+        Create a mission progress row safely.
+
+        The database uniqueness constraint is the final concurrency
+        guard. A concurrent insert conflict is isolated to a savepoint,
+        then the existing row is fetched and locked.
+        """
+
+        try:
+
+            with session.begin_nested():
+
                 session.execute(
                     text(
                         """
@@ -353,47 +201,397 @@ class MissionService:
                     },
                 )
 
-                result = session.execute(
-                    text(
-                        """
-                        SELECT
-                            id,
-                            progress,
-                            completed
-                        FROM esecurityin_user_missions
-                        WHERE user_id = :user_id
-                          AND mission_id = :mission_id
-                          AND period_key = :period_key
-                        """
-                    ),
-                    {
-                        "user_id": user_id,
-                        "mission_id": mission_id,
-                        "period_key": period_key,
-                    },
+        except IntegrityError:
+
+            pass
+
+        return cls.select_progress(
+            session=session,
+            user_id=user_id,
+            mission_id=mission_id,
+            period_key=period_key,
+            for_update=True,
+        )
+
+
+    @classmethod
+    def seed_missions(cls):
+
+        for definition in cls.MISSIONS:
+
+            existing = (
+                Mission.query
+                .filter_by(
+                    key=definition["key"]
+                )
+                .first()
+            )
+
+            if existing:
+                continue
+
+            mission = Mission(
+                **definition
+            )
+
+            db.session.add(
+                mission
+            )
+
+        db.session.commit()
+
+
+    @classmethod
+    def get_active_missions(
+        cls,
+        mission_type=None,
+    ):
+
+        query = Mission.query.filter_by(
+            active=True
+        )
+
+        if mission_type:
+
+            query = query.filter_by(
+                mission_type=mission_type
+            )
+
+        return query.order_by(
+            Mission.id.asc()
+        ).all()
+
+
+    @classmethod
+    def get_period_key(
+        cls,
+        mission_type,
+        current_date=None,
+    ):
+
+        if current_date is None:
+            current_date = cls.get_current_date()
+
+        if mission_type == "daily":
+
+            return current_date.isoformat()
+
+        if mission_type == "weekly":
+
+            year, week, _ = (
+                current_date.isocalendar()
+            )
+
+            return (
+                f"{year}-W{week:02d}"
+            )
+
+        return "special"
+
+
+    @classmethod
+    def get_or_create_progress(
+        cls,
+        user_id,
+        mission,
+        current_date=None,
+        session=None,
+    ):
+
+        if current_date is None:
+
+            current_date = (
+                cls.get_current_date()
+            )
+
+        period_key = (
+            cls.get_period_key(
+                mission.mission_type,
+                current_date,
+            )
+        )
+
+        active_session = (
+            session
+            if session is not None
+            else db.session
+        )
+
+        progress = (
+            UserMission.query
+            .filter_by(
+                user_id=user_id,
+                mission_id=mission.id,
+                period_key=period_key,
+            )
+            .first()
+        )
+
+        if progress:
+
+            return progress
+
+        try:
+
+            with active_session.begin_nested():
+
+                progress = UserMission(
+                    user_id=user_id,
+                    mission_id=mission.id,
+                    period_key=period_key,
+                    progress=0,
+                    completed=False,
+                    completed_at=None,
                 )
 
-                user_mission = result.fetchone()
+                active_session.add(
+                    progress
+                )
 
-                user_mission_id = user_mission[0]
-                current_progress = 0
-                already_completed = False
+                active_session.flush()
+
+        except IntegrityError:
+
+            progress = (
+                UserMission.query
+                .filter_by(
+                    user_id=user_id,
+                    mission_id=mission.id,
+                    period_key=period_key,
+                )
+                .first()
+            )
+
+            if progress:
+
+                return progress
+
+            raise
+
+        return progress
+
+
+    @classmethod
+    def get_player_missions(
+        cls,
+        user_id,
+        mission_type=None,
+    ):
+
+        missions = (
+            cls.get_active_missions(
+                mission_type=mission_type
+            )
+        )
+
+        current_date = (
+            cls.get_current_date()
+        )
+
+        progress_rows = (
+            UserMission.query
+            .filter_by(
+                user_id=user_id,
+            )
+            .all()
+        )
+
+        progress_map = {}
+
+        for progress in progress_rows:
+
+            progress_map[
+                (
+                    progress.mission_id,
+                    progress.period_key,
+                )
+            ] = progress
+
+        result = []
+
+        for mission in missions:
+
+            period_key = (
+                cls.get_period_key(
+                    mission.mission_type,
+                    current_date,
+                )
+            )
+
+            progress = progress_map.get(
+                (
+                    mission.id,
+                    period_key,
+                )
+            )
+
+            current_progress = (
+                progress.progress
+                if progress
+                else 0
+            )
+
+            completed = (
+                progress.completed
+                if progress
+                else False
+            )
+
+            completed_at = (
+                progress.completed_at.isoformat()
+                if progress
+                and progress.completed_at
+                else None
+            )
+
+            result.append(
+                {
+                    "id": mission.id,
+                    "key": mission.key,
+                    "name": mission.name,
+                    "description": mission.description,
+                    "icon": mission.icon,
+                    "mission_type": mission.mission_type,
+                    "objective_type": mission.objective_type,
+                    "target_value": mission.target_value,
+                    "xp_reward": mission.xp_reward,
+                    "period_key": period_key,
+                    "progress": current_progress,
+                    "completed": completed,
+                    "remaining": max(
+                        0,
+                        mission.target_value
+                        - current_progress,
+                    ),
+                    "completed_at": completed_at,
+                }
+            )
+
+        return result
+
+
+    @classmethod
+    def process_solve(
+        cls,
+        session,
+        user_id,
+        challenge_xp,
+    ):
+
+        current_date = (
+            cls.get_current_date()
+        )
+
+        missions = (
+            session.execute(
+                text(
+                    """
+                    SELECT
+                        id,
+                        `key`,
+                        name,
+                        description,
+                        icon,
+                        mission_type,
+                        objective_type,
+                        target_value,
+                        xp_reward
+                    FROM esecurityin_missions
+                    WHERE active = 1
+                    ORDER BY id ASC
+                    """
+                )
+            )
+            .fetchall()
+        )
+
+        newly_completed = []
+
+        for mission in missions:
+
+            (
+                mission_id,
+                key,
+                name,
+                description,
+                icon,
+                mission_type,
+                objective_type,
+                target_value,
+                xp_reward,
+            ) = mission
+
+            period_key = (
+                cls.get_period_key(
+                    mission_type,
+                    current_date,
+                )
+            )
+
+            user_mission = (
+                cls.select_progress(
+                    session=session,
+                    user_id=user_id,
+                    mission_id=mission_id,
+                    period_key=period_key,
+                    for_update=True,
+                )
+            )
+
+            if user_mission is None:
+
+                user_mission = (
+                    cls.create_progress_safely(
+                        session=session,
+                        user_id=user_id,
+                        mission_id=mission_id,
+                        period_key=period_key,
+                    )
+                )
+
+            if user_mission is None:
+
+                raise RuntimeError(
+                    "Unable to create or retrieve "
+                    "CyberRealm mission progress row."
+                )
+
+            (
+                user_mission_id,
+                current_progress,
+                already_completed,
+            ) = user_mission
+
+            current_progress = (
+                current_progress or 0
+            )
+
+            already_completed = bool(
+                already_completed
+            )
 
             if already_completed:
+
                 continue
 
             if objective_type == "solves":
+
                 new_progress = (
                     current_progress + 1
                 )
 
             elif objective_type == "xp":
+
                 new_progress = (
-                    current_progress + challenge_xp
+                    current_progress
+                    + challenge_xp
                 )
 
             else:
-                new_progress = current_progress
+
+                new_progress = (
+                    current_progress
+                )
 
             new_progress = min(
                 new_progress,
@@ -407,7 +605,8 @@ class MissionService:
             session.execute(
                 text(
                     """
-                    UPDATE esecurityin_user_missions
+                    UPDATE
+                        esecurityin_user_missions
                     SET
                         progress = :progress,
                         completed = :completed,
@@ -430,6 +629,7 @@ class MissionService:
             )
 
             if is_completed:
+
                 newly_completed.append(
                     {
                         "id": mission_id,

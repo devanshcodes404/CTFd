@@ -430,14 +430,4 @@ class DailyObjectiveService:
                     }
                 )
 
-                print(
-                    "🎯 Daily objective completed: "
-                    f"{name}"
-                )
-
-                print(
-                    "🎯 Daily objective reward: "
-                    f"+{xp_reward} XP"
-                )
-
         return newly_completed

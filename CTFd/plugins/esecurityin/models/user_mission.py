@@ -4,6 +4,15 @@ from CTFd.models import db
 class UserMission(db.Model):
     __tablename__ = "esecurityin_user_missions"
 
+    __table_args__ = (
+        db.UniqueConstraint(
+            "user_id",
+            "mission_id",
+            "period_key",
+            name="uq_esecurityin_user_mission_period",
+        ),
+    )
+
     id = db.Column(
         db.Integer,
         primary_key=True,

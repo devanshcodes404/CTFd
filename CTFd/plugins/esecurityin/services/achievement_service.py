@@ -62,6 +62,42 @@ class AchievementService:
             "requirement_type": "level",
             "requirement_value": 10,
         },
+        {
+            "key": "elite_operator",
+            "name": "Elite Operator",
+            "description": "Solve 25 challenges.",
+            "icon": "☠️",
+            "xp_reward": 300,
+            "requirement_type": "total_solves",
+            "requirement_value": 25,
+        },
+        {
+            "key": "xp_hunter",
+            "name": "XP Hunter",
+            "description": "Earn 500 XP.",
+            "icon": "💎",
+            "xp_reward": 150,
+            "requirement_type": "total_xp",
+            "requirement_value": 500,
+        },
+        {
+            "key": "streak_master",
+            "name": "Streak Master",
+            "description": "Reach a 7-day solving streak.",
+            "icon": "🔥",
+            "xp_reward": 250,
+            "requirement_type": "streak",
+            "requirement_value": 7,
+        },
+        {
+            "key": "mission_commander",
+            "name": "Mission Commander",
+            "description": "Complete 10 missions.",
+            "icon": "🚀",
+            "xp_reward": 250,
+            "requirement_type": "total_missions",
+            "requirement_value": 10,
+        },
     ]
 
     @classmethod
@@ -186,6 +222,36 @@ class AchievementService:
                 elif requirement_type == "level":
                     requirement_met = (
                         current_level
+                        >= requirement_value
+                    )
+
+                elif requirement_type == "total_xp":
+                    requirement_met = (
+                        current_xp
+                        >= requirement_value
+                    )
+
+                elif requirement_type == "total_missions":
+                    mission_result = session.execute(
+                        text(
+                            """
+                            SELECT COUNT(*)
+                            FROM esecurityin_user_missions
+                            WHERE user_id = :user_id
+                              AND completed = 1
+                            """
+                        ),
+                        {
+                            "user_id": user_id,
+                        },
+                    )
+
+                    completed_missions = (
+                        mission_result.scalar() or 0
+                    )
+
+                    requirement_met = (
+                        completed_missions
                         >= requirement_value
                     )
 

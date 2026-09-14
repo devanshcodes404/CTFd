@@ -425,6 +425,61 @@ Alpine.data(
     },
 
 
+    getCurrentUserStanding() {
+
+      return this.standings.find(
+        (standing) =>
+          this.isCurrentUser(
+            standing,
+          ),
+      );
+
+    },
+
+
+    getCurrentUserNeighbors() {
+
+      const current =
+        this.getCurrentUserStanding();
+
+
+      if (!current) {
+
+        return {
+          above: null,
+          below: null,
+        };
+
+      }
+
+
+      const index =
+        this.standings.findIndex(
+          (standing) =>
+            Number(
+              standing.account_id,
+            ) === Number(
+              current.account_id,
+            ),
+        );
+
+
+      return {
+        above:
+          index > 0
+            ? this.standings[index - 1]
+            : null,
+
+        below:
+          index >= 0 &&
+          index < this.standings.length - 1
+            ? this.standings[index + 1]
+            : null,
+      };
+
+    },
+
+
     /* -----------------------------------------
        DISPLAY RANK
     ----------------------------------------- */

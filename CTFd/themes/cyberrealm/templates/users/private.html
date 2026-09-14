@@ -274,47 +274,90 @@
     </div>
 
     <div class="cyberrealm-profile-achievement-grid">
-      <template
-        x-for="achievement in profile.achievements"
-        :key="achievement.id"
-      >
-        <div
-          class="cyberrealm-profile-achievement"
-          :class="achievement.unlocked ? 'unlocked' : 'locked'"
+  <template
+    x-for="achievement in profile.achievements"
+    :key="achievement.id"
+  >
+    <div
+      class="cyberrealm-profile-achievement"
+      :class="achievement.unlocked ? 'unlocked' : 'locked'"
+    >
+      <div class="profile-achievement-icon">
+        <span
+          x-text="achievement.unlocked ? achievement.icon : '🔒'"
         >
-          <div class="profile-achievement-icon">
-            <span
-              x-text="achievement.unlocked ? achievement.icon : '🔒'"
-            >
-              🔒
+          🔒
+        </span>
+      </div>
+
+      <div class="profile-achievement-content">
+        <div
+          class="profile-achievement-name"
+          x-text="achievement.name"
+        >
+          Achievement
+        </div>
+
+        <div
+          class="profile-achievement-description"
+          x-text="achievement.description"
+        >
+          Achievement description
+        </div>
+
+        <div class="profile-achievement-progress">
+          <div class="profile-achievement-progress-header">
+            <span>
+              PROGRESS
             </span>
+
+            <strong
+              x-text="`${achievement.progressCurrent} / ${achievement.progressTarget}`"
+            >
+              0 / 0
+            </strong>
           </div>
 
-          <div class="profile-achievement-content">
+          <div class="profile-achievement-progress-track">
             <div
-              class="profile-achievement-name"
-              x-text="achievement.name"
-            >
-              Achievement
-            </div>
-
-            <div
-              class="profile-achievement-description"
-              x-text="achievement.description"
-            >
-              Achievement description
-            </div>
-
-            <div
-              class="profile-achievement-reward"
-              x-text="`+${achievement.xp_reward} XP`"
-            >
-              +0 XP
-            </div>
+              class="profile-achievement-progress-fill"
+              :class="achievement.unlocked ? 'complete' : ''"
+              :style="{
+                width: `${achievement.progressPercent}%`
+              }"
+            ></div>
           </div>
         </div>
-      </template>
+
+        <div class="profile-achievement-footer">
+          <div class="profile-achievement-status">
+            <template x-if="achievement.unlocked">
+              <span class="achievement-unlocked">
+                <i class="fas fa-check"></i>
+                UNLOCKED
+              </span>
+            </template>
+
+            <template x-if="!achievement.unlocked">
+              <span
+                x-text="`${achievement.remaining} remaining`"
+              >
+                0 remaining
+              </span>
+            </template>
+          </div>
+
+          <div
+            class="profile-achievement-reward"
+            x-text="`+${achievement.xp_reward} XP`"
+          >
+            +0 XP
+          </div>
+        </div>
+      </div>
     </div>
+  </template>
+</div>
   </div>
 </div>
 
