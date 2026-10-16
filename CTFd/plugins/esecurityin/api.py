@@ -7,6 +7,7 @@ from CTFd.scoreboard import get_standings
 from CTFd.utils.decorators import authed_only
 from CTFd.utils.user import get_current_user
 
+from .services.brooch_service import BroochService
 from .services.daily_objective_service import (
     DailyObjectiveService,
 )
@@ -62,7 +63,10 @@ def xp_test(difficulty):
 # =========================================================
 
 @api.route("/user/<int:user_id>")
+@authed_only
 def get_user(user_id):
+    if get_current_user().id != user_id:
+        return jsonify({"error": "forbidden"}), 403
 
     user = XPService.get_or_create_user(user_id)
 
@@ -388,7 +392,10 @@ def get_player_rank(level):
     "/user/<int:user_id>/achievements",
     methods=["GET"],
 )
+@authed_only
 def get_user_achievements(user_id):
+    if get_current_user().id != user_id:
+        return jsonify({"error": "forbidden"}), 403
 
     result = db.session.execute(
         text(
@@ -453,7 +460,10 @@ def get_user_achievements(user_id):
     "/user/<int:user_id>/achievements/all",
     methods=["GET"],
 )
+@authed_only
 def get_all_user_achievements(user_id):
+    if get_current_user().id != user_id:
+        return jsonify({"error": "forbidden"}), 403
 
     result = db.session.execute(
         text(
@@ -538,7 +548,10 @@ def get_all_user_achievements(user_id):
     "/profile/<int:user_id>",
     methods=["GET"],
 )
+@authed_only
 def get_profile(user_id):
+    if get_current_user().id != user_id:
+        return jsonify({"error": "forbidden"}), 403
 
     user = XPService.get_or_create_user(user_id)
 
@@ -626,6 +639,20 @@ def get_profile(user_id):
         mission_result.scalar() or 0
     )
 
+    brooches = (
+        BroochService.get_player_brooches(
+            user_id=user_id,
+        )
+    )
+
+    unlocked_brooch_count = sum(
+        1
+        for brooch in brooches
+        if brooch["unlocked"]
+    )
+
+    total_brooches = len(brooches)
+
     return jsonify(
         {
             "user": {
@@ -659,6 +686,17 @@ def get_profile(user_id):
                 "items":
                     achievements,
             },
+
+            "brooches": {
+                "unlocked":
+                    unlocked_brooch_count,
+
+                "total":
+                    total_brooches,
+
+                "items":
+                    brooches,
+            },
         }
     )
 
@@ -671,7 +709,10 @@ def get_profile(user_id):
     "/user/<int:user_id>/daily-objectives",
     methods=["GET"],
 )
+@authed_only
 def get_daily_objectives(user_id):
+    if get_current_user().id != user_id:
+        return jsonify({"error": "forbidden"}), 403
 
     objectives = DailyObjectiveService.get_today(user_id)
 
@@ -714,30 +755,5 @@ def get_missions():
         {
             "user_id": user.id,
             "missions": missions,
-        }
-    )
-
-# =========================================================
-# MANUAL XP
-# =========================================================
-
-@api.route(
-    "/user/<int:user_id>/add/<int:xp>"
-)
-def add_xp(user_id, xp):
-
-    user = XPService.add_xp(user_id, xp)
-
-
-    return jsonify(
-        {
-            "user_id":
-                user.user_id,
-
-            "xp":
-                user.xp,
-
-            "level":
-                user.level,
         }
     )

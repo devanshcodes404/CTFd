@@ -2581,3 +2581,1226 @@ color:#CBD5E1;
     background: rgba(22, 163, 74, .12);
     color: #22C55E;
 }
+
+/* =========================================================
+   CYBERREALM — BROOCH COLLECTION
+========================================================= */
+
+.cyberrealm-brooches-wrapper {
+  margin-top: 48px;
+  margin-bottom: 48px;
+}
+
+.cyberrealm-brooches-wrapper .cyberrealm-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.cyberrealm-brooches-wrapper .cyberrealm-section-eyebrow {
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #5edcff;
+}
+
+.cyberrealm-brooches-wrapper .cyberrealm-section-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  color: #f4fbff;
+}
+
+.cyberrealm-brooches-wrapper .cyberrealm-section-description {
+  max-width: 620px;
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(207, 225, 235, 0.68);
+}
+
+.cyberrealm-brooch-count {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 120px;
+  justify-content: flex-end;
+}
+
+.cyberrealm-brooch-count-current {
+  font-size: 28px;
+  font-weight: 900;
+  color: #63dcff;
+  line-height: 1;
+}
+
+.cyberrealm-brooch-count-separator {
+  font-size: 18px;
+  color: rgba(207, 225, 235, 0.35);
+}
+
+.cyberrealm-brooch-count-total {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(232, 243, 248, 0.65);
+}
+
+.cyberrealm-brooch-count-label {
+  margin-left: 6px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: rgba(207, 225, 235, 0.45);
+}
+
+/* ---------------------------------------------------------
+   GRID
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+/* ---------------------------------------------------------
+   CARD
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 370px;
+  padding: 20px;
+  border: 1px solid rgba(131, 172, 190, 0.16);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18, 29, 36, 0.98),
+      rgba(7, 13, 18, 0.98)
+    );
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.cyberrealm-brooch-card::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  content: "";
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(93, 220, 255, 0.65),
+      transparent
+    );
+  opacity: 0.5;
+}
+
+.cyberrealm-brooch-card.is-unlocked {
+  border-color: rgba(76, 211, 244, 0.3);
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.3),
+    0 0 28px rgba(44, 205, 244, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}
+
+.cyberrealm-brooch-card.is-unlocked:hover {
+  transform: translateY(-4px);
+  border-color: rgba(93, 220, 255, 0.55);
+  box-shadow:
+    0 22px 42px rgba(0, 0, 0, 0.38),
+    0 0 34px rgba(44, 205, 244, 0.1);
+}
+
+.cyberrealm-brooch-card.is-locked {
+  opacity: 0.78;
+}
+
+.cyberrealm-brooch-card.is-inactive {
+  opacity: 0.42;
+}
+
+/* ---------------------------------------------------------
+   BROOCH ART
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 210px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(125, 165, 183, 0.1);
+  border-radius: 11px;
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(36, 76, 90, 0.23) 0%,
+      rgba(9, 17, 23, 0.86) 55%,
+      rgba(5, 9, 13, 0.96) 100%
+    );
+  overflow: hidden;
+}
+
+.cyberrealm-brooch-art::before,
+.cyberrealm-brooch-art::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.cyberrealm-brooch-art::before {
+  width: 170px;
+  height: 170px;
+  border: 1px solid rgba(94, 220, 255, 0.12);
+  border-radius: 50%;
+}
+
+.cyberrealm-brooch-art::after {
+  width: 136px;
+  height: 136px;
+  border: 1px dashed rgba(148, 176, 189, 0.12);
+  border-radius: 50%;
+}
+
+/* ---------------------------------------------------------
+   METAL RING
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-ring {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 148px;
+  height: 148px;
+  border: 7px solid #525e65;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      145deg,
+      #e3edf0 0%,
+      #77858d 18%,
+      #222c31 43%,
+      #0d151a 63%,
+      #89979e 84%,
+      #dce7ea 100%
+    );
+  box-shadow:
+    0 14px 24px rgba(0, 0, 0, 0.48),
+    inset 0 2px 3px rgba(255, 255, 255, 0.35),
+    inset 0 -4px 5px rgba(0, 0, 0, 0.55);
+}
+
+.cyberrealm-brooch-ring::before {
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(93, 220, 255, 0.32);
+  border-radius: 50%;
+  content: "";
+}
+
+.cyberrealm-brooch-ring::after {
+  position: absolute;
+  inset: 16px;
+  border: 1px solid rgba(221, 233, 237, 0.14);
+  border-radius: 50%;
+  content: "";
+}
+
+/* ---------------------------------------------------------
+   EMBLEM
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-emblem {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 92px;
+  border: 2px solid #7b8a92;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 34% 28%,
+      #17262d 0%,
+      #0b1419 45%,
+      #050a0e 100%
+    );
+  box-shadow:
+    inset 0 2px 6px rgba(255, 255, 255, 0.08),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.65),
+    0 0 18px rgba(71, 215, 246, 0.08);
+}
+
+.cyberrealm-brooch-emblem::before {
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(94, 220, 255, 0.55);
+  border-radius: 50%;
+  content: "";
+  box-shadow:
+    0 0 8px rgba(94, 220, 255, 0.08);
+}
+
+.cyberrealm-brooch-emblem span {
+  position: relative;
+  z-index: 2;
+  font-size: 30px;
+  font-weight: 900;
+  color: #e8f6fa;
+  text-shadow:
+    0 0 10px rgba(94, 220, 255, 0.42),
+    0 2px 4px rgba(0, 0, 0, 0.85);
+}
+
+/* ---------------------------------------------------------
+   BROOCH STATE
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-state {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 4;
+  padding: 5px 8px;
+  border: 1px solid rgba(94, 220, 255, 0.22);
+  border-radius: 4px;
+  background: rgba(4, 10, 14, 0.86);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: #63dcff;
+  backdrop-filter: blur(8px);
+}
+
+.cyberrealm-brooch-card.is-locked .cyberrealm-brooch-state {
+  border-color: rgba(180, 193, 200, 0.14);
+  color: rgba(207, 225, 235, 0.5);
+}
+
+.cyberrealm-brooch-card.is-inactive .cyberrealm-brooch-state {
+  color: rgba(207, 225, 235, 0.35);
+}
+
+/* ---------------------------------------------------------
+   CONTENT
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-content {
+  position: relative;
+  z-index: 2;
+}
+
+.cyberrealm-brooch-name {
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.015em;
+  color: #f0f7fa;
+}
+
+.cyberrealm-brooch-description {
+  min-height: 42px;
+  font-size: 11px;
+  line-height: 1.55;
+  color: rgba(207, 225, 235, 0.58);
+}
+
+.cyberrealm-brooch-requirement {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(141, 171, 183, 0.1);
+}
+
+.cyberrealm-brooch-requirement-label {
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: rgba(207, 225, 235, 0.42);
+}
+
+.cyberrealm-brooch-requirement-value {
+  font-size: 11px;
+  font-weight: 800;
+  color: #63dcff;
+}
+
+.cyberrealm-brooch-unlocked-date {
+  margin-top: 14px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: rgba(207, 225, 235, 0.4);
+}
+
+/* ---------------------------------------------------------
+   BROOCH IDENTITIES
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-emblem[data-brooch="first_breach"] span::before {
+  content: "B";
+}
+
+.cyberrealm-brooch-emblem[data-brooch="breach_runner"] span::before {
+  content: "R";
+}
+
+.cyberrealm-brooch-emblem[data-brooch="elite_operator"] span::before {
+  content: "E";
+}
+
+.cyberrealm-brooch-emblem[data-brooch="crypto_specialist"] span::before {
+  content: "C";
+}
+
+.cyberrealm-brooch-emblem[data-brooch="web_defender"] span::before {
+  content: "W";
+}
+
+.cyberrealm-brooch-emblem[data-brooch="xp_hunter"] span::before {
+  content: "X";
+}
+
+.cyberrealm-brooch-emblem[data-brooch="mission_commander"] span::before {
+  content: "M";
+}
+
+.cyberrealm-brooch-emblem[data-brooch="stage_master"] span::before {
+  content: "S";
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+  .cyberrealm-brooch-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .cyberrealm-brooch-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cyberrealm-brooches-wrapper .cyberrealm-section-header {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .cyberrealm-brooches-wrapper .cyberrealm-section-header {
+    flex-direction: column;
+  }
+
+  .cyberrealm-brooch-count {
+    justify-content: flex-start;
+  }
+
+  .cyberrealm-brooch-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cyberrealm-brooch-card {
+    min-height: 350px;
+  }
+}
+/* =========================================================
+   BROOCH ARTWORK — FINAL PRESENTATION
+========================================================= */
+
+.cyberrealm-brooch-ring {
+  width: 172px;
+  height: 172px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+}
+
+.cyberrealm-brooch-ring::before,
+.cyberrealm-brooch-ring::after {
+  display: none;
+}
+
+.cyberrealm-brooch-emblem {
+  width: 168px;
+  height: 168px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.cyberrealm-brooch-emblem::before {
+  display: none;
+}
+
+.cyberrealm-brooch-emblem img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  filter:
+    drop-shadow(0 10px 18px rgba(0, 0, 0, 0.5))
+    drop-shadow(0 0 10px rgba(63, 213, 247, 0.08));
+}
+
+.cyberrealm-brooch-card.is-unlocked
+.cyberrealm-brooch-emblem img {
+  filter:
+    drop-shadow(0 10px 18px rgba(0, 0, 0, 0.5))
+    drop-shadow(0 0 16px rgba(63, 213, 247, 0.14));
+}
+
+.cyberrealm-brooch-card.is-locked
+.cyberrealm-brooch-emblem img {
+  filter:
+    grayscale(0.18)
+    brightness(0.72)
+    saturate(0.7)
+    drop-shadow(0 8px 14px rgba(0, 0, 0, 0.55));
+}
+
+.cyberrealm-brooch-card.is-inactive
+.cyberrealm-brooch-emblem img {
+  filter:
+    grayscale(0.45)
+    brightness(0.48)
+    saturate(0.5)
+    drop-shadow(0 6px 12px rgba(0, 0, 0, 0.55));
+}
+
+/* =========================================================
+   CYBERREALM BROOCH COLLECTION — VISUAL POLISH v1
+========================================================= */
+
+.cyberrealm-brooches-wrapper {
+  position: relative;
+}
+
+.cyberrealm-brooch-grid {
+  align-items: stretch;
+}
+
+.cyberrealm-brooch-card {
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.22s ease;
+
+  transform: translateY(0);
+}
+
+/* ---------------------------------------------------------
+   BROOCH ART AREA
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-art {
+  position: relative;
+
+  min-height: 220px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 18px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(0, 210, 255, 0.055) 0%,
+      rgba(0, 210, 255, 0.02) 35%,
+      rgba(0, 0, 0, 0) 72%
+    );
+
+  overflow: hidden;
+}
+
+.cyberrealm-brooch-ring {
+  width: 196px;
+  height: 196px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+
+  box-shadow: none;
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.cyberrealm-brooch-ring::before,
+.cyberrealm-brooch-ring::after {
+  display: none;
+}
+
+.cyberrealm-brooch-emblem {
+  width: 190px;
+  height: 190px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+
+  box-shadow: none;
+
+  overflow: visible;
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+.cyberrealm-brooch-emblem::before,
+.cyberrealm-brooch-emblem::after {
+  display: none;
+}
+
+.cyberrealm-brooch-emblem img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  transform: scale(1);
+
+  filter:
+    drop-shadow(
+      0 10px 16px rgba(0, 0, 0, 0.55)
+    );
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* ---------------------------------------------------------
+   UNLOCKED
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-card.is-unlocked {
+  border-color:
+    rgba(0, 210, 255, 0.32);
+}
+
+.cyberrealm-brooch-card.is-unlocked
+.cyberrealm-brooch-emblem img {
+  filter:
+    drop-shadow(
+      0 10px 18px rgba(0, 0, 0, 0.52)
+    )
+    drop-shadow(
+      0 0 14px rgba(0, 210, 255, 0.14)
+    );
+}
+
+.cyberrealm-brooch-card.is-unlocked
+.cyberrealm-brooch-state {
+  color: #42e8ff;
+  border-color:
+    rgba(66, 232, 255, 0.4);
+}
+
+/* ---------------------------------------------------------
+   LOCKED
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-card.is-locked {
+  border-color:
+    rgba(255, 255, 255, 0.07);
+}
+
+.cyberrealm-brooch-card.is-locked
+.cyberrealm-brooch-emblem img {
+  filter:
+    grayscale(0.12)
+    brightness(0.76)
+    saturate(0.75)
+    drop-shadow(
+      0 8px 14px rgba(0, 0, 0, 0.58)
+    );
+}
+
+/* ---------------------------------------------------------
+   COMING SOON
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-card.is-inactive {
+  border-color:
+    rgba(255, 255, 255, 0.045);
+}
+
+.cyberrealm-brooch-card.is-inactive
+.cyberrealm-brooch-emblem img {
+  filter:
+    grayscale(0.5)
+    brightness(0.46)
+    saturate(0.45)
+    drop-shadow(
+      0 6px 12px rgba(0, 0, 0, 0.62)
+    );
+}
+
+/* ---------------------------------------------------------
+   HOVER
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-card:hover {
+  transform: translateY(-4px);
+
+  border-color:
+    rgba(0, 210, 255, 0.28);
+
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.28),
+    0 0 22px rgba(0, 210, 255, 0.045);
+}
+
+.cyberrealm-brooch-card:hover
+.cyberrealm-brooch-emblem img {
+  transform: scale(1.045);
+}
+
+.cyberrealm-brooch-card.is-unlocked:hover {
+  border-color:
+    rgba(66, 232, 255, 0.52);
+
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.3),
+    0 0 28px rgba(0, 210, 255, 0.09);
+}
+
+.cyberrealm-brooch-card.is-unlocked:hover
+.cyberrealm-brooch-emblem img {
+  filter:
+    drop-shadow(
+      0 10px 18px rgba(0, 0, 0, 0.5)
+    )
+    drop-shadow(
+      0 0 22px rgba(0, 210, 255, 0.2)
+    );
+}
+
+/* ---------------------------------------------------------
+   STATE LABEL
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-state {
+  z-index: 2;
+
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+/* ---------------------------------------------------------
+   BROOCH CONTENT
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-content {
+  min-height: 108px;
+}
+
+.cyberrealm-brooch-name {
+  letter-spacing: 0.01em;
+}
+
+/* ---------------------------------------------------------
+   COLLECTION COUNTER
+--------------------------------------------------------- */
+
+.cyberrealm-brooch-count-current {
+  text-shadow:
+    0 0 14px rgba(0, 210, 255, 0.3);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 992px) {
+  .cyberrealm-brooch-art {
+    min-height: 205px;
+  }
+
+  .cyberrealm-brooch-ring,
+  .cyberrealm-brooch-emblem {
+    width: 176px;
+    height: 176px;
+  }
+}
+
+@media (max-width: 767px) {
+  .cyberrealm-brooch-art {
+    min-height: 220px;
+  }
+
+  .cyberrealm-brooch-ring,
+  .cyberrealm-brooch-emblem {
+    width: 190px;
+    height: 190px;
+  }
+
+  .cyberrealm-brooch-card:hover {
+    transform: none;
+  }
+
+  .cyberrealm-brooch-card:hover
+  .cyberrealm-brooch-emblem img {
+    transform: none;
+  }
+}
+/* =========================================================
+   BROOCH REQUIREMENT / PROGRESS
+========================================================= */
+
+.cyberrealm-brooch-progress {
+  margin-top: 16px;
+  padding-top: 12px;
+
+  border-top: 1px solid
+    rgba(255, 255, 255, 0.06);
+}
+
+.cyberrealm-brooch-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 7px;
+}
+
+.cyberrealm-brooch-progress-label {
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+
+  color: #64748b;
+}
+
+.cyberrealm-brooch-progress-count {
+  font-size: 9px;
+  font-weight: 800;
+
+  color: #dbeafe;
+}
+
+.cyberrealm-brooch-progress-track {
+  width: 100%;
+  height: 5px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.055);
+}
+
+.cyberrealm-brooch-progress-fill {
+  height: 100%;
+
+  min-width: 0;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #0aa8ff,
+      #42e8ff
+    );
+
+  box-shadow:
+    0 0 10px
+      rgba(66, 232, 255, 0.18);
+
+  transition:
+    width 0.35s ease;
+}
+
+.cyberrealm-brooch-progress-footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+
+  margin-top: 8px;
+
+  font-size: 8px;
+  line-height: 1.45;
+
+  color: #64748b;
+}
+
+.cyberrealm-brooch-remaining {
+  flex: 0 0 auto;
+
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.cyberrealm-brooch-card.is-unlocked
+.cyberrealm-brooch-progress {
+  display: none;
+}
+
+.cyberrealm-brooch-card.is-inactive
+.cyberrealm-brooch-progress {
+  display: none;
+}
+/* =========================================================
+   BROOCH DETAIL MODAL
+========================================================= */
+
+.cyberrealm-brooch-modal {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    rgba(2, 7, 14, 0.82);
+
+  backdrop-filter:
+    blur(8px);
+}
+
+.cyberrealm-brooch-modal-panel {
+  position: relative;
+
+  width: min(520px, 100%);
+
+  padding: 32px;
+
+  border: 1px solid
+    rgba(66, 232, 255, 0.22);
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(12, 22, 35, 0.98),
+      rgba(4, 10, 18, 0.98)
+    );
+
+  box-shadow:
+    0 30px 80px
+      rgba(0, 0, 0, 0.58),
+    0 0 45px
+      rgba(0, 210, 255, 0.07);
+
+  color: #ffffff;
+}
+
+.cyberrealm-brooch-modal-close {
+  position: absolute;
+
+  top: 14px;
+  right: 16px;
+
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.03);
+
+  color: #cbd5e1;
+
+  font-size: 22px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.cyberrealm-brooch-modal-close:hover {
+  color: #ffffff;
+
+  border-color:
+    rgba(66, 232, 255, 0.35);
+
+  background:
+    rgba(66, 232, 255, 0.08);
+}
+
+.cyberrealm-brooch-modal-art {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 245px;
+
+  margin-bottom: 18px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(0, 210, 255, 0.07),
+      transparent 68%
+    );
+}
+
+.cyberrealm-brooch-modal-art img {
+  width: 230px;
+  height: 230px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 18px 24px rgba(0, 0, 0, 0.5)
+    )
+    drop-shadow(
+      0 0 20px rgba(0, 210, 255, 0.12)
+    );
+}
+
+.cyberrealm-brooch-modal-header {
+  padding-right: 42px;
+}
+
+.cyberrealm-brooch-modal-header h2 {
+  margin: 5px 0 8px;
+
+  font-size: 25px;
+  font-weight: 900;
+
+  color: #ffffff;
+}
+
+.cyberrealm-brooch-modal-status {
+  display: inline-flex;
+
+  padding: 5px 9px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.08);
+
+  border-radius: 6px;
+
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.cyberrealm-brooch-modal-status.is-unlocked {
+  color: #42e8ff;
+
+  border-color:
+    rgba(66, 232, 255, 0.3);
+
+  background:
+    rgba(66, 232, 255, 0.06);
+}
+
+.cyberrealm-brooch-modal-status.is-locked {
+  color: #cbd5e1;
+}
+
+.cyberrealm-brooch-modal-status.is-inactive {
+  color: #64748b;
+}
+
+.cyberrealm-brooch-modal-description {
+  margin: 18px 0 0;
+
+  font-size: 13px;
+  line-height: 1.7;
+
+  color: #94a3b8;
+}
+
+.cyberrealm-brooch-modal-progress {
+  margin-top: 22px;
+
+  padding: 16px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.06);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.02);
+}
+
+.cyberrealm-brooch-modal-requirement {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: 10px;
+
+  font-size: 9px;
+  line-height: 1.5;
+
+  color: #64748b;
+}
+
+.cyberrealm-brooch-modal-requirement strong {
+  flex: 0 0 auto;
+
+  color: #cbd5e1;
+}
+
+.cyberrealm-brooch-modal-unlocked {
+  margin-top: 22px;
+
+  padding: 14px 16px;
+
+  border: 1px solid
+    rgba(66, 232, 255, 0.15);
+
+  border-radius: 12px;
+
+  background:
+    rgba(66, 232, 255, 0.035);
+
+  font-size: 9px;
+
+  color: #64748b;
+}
+
+.cyberrealm-brooch-modal-acquired {
+  margin-bottom: 7px;
+
+  color: #42e8ff;
+
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+}
+
+.cyberrealm-brooch-modal-coming-soon {
+  margin-top: 22px;
+
+  padding: 14px 16px;
+
+  border: 1px solid
+    rgba(255, 255, 255, 0.05);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.02);
+
+  color: #64748b;
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.cyberrealm-brooch-modal-enter {
+  transition:
+    opacity 0.2s ease;
+}
+
+.cyberrealm-brooch-modal-enter-start {
+  opacity: 0;
+}
+
+.cyberrealm-brooch-modal-enter-end {
+  opacity: 1;
+}
+
+.cyberrealm-brooch-modal-leave {
+  transition:
+    opacity 0.16s ease;
+}
+
+.cyberrealm-brooch-modal-leave-start {
+  opacity: 1;
+}
+
+.cyberrealm-brooch-modal-leave-end {
+  opacity: 0;
+}
+
+@media (max-width: 767px) {
+  .cyberrealm-brooch-modal {
+    padding: 12px;
+  }
+
+  .cyberrealm-brooch-modal-panel {
+    padding: 22px;
+  }
+
+  .cyberrealm-brooch-modal-art {
+    min-height: 190px;
+  }
+
+  .cyberrealm-brooch-modal-art img {
+    width: 185px;
+    height: 185px;
+  }
+}

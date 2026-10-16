@@ -45,16 +45,42 @@ Alpine.data(
 
     recentSolves: [],
 
+    missions: [],
+
     recentAchievements: [],
 
     dailyObjectives: [],
 
-
     loading: false,
-
 
     initialized: false,
 
+    async loadMissions() {
+    try {
+        const response = await fetch(
+            "/api/v1/esecurityin/missions?type=daily",
+            {
+                credentials: "same-origin",
+                headers: {
+                    Accept: "application/json",
+                },
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`Mission API returned ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        this.missions = data.missions || [];
+
+        console.log("[CyberRealm] Missions loaded:", this.missions);
+    } catch (error) {
+        console.error("[CyberRealm] Failed to load missions:", error);
+        this.missions = [];
+    }
+},
 
     /* =========================================
        INITIALIZE
@@ -106,10 +132,10 @@ Alpine.data(
         await Promise.all([
 
           this.loadProfile(),
-
           this.loadRecentSolves(),
-
           this.loadDailyObjectives(),
+          this.loadMissions(),
+
 
         ]);
 

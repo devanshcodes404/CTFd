@@ -268,84 +268,71 @@ class DailyObjectiveService:
 
             user_objective = result.fetchone()
 
-            if user_objective:
+            # Atomically create the daily-objective row if missing.
+            session.execute(
+                text(
+                    """
+                    INSERT INTO esecurityin_user_daily_objectives
+                    (
+                        user_id,
+                        objective_id,
+                        objective_date,
+                        progress,
+                        completed,
+                        completed_at
+                    )
+                    VALUES
+                    (
+                        :user_id,
+                        :objective_id,
+                        :objective_date,
+                        0,
+                        0,
+                        NULL
+                    )
+                    ON DUPLICATE KEY UPDATE
+                        id = id
+                    """
+                ),
+                {
+                    "user_id": user_id,
+                    "objective_id": objective_id,
+                    "objective_date": today,
+                },
+            )
 
-                user_objective_id = (
-                    user_objective[0]
+            # Read the actual state while holding a row lock.
+            result = session.execute(
+                text(
+                    """
+                    SELECT
+                        id,
+                        progress,
+                        completed
+                    FROM esecurityin_user_daily_objectives
+                    WHERE user_id = :user_id
+                      AND objective_id = :objective_id
+                      AND objective_date = :objective_date
+                    FOR UPDATE
+                    """
+                ),
+                {
+                    "user_id": user_id,
+                    "objective_id": objective_id,
+                    "objective_date": today,
+                },
+            )
+
+            user_objective = result.fetchone()
+
+            if user_objective is None:
+                raise RuntimeError(
+                    "Daily objective row was not found after insert."
                 )
 
-                current_progress = (
-                    user_objective[1] or 0
-                )
-
-                already_completed = bool(
-                    user_objective[2]
-                )
-
-            else:
-
-                session.execute(
-                    text(
-                        """
-                        INSERT INTO
-                            esecurityin_user_daily_objectives
-                        (
-                            user_id,
-                            objective_id,
-                            objective_date,
-                            progress,
-                            completed,
-                            completed_at
-                        )
-                        VALUES
-                        (
-                            :user_id,
-                            :objective_id,
-                            :objective_date,
-                            0,
-                            0,
-                            NULL
-                        )
-                        """
-                    ),
-                    {
-                        "user_id": user_id,
-                        "objective_id": objective_id,
-                        "objective_date": today,
-                    },
-                )
-
-                result = session.execute(
-                    text(
-                        """
-                        SELECT
-                            id,
-                            progress,
-                            completed
-                        FROM esecurityin_user_daily_objectives
-                        WHERE user_id = :user_id
-                          AND objective_id = :objective_id
-                          AND objective_date = :objective_date
-                        FOR UPDATE
-                        """
-                    ),
-                    {
-                        "user_id": user_id,
-                        "objective_id": objective_id,
-                        "objective_date": today,
-                    },
-                )
-
-                user_objective = result.fetchone()
-
-                user_objective_id = (
-                    user_objective[0]
-                )
-
-                current_progress = 0
-
-                already_completed = False
-
+            user_objective_id = user_objective[0]
+            current_progress = user_objective[1] or 0
+            already_completed = bool(user_objective[2])
             if already_completed:
                 continue
 

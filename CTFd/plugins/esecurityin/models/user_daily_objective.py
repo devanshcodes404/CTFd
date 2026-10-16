@@ -4,6 +4,15 @@ from CTFd.models import db
 class UserDailyObjective(db.Model):
     __tablename__ = "esecurityin_user_daily_objectives"
 
+    __table_args__ = (
+        db.UniqueConstraint(
+            "user_id",
+            "objective_id",
+            "objective_date",
+            name="uq_esecurityin_user_daily_objective_date",
+        ),
+    )
+
     id = db.Column(
         db.Integer,
         primary_key=True,

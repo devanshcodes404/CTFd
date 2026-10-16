@@ -124,6 +124,7 @@ class NotificationService:
                 f"**+{reward} XP**"
             ),
         )
+
     @classmethod
     def mission_completed(
         cls,
@@ -158,5 +159,31 @@ class NotificationService:
                 f"{description}\n\n"
                 f"**{mission_type.title()} Mission**\n\n"
                 f"**+{reward} XP**"
+            ),
+        )
+
+    @classmethod
+    def brooch_unlocked(
+        cls,
+        user_id,
+        brooch,
+    ):
+        name = brooch.get(
+            "name",
+            "Brooch",
+        )
+
+        description = brooch.get(
+            "description",
+            "",
+        )
+
+        return cls._create(
+            user_id=user_id,
+            title="📌 Brooch Unlocked",
+            content=(
+                f"**{name}**\n\n"
+                f"{description}\n\n"
+                "Your CyberRealm collection has been updated."
             ),
         )

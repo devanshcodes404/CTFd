@@ -3,6 +3,25 @@ import CTFd from "../index";
 import { colorHash } from "@ctfdio/ctfd-js/ui";
 import { getOption as getUserScoreOption } from "../utils/graphs/echarts/userscore";
 import { embed } from "../utils/graphs/echarts";
+import firstBreachImage from "../../img/brooches/first-breach.png";
+import breachRunnerImage from "../../img/brooches/breach-runner.png";
+import eliteOperatorImage from "../../img/brooches/elite-operator.png";
+import cryptoSpecialistImage from "../../img/brooches/crypto-specialist.png";
+import webDefenderImage from "../../img/brooches/web-defender.png";
+import xpHunterImage from "../../img/brooches/xp-hunter.png";
+import missionCommanderImage from "../../img/brooches/mission-commander.png";
+import stageMasterImage from "../../img/brooches/stage-master.png";
+
+const BROOCH_ASSETS = {
+  first_breach: firstBreachImage,
+  breach_runner: breachRunnerImage,
+  elite_operator: eliteOperatorImage,
+  crypto_specialist: cryptoSpecialistImage,
+  web_defender: webDefenderImage,
+  xp_hunter: xpHunterImage,
+  mission_commander: missionCommanderImage,
+  stage_master: stageMasterImage,
+};
 
 window.Alpine = Alpine;
 
@@ -15,11 +34,17 @@ Alpine.data("UserGraphs", () => ({
   awardCount: 0,
 
   getSolvePercentage() {
-    return ((this.solveCount / (this.solveCount + this.failCount)) * 100).toFixed(2);
+    return (
+      (this.solveCount / (this.solveCount + this.failCount)) *
+      100
+    ).toFixed(2);
   },
 
   getFailPercentage() {
-    return ((this.failCount / (this.solveCount + this.failCount)) * 100).toFixed(2);
+    return (
+      (this.failCount / (this.solveCount + this.failCount)) *
+      100
+    ).toFixed(2);
   },
 
   getCategoryBreakdown() {
@@ -39,10 +64,11 @@ Alpine.data("UserGraphs", () => ({
     });
 
     const data = [];
+
     for (const property in breakdown) {
-      const percent = Number((breakdown[property] / categories.length) * 100).toFixed(
-        2,
-      );
+      const percent = Number(
+        (breakdown[property] / categories.length) * 100
+      ).toFixed(2);
 
       data.push({
         name: property,
@@ -73,11 +99,12 @@ Alpine.data("UserGraphs", () => ({
         CTFd.user.name,
         this.solves.data,
         this.awards.data,
-        optionMerge,
-      ),
+        optionMerge
+      )
     );
   },
 }));
+
 
 Alpine.data("CyberRealmProfile", () => ({
   profile: {
@@ -85,7 +112,7 @@ Alpine.data("CyberRealmProfile", () => ({
     level: 1,
     rank: "RECRUIT",
     nextRank: "OPERATIVE",
-nextRankLevel: 5,
+    nextRankLevel: 5,
 
     xpPerLevel: 500,
     xpIntoLevel: 0,
@@ -100,12 +127,17 @@ nextRankLevel: 5,
     achievementsTotal: 0,
 
     achievements: [],
+
+    broochesUnlocked: 0,
+    broochesTotal: 0,
+    brooches: [],
   },
+  selectedBrooch: null,
 
   async init() {
     if (!window.init || !window.init.userId) {
       console.log(
-        "[CyberRealm] No logged-in user for profile.",
+        "[CyberRealm] No logged-in user for profile."
       );
 
       return;
@@ -118,12 +150,12 @@ nextRankLevel: 5,
           headers: {
             Accept: "application/json",
           },
-        },
+        }
       );
 
       if (!response.ok) {
         throw new Error(
-          `HTTP ${response.status}`,
+          `HTTP ${response.status}`
         );
       }
 
@@ -131,15 +163,14 @@ nextRankLevel: 5,
 
       console.log(
         "[CyberRealm] Profile:",
-        data,
+        data
       );
 
       this.updateProfile(data);
-
     } catch (error) {
       console.error(
         "[CyberRealm] Failed to fetch profile:",
-        error,
+        error
       );
     }
   },
@@ -150,6 +181,9 @@ nextRankLevel: 5,
 
     const achievements =
       data.achievements || {};
+
+    const brooches =
+      data.brooches || {};
 
     const XP_PER_LEVEL = 500;
 
@@ -165,10 +199,11 @@ nextRankLevel: 5,
     const progress =
       Number(
         (
-          xpIntoLevel /
-          XP_PER_LEVEL
-        ) * 100
-      ).toFixed(1);
+          (xpIntoLevel /
+            XP_PER_LEVEL) *
+          100
+        ).toFixed(1)
+      );
 
     const xpToNext =
       XP_PER_LEVEL -
@@ -176,14 +211,14 @@ nextRankLevel: 5,
 
     const nextRank = this.getNextRank(level);
 
-this.profile = {
-  xp,
-  level,
+    this.profile = {
+      xp,
+      level,
 
-  rank: this.getPlayerRank(level),
+      rank: this.getPlayerRank(level),
 
-  nextRank: nextRank.name,
-  nextRankLevel: nextRank.level,
+      nextRank: nextRank.name,
+      nextRankLevel: nextRank.level,
 
       xpPerLevel:
         XP_PER_LEVEL,
@@ -207,7 +242,7 @@ this.profile = {
       achievementsTotal:
         achievements.total || 0,
 
-            achievements:
+      achievements:
         (achievements.items || []).map(
           achievement =>
             this.enrichAchievementProgress(
@@ -220,16 +255,66 @@ this.profile = {
                 totalSolves:
                   progression.total_solves || 0,
                 totalMissions:
-                 progression.total_missions || 0,
-              },
-            ),
+                  progression.total_missions || 0,
+              }
+            )
+        ),
+
+      broochesUnlocked:
+        brooches.unlocked || 0,
+
+      broochesTotal:
+        brooches.total || 0,
+
+            brooches:
+        (brooches.items || []).map(
+          brooch => {
+            const asset =
+              BROOCH_ASSETS[brooch.asset_key];
+
+            return {
+              ...brooch,
+              assetUrl: asset
+                ? `/themes/cyberrealm/static${asset}`
+                : null,
+            };
+          },
         ),
     };
   },
 
-    enrichAchievementProgress(
+  getBroochRequirement(brooch) {
+   const value = brooch.requirement_value || 0;
+
+   switch (brooch.requirement_type) {
+     case "achievement":
+      return "Reach the required achievement";
+
+     case "mission":
+      return "Complete the required mission";
+
+     case "category_solves":
+      return `Solve ${value} challenges in the required category`;
+
+     case "stage":
+      return "Complete the required CyberRealm stage";
+
+     default:
+      return `Complete ${value} required progress`;
+    }
+  },
+
+  openBrooch(brooch) {
+  this.selectedBrooch = brooch;
+},
+
+closeBrooch() {
+  this.selectedBrooch = null;
+},
+
+  enrichAchievementProgress(
     achievement,
-    progression,
+    progression
   ) {
     let current = 0;
 
@@ -283,14 +368,14 @@ this.profile = {
           (
             (current / target) *
             100
-          ).toFixed(1),
-        ),
+          ).toFixed(1)
+        )
       );
 
-        const cappedCurrent =
+    const cappedCurrent =
       Math.min(
         current,
-        target,
+        target
       );
 
     return {
@@ -304,7 +389,7 @@ this.profile = {
 
       remaining: Math.max(
         0,
-        target - current,
+        target - current
       ),
 
       progressPercent,
@@ -312,84 +397,87 @@ this.profile = {
   },
 
   getPlayerRank(level) {
-  if (level >= 50) {
-    return "CYBER LEGEND";
-  }
+    if (level >= 50) {
+      return "CYBER LEGEND";
+    }
 
-  if (level >= 30) {
-    return "SHADOW AGENT";
-  }
+    if (level >= 30) {
+      return "SHADOW AGENT";
+    }
 
-  if (level >= 20) {
-    return "ELITE";
-  }
+    if (level >= 20) {
+      return "ELITE";
+    }
 
-  if (level >= 10) {
-    return "SPECIALIST";
-  }
+    if (level >= 10) {
+      return "SPECIALIST";
+    }
 
-  if (level >= 5) {
-    return "OPERATIVE";
-  }
+    if (level >= 5) {
+      return "OPERATIVE";
+    }
 
-  return "RECRUIT";
-},
+    return "RECRUIT";
+  },
 
-getNextRank(level) {
-  if (level >= 50) {
+  getNextRank(level) {
+    if (level >= 50) {
+      return {
+        name: "MAX RANK",
+        level: 50,
+      };
+    }
+
+    if (level >= 30) {
+      return {
+        name: "CYBER LEGEND",
+        level: 50,
+      };
+    }
+
+    if (level >= 20) {
+      return {
+        name: "SHADOW AGENT",
+        level: 30,
+      };
+    }
+
+    if (level >= 10) {
+      return {
+        name: "ELITE",
+        level: 20,
+      };
+    }
+
+    if (level >= 5) {
+      return {
+        name: "SPECIALIST",
+        level: 10,
+      };
+    }
+
     return {
-      name: "MAX RANK",
-      level: 50,
+      name: "OPERATIVE",
+      level: 5,
     };
-  }
-
-  if (level >= 30) {
-    return {
-      name: "CYBER LEGEND",
-      level: 50,
-    };
-  }
-
-  if (level >= 20) {
-    return {
-      name: "SHADOW AGENT",
-      level: 30,
-    };
-  }
-
-  if (level >= 10) {
-    return {
-      name: "ELITE",
-      level: 20,
-    };
-  }
-
-  if (level >= 5) {
-    return {
-      name: "SPECIALIST",
-      level: 10,
-    };
-  }
-
-  return {
-    name: "OPERATIVE",
-    level: 5,
-  };
-},
+  },
 }));
+
+
 Alpine.data("CyberRealmStats", () => ({
   stats: {
-  solves: 0,
-  fails: 0,
-  solveRate: "0.00",
-  totalAttempts: 0,
-  longestStreak: 0,
-  categories: [],
-},
+    solves: 0,
+    fails: 0,
+    solveRate: "0.00",
+    totalAttempts: 0,
+    longestStreak: 0,
+    categories: [],
+  },
+
   async init() {
     if (!window.init || !window.init.userId) {
       console.log(
-        "[CyberRealm] No logged-in user for stats.",
+        "[CyberRealm] No logged-in user for stats."
       );
 
       return;
@@ -402,7 +490,7 @@ Alpine.data("CyberRealmStats", () => ({
           headers: {
             Accept: "application/json",
           },
-        },
+        }
       );
 
       const failsResponse = await fetch(
@@ -411,7 +499,7 @@ Alpine.data("CyberRealmStats", () => ({
           headers: {
             Accept: "application/json",
           },
-        },
+        }
       );
 
       if (
@@ -419,7 +507,7 @@ Alpine.data("CyberRealmStats", () => ({
         !failsResponse.ok
       ) {
         throw new Error(
-          "Unable to load solve statistics",
+          "Unable to load solve statistics"
         );
       }
 
@@ -447,7 +535,8 @@ Alpine.data("CyberRealmStats", () => ({
       const solveRate =
         totalAttempts > 0
           ? (
-              (solveCount / totalAttempts) *
+              (solveCount /
+                totalAttempts) *
               100
             ).toFixed(2)
           : "0.00";
@@ -455,7 +544,6 @@ Alpine.data("CyberRealmStats", () => ({
       const categories = {};
 
       for (const solve of solves) {
-
         const category =
           solve.challenge?.category ||
           "Unknown";
@@ -483,7 +571,7 @@ Alpine.data("CyberRealmStats", () => ({
           }))
           .sort(
             (a, b) =>
-              b.count - a.count,
+              b.count - a.count
           );
 
       const profileResponse =
@@ -494,7 +582,7 @@ Alpine.data("CyberRealmStats", () => ({
               Accept:
                 "application/json",
             },
-          },
+          }
         );
 
       let longestStreak = 0;
@@ -509,22 +597,22 @@ Alpine.data("CyberRealmStats", () => ({
       }
 
       this.stats = {
-  solves: solveCount,
-  fails: failCount,
-  solveRate,
-  totalAttempts,
-  longestStreak,
-  categories: categoryData,
-};
-
+        solves: solveCount,
+        fails: failCount,
+        solveRate,
+        totalAttempts,
+        longestStreak,
+        categories: categoryData,
+      };
     } catch (error) {
       console.error(
         "[CyberRealm] Failed to load progression statistics:",
-        error,
+        error
       );
     }
   },
 }));
+
 
 Alpine.data("CyberRealmMissions", () => ({
   missions: {
@@ -571,11 +659,10 @@ Alpine.data("CyberRealmMissions", () => ({
         weekly,
         special,
       };
-
     } catch (error) {
       console.error(
         "[CyberRealm] Failed to load missions:",
-        error,
+        error
       );
 
       this.error =
@@ -592,12 +679,12 @@ Alpine.data("CyberRealmMissions", () => ({
         headers: {
           Accept: "application/json",
         },
-      },
+      }
     );
 
     if (!response.ok) {
       throw new Error(
-        `Mission API returned HTTP ${response.status}`,
+        `Mission API returned HTTP ${response.status}`
       );
     }
 
@@ -625,7 +712,7 @@ Alpine.data("CyberRealmMissions", () => ({
         (mission.progress /
           mission.target_value) *
         100
-      ).toFixed(1),
+      ).toFixed(1)
     );
   },
 }));

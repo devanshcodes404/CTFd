@@ -357,8 +357,426 @@
       </div>
     </div>
   </template>
+ </div>
 </div>
+
+<!-- =========================
+     BROOCH COLLECTION
+========================= -->
+<section class="container cyberrealm-brooches-wrapper">
+
+  <div class="cyberrealm-section-header">
+    <div>
+      <div class="cyberrealm-section-eyebrow">
+        CYBERREALM COLLECTION
+      </div>
+
+      <h2 class="cyberrealm-section-title">
+        Brooch Collection
+      </h2>
+
+      <p class="cyberrealm-section-description">
+        Earn insignias by completing missions and reaching major milestones.
+      </p>
+    </div>
+
+    <div class="cyberrealm-brooch-count">
+      <span
+        class="cyberrealm-brooch-count-current"
+        x-text="profile.broochesUnlocked"
+      ></span>
+
+      <span class="cyberrealm-brooch-count-separator">
+        /
+      </span>
+
+      <span
+        class="cyberrealm-brooch-count-total"
+        x-text="profile.broochesTotal"
+      ></span>
+
+      <span class="cyberrealm-brooch-count-label">
+        UNLOCKED
+      </span>
+    </div>
   </div>
+
+  <div class="cyberrealm-brooch-grid">
+
+    <template
+      x-for="brooch in profile.brooches"
+      :key="brooch.id"
+    >
+      <article
+        class="cyberrealm-brooch-card"
+        role="button"
+        tabindex="0"
+        @click="openBrooch(brooch)"
+        @keydown.enter="openBrooch(brooch)"
+        @keydown.space.prevent="openBrooch(brooch)"
+        :class="{
+          'is-unlocked': brooch.unlocked,
+          'is-locked': !brooch.unlocked,
+          'is-inactive': !brooch.active
+        }"
+      >
+
+        <div class="cyberrealm-brooch-art">
+
+          <div class="cyberrealm-brooch-ring">
+            <div class="cyberrealm-brooch-emblem">
+              <img
+                 :src="brooch.assetUrl"
+                 :alt="brooch.name"
+                  loading="lazy"
+              >
+           </div>
+          </div>
+
+          <div
+            class="cyberrealm-brooch-state"
+            x-show="brooch.unlocked"
+          >
+            UNLOCKED
+          </div>
+
+          <div
+            class="cyberrealm-brooch-state"
+            x-show="!brooch.unlocked && brooch.active"
+          >
+            LOCKED
+          </div>
+
+          <div
+            class="cyberrealm-brooch-state"
+            x-show="!brooch.active"
+          >
+            COMING SOON
+          </div>
+
+        </div>
+
+        <div class="cyberrealm-brooch-content">
+
+          <div
+            class="cyberrealm-brooch-name"
+            x-text="brooch.name"
+          ></div>
+
+          <div
+            class="cyberrealm-brooch-description"
+            x-text="brooch.description"
+          ></div>
+
+          <div
+  class="cyberrealm-brooch-progress"
+  x-show="brooch.active && !brooch.unlocked"
+>
+  <div class="cyberrealm-brooch-progress-header">
+
+    <span class="cyberrealm-brooch-progress-label">
+      PROGRESS
+    </span>
+
+    <span
+      class="cyberrealm-brooch-progress-count"
+      x-text="`${brooch.progress} / ${brooch.requirement_value}`"
+    ></span>
+
+  </div>
+
+  <div class="cyberrealm-brooch-progress-track">
+
+    <div
+      class="cyberrealm-brooch-progress-fill"
+      :style="{
+        width: `${Math.min(
+          100,
+          (brooch.progress /
+            brooch.requirement_value) * 100
+        )}%`
+      }"
+    ></div>
+
+  </div>
+
+  <div class="cyberrealm-brooch-progress-footer">
+
+    <span
+      x-text="getBroochRequirement(brooch)"
+    >
+      Complete the requirement
+    </span>
+
+    <span
+      class="cyberrealm-brooch-remaining"
+      x-text="`${brooch.remaining} remaining`"
+    >
+      0 remaining
+    </span>
+
+  </div>
+</div>
+
+          <div
+  class="cyberrealm-brooch-unlocked-meta"
+  x-show="brooch.unlocked && brooch.unlocked_at"
+>
+  <span class="cyberrealm-brooch-unlocked-mark">
+    ✓ COLLECTION ACQUIRED
+  </span>
+
+  <span
+    class="cyberrealm-brooch-unlocked-date"
+    x-text="`Unlocked ${brooch.unlocked_at}`"
+  ></span>
+</div>
+
+        </div>
+
+      </article>
+    </template>
+
+  </div>
+
+</section>
+
+<!-- =========================================================
+     BROOCH DETAIL PANEL
+========================================================= -->
+
+<div
+  class="cyberrealm-brooch-modal"
+  x-show="selectedBrooch"
+  x-cloak
+  x-transition.opacity
+  @click.self="closeBrooch()"
+  @keydown.escape.window="closeBrooch()"
+>
+
+  <div
+    class="cyberrealm-brooch-modal-panel"
+    x-show="selectedBrooch"
+    x-transition:enter="cyberrealm-brooch-modal-enter"
+    x-transition:enter-start="cyberrealm-brooch-modal-enter-start"
+    x-transition:enter-end="cyberrealm-brooch-modal-enter-end"
+    x-transition:leave="cyberrealm-brooch-modal-leave"
+    x-transition:leave-start="cyberrealm-brooch-modal-leave-start"
+    x-transition:leave-end="cyberrealm-brooch-modal-leave-end"
+  >
+
+    <button
+      type="button"
+      class="cyberrealm-brooch-modal-close"
+      @click="closeBrooch()"
+      aria-label="Close brooch details"
+    >
+      ×
+    </button>
+
+
+    <!-- ARTWORK -->
+
+    <div class="cyberrealm-brooch-modal-art">
+
+      <img
+        x-show="selectedBrooch && selectedBrooch.assetUrl"
+        :src="selectedBrooch ? selectedBrooch.assetUrl : ''"
+        :alt="selectedBrooch ? selectedBrooch.name : ''"
+      >
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <div class="cyberrealm-brooch-modal-header">
+
+      <div
+        class="cyberrealm-section-eyebrow"
+        x-text="selectedBrooch ? selectedBrooch.asset_key.replaceAll('_', ' ').toUpperCase() : ''"
+      >
+      </div>
+
+      <h2
+        x-text="selectedBrooch ? selectedBrooch.name : ''"
+      >
+        Brooch
+      </h2>
+
+      <div
+        class="cyberrealm-brooch-modal-status"
+        :class="{
+          'is-unlocked':
+            selectedBrooch && selectedBrooch.unlocked,
+          'is-locked':
+            selectedBrooch &&
+            !selectedBrooch.unlocked &&
+            selectedBrooch.active,
+          'is-inactive':
+            selectedBrooch &&
+            !selectedBrooch.active
+        }"
+      >
+
+        <template x-if="selectedBrooch && selectedBrooch.unlocked">
+          <span>✓ UNLOCKED</span>
+        </template>
+
+        <template
+          x-if="
+            selectedBrooch &&
+            !selectedBrooch.unlocked &&
+            selectedBrooch.active
+          "
+        >
+          <span>LOCKED</span>
+        </template>
+
+        <template
+          x-if="
+            selectedBrooch &&
+            !selectedBrooch.active
+          "
+        >
+          <span>COMING SOON</span>
+        </template>
+
+      </div>
+
+    </div>
+
+
+    <!-- DESCRIPTION -->
+
+    <p
+      class="cyberrealm-brooch-modal-description"
+      x-text="
+        selectedBrooch
+          ? selectedBrooch.description
+          : ''
+      "
+    >
+      Brooch description.
+    </p>
+
+
+    <!-- LOCKED PROGRESS -->
+
+    <div
+      class="cyberrealm-brooch-modal-progress"
+      x-show="
+        selectedBrooch &&
+        selectedBrooch.active &&
+        !selectedBrooch.unlocked
+      "
+    >
+
+      <div class="cyberrealm-brooch-progress-header">
+
+        <span>
+          PROGRESS
+        </span>
+
+        <strong
+          x-text="
+            selectedBrooch
+              ? `${selectedBrooch.progress} / ${selectedBrooch.requirement_value}`
+              : ''
+          "
+        >
+        </strong>
+
+      </div>
+
+      <div class="cyberrealm-brooch-progress-track">
+
+        <div
+          class="cyberrealm-brooch-progress-fill"
+          :style="{
+            width: selectedBrooch
+              ? `${Math.min(
+                  100,
+                  (
+                    selectedBrooch.progress /
+                    selectedBrooch.requirement_value
+                  ) * 100
+                )}%`
+              : '0%'
+          }"
+        ></div>
+
+      </div>
+
+      <div class="cyberrealm-brooch-modal-requirement">
+
+        <span
+          x-text="
+            selectedBrooch
+              ? getBroochRequirement(selectedBrooch)
+              : ''
+          "
+        >
+        </span>
+
+        <strong
+          x-text="
+            selectedBrooch
+              ? `${selectedBrooch.remaining} remaining`
+              : ''
+          "
+        >
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- UNLOCKED INFORMATION -->
+
+    <div
+      class="cyberrealm-brooch-modal-unlocked"
+      x-show="
+        selectedBrooch &&
+        selectedBrooch.unlocked
+      "
+    >
+
+      <div class="cyberrealm-brooch-modal-acquired">
+        ✓ COLLECTION ACQUIRED
+      </div>
+
+      <div
+        x-text="
+          selectedBrooch
+            ? `Unlocked ${selectedBrooch.unlocked_at}`
+            : ''
+        "
+      >
+      </div>
+
+    </div>
+
+
+    <!-- COMING SOON -->
+
+    <div
+      class="cyberrealm-brooch-modal-coming-soon"
+      x-show="
+        selectedBrooch &&
+        !selectedBrooch.active
+      "
+    >
+      This collectible will become available
+      as the CyberRealm progression expands.
+    </div>
+
+
+  </div>
+
+</div>
+
 </div>
 
 <div

@@ -10,6 +10,7 @@ from CTFd.utils.user import get_current_user
 
 from .api import api
 from .services.achievement_service import AchievementService
+from .services.brooch_service import BroochService
 from .services.daily_objective_service import DailyObjectiveService
 from .services.mission_service import MissionService
 from .services.notification_service import NotificationService
@@ -51,6 +52,7 @@ def load(app):
     AchievementService.seed_achievements()
     DailyObjectiveService.seed_objectives()
     MissionService.seed_missions()
+    BroochService.seed_brooches()
 
 
 @event.listens_for(Session, "before_flush")
@@ -619,7 +621,35 @@ def award_xp_after_flush(session, flush_context):
             )
 
         # ---------------------------------------------------------
-        # 12. Final level-up detection
+        # 12. Brooches
+        # ---------------------------------------------------------
+
+        unlocked_brooches = (
+            BroochService.process_unlocks(
+                session=session,
+                user_id=user_id,
+            )
+        )
+
+        for brooch in unlocked_brooches:
+
+            print(
+                "📌 CyberRealm brooch unlocked: "
+                f"{brooch['name']}"
+            )
+
+            NotificationService.brooch_unlocked(
+                user_id=user_id,
+                brooch=brooch,
+            )
+
+            print(
+                "🔔 CyberRealm brooch notification created: "
+                f"{brooch['name']}"
+            )
+
+        # ---------------------------------------------------------
+        # 13. Final level-up detection
         # ---------------------------------------------------------
         #
         # Important:

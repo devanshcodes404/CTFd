@@ -682,6 +682,122 @@
 
     </section>
 
+    <!-- =========================================
+     ACTIVE MISSIONS
+    ========================================== -->
+
+  <section
+    class="cyberrealm-dashboard-section"
+    x-show="missions.length > 0"
+ >
+
+     <div class="container">
+
+        <div class="cyberrealm-dashboard-panel">
+
+            <div class="cyberrealm-dashboard-panel-header">
+
+                <div>
+                    <div class="cyberrealm-dashboard-label">
+                        ACTIVE MISSIONS
+                    </div>
+
+                    <h2>
+                        Current Operations
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-objective-list">
+
+                <template
+                    x-for="mission in missions"
+                    :key="mission.id"
+                >
+
+                    <div
+                        class="dashboard-objective"
+                        :class="{ 'objective-completed': mission.completed }"
+                    >
+
+                        <div class="dashboard-objective-icon">
+                            <span x-text="mission.icon || '⚔️'"></span>
+                        </div>
+
+
+                        <div class="dashboard-objective-content">
+
+                            <div class="dashboard-objective-title">
+                                <span x-text="mission.name"></span>
+                            </div>
+
+                            <div
+                                class="dashboard-objective-description"
+                                x-text="mission.description"
+                            ></div>
+
+
+                            <div class="dashboard-objective-progress">
+
+                                <div class="dashboard-objective-progress-track">
+
+                                    <div
+                                        class="dashboard-objective-progress-fill"
+                                        :style="`width: ${Math.min(
+                                            100,
+                                            ((mission.progress || 0) /
+                                                (mission.target_value || 1)) * 100
+                                        )}%`"
+                                    ></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="dashboard-objective-meta">
+
+                            <div
+                                class="dashboard-objective-reward"
+                                x-text="`+${mission.xp_reward || 0} XP`"
+                            ></div>
+
+                            <div
+                                class="dashboard-objective-count"
+                            >
+                                <span
+                                    x-text="mission.progress || 0"
+                                ></span>
+
+                                /
+
+                                <span
+                                    x-text="mission.target_value || 0"
+                                ></span>
+                            </div>
+
+                            <div
+                                class="dashboard-objective-status"
+                                x-text="mission.completed ? 'COMPLETED' : 'ACTIVE'"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </template>
+
+            </div>
+
+        </div>
+
+     </div>
+  </section>
+
 </div>
 {% endblock %}
 

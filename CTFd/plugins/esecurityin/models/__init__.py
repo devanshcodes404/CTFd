@@ -5,6 +5,8 @@ from .daily_objective import DailyObjective
 from .user_daily_objective import UserDailyObjective
 from .mission import Mission
 from .user_mission import UserMission
+from .brooch import Brooch
+from .user_brooch import UserBrooch
 
 __all__ = [
     "UserXP",
@@ -14,4 +16,6 @@ __all__ = [
     "UserDailyObjective",
     "Mission",
     "UserMission",
+    "Brooch",
+    "UserBrooch",
 ]
