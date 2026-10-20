@@ -245,29 +245,6 @@ class DailyObjectiveService:
                 xp_reward,
             ) = objective
 
-            result = session.execute(
-                text(
-                    """
-                    SELECT
-                        id,
-                        progress,
-                        completed
-                    FROM esecurityin_user_daily_objectives
-                    WHERE user_id = :user_id
-                      AND objective_id = :objective_id
-                      AND objective_date = :objective_date
-                    FOR UPDATE
-                    """
-                ),
-                {
-                    "user_id": user_id,
-                    "objective_id": objective_id,
-                    "objective_date": today,
-                },
-            )
-
-            user_objective = result.fetchone()
-
             # Atomically create the daily-objective row if missing.
             session.execute(
                 text(
