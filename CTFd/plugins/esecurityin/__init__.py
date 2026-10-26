@@ -1,4 +1,5 @@
-from datetime import date, timedelta
+from datetime import datetime, timedelta, timezone
+from weakref import WeakSet
 
 from flask import Blueprint, render_template
 from sqlalchemy import event, text
@@ -15,8 +16,12 @@ from .services.daily_objective_service import DailyObjectiveService
 from .services.mission_service import MissionService
 from .services.notification_service import NotificationService
 
+_plugin_engines = WeakSet()
+
 
 def load(app):
+    _plugin_engines.add(db.engine)
+
     bp = Blueprint(
         "esecurityin",
         __name__,
@@ -61,17 +66,39 @@ def collect_new_solves(session, flush_context, instances):
     Collect newly created CTFd solves before SQLAlchemy flushes them.
     """
 
+    if session.get_bind() not in _plugin_engines:
+        return
+
     if "esecurityin_solves" not in session.info:
         session.info["esecurityin_solves"] = []
 
     for obj in session.new:
         if isinstance(obj, Solves):
+            # Lock the parent before the solve's FK insert; a missing UserXP
+            # row cannot itself serialize first-time progression creation.
+            session.execute(
+                text(
+                    """
+                    SELECT id
+                    FROM users
+                    WHERE id = :user_id
+                    FOR UPDATE
+                    """
+                ),
+                {"user_id": obj.user_id},
+            )
             session.info["esecurityin_solves"].append(
                 {
                     "user_id": obj.user_id,
                     "challenge_id": obj.challenge_id,
                 }
             )
+
+
+@event.listens_for(Session, "after_soft_rollback")
+def clear_queued_solves_after_rollback(session, previous_transaction):
+    """Discard solve snapshots from a transaction that did not commit."""
+    session.info.pop("esecurityin_solves", None)
 
 
 @event.listens_for(Session, "after_flush_postexec")
@@ -91,6 +118,9 @@ def award_xp_after_flush(session, flush_context):
     - Achievements
     - CyberRealm notifications
     """
+
+    if session.get_bind() not in _plugin_engines:
+        return
 
     solves = session.info.pop(
         "esecurityin_solves",
@@ -186,7 +216,7 @@ def award_xp_after_flush(session, flush_context):
 
         user_xp = result.fetchone()
 
-        today = date.today()
+        today = datetime.now(timezone.utc).date()
 
         # ---------------------------------------------------------
         # 3. Existing player

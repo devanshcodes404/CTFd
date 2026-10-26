@@ -1,4 +1,3 @@
-from datetime import date
 from flask import Blueprint, jsonify, request
 from sqlalchemy import text
 
@@ -723,7 +722,7 @@ def get_daily_objectives(user_id):
                 user_id,
 
             "date":
-                date.today().isoformat(),
+                DailyObjectiveService.get_current_date().isoformat(),
 
             "objectives":
                 objectives,

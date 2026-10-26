@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import threading
-from datetime import date
+from datetime import date, timedelta
 
 import pytest
 from freezegun import freeze_time
@@ -502,3 +502,90 @@ def test_solve_event_credits_objective_xp_exactly_once(app):
             assert treatment_third_xp - treatment_second_xp == (
                 control_third_xp - control_second_xp
             )
+
+
+def test_solve_progression_uses_utc_date_at_local_day_boundary(app, monkeypatch):
+    _require_mysql(app)
+    with app.app_context():
+        from CTFd.plugins import esecurityin as esecurityin_plugin
+        from CTFd.plugins.esecurityin.models import (
+            Mission,
+            UserMission,
+            UserXP,
+        )
+        from CTFd.plugins.esecurityin.services import daily_objective_service
+
+        class HostLocalDate:
+            @classmethod
+            def today(cls):
+                return TODAY + timedelta(days=1)
+
+        # Simulate a host timezone where local midnight has passed while UTC has not.
+        monkeypatch.setattr(esecurityin_plugin, "date", HostLocalDate, raising=False)
+        monkeypatch.setattr(
+            daily_objective_service,
+            "date",
+            HostLocalDate,
+            raising=False,
+        )
+
+        register_user(
+            app,
+            name="utc-date-boundary",
+            email="utc-date-boundary@examplectf.com",
+        )
+        user = Users.query.filter_by(name="utc-date-boundary").one()
+        challenge = gen_challenge(
+            app.db,
+            name="UTC date-boundary challenge",
+            value=20,
+        )
+        user_xp = UserXP(
+            user_id=user.id,
+            xp=0,
+            level=1,
+            streak=1,
+            longest_streak=1,
+            total_solves=1,
+            last_solve_date=TODAY - timedelta(days=1),
+        )
+        app.db.session.add(user_xp)
+        app.db.session.commit()
+
+        with freeze_time("2026-10-21 23:30:00+00:00"):
+            gen_solve(
+                app.db,
+                user_id=user.id,
+                challenge_id=challenge.id,
+            )
+            today_objectives = DailyObjectiveService.get_today(user.id)
+            with login_as_user(app, name="utc-date-boundary") as client:
+                response = client.get(
+                    f"/api/v1/esecurityin/user/{user.id}/daily-objectives"
+                )
+                assert response.status_code == 200
+                assert response.get_json()["date"] == TODAY.isoformat()
+
+        app.db.session.expire_all()
+        persisted_xp = UserXP.query.filter_by(user_id=user.id).one()
+        assert persisted_xp.last_solve_date == TODAY
+        assert persisted_xp.streak == 2
+
+        first_breach = DailyObjective.query.filter_by(
+            key="daily_first_breach"
+        ).one()
+        daily_progress = UserDailyObjective.query.filter_by(
+            user_id=user.id,
+            objective_id=first_breach.id,
+            objective_date=TODAY,
+        ).one()
+        assert daily_progress.completed is True
+        assert today_objectives[0]["completed"] is True
+
+        daily_runner = Mission.query.filter_by(key="daily_breach_runner").one()
+        mission_progress = UserMission.query.filter_by(
+            user_id=user.id,
+            mission_id=daily_runner.id,
+            period_key=TODAY.isoformat(),
+        ).one()
+        assert mission_progress.progress == 1

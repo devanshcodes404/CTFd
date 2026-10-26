@@ -201,8 +201,9 @@ class MissionService:
                     },
                 )
 
-        except IntegrityError:
-
+        except IntegrityError as error:
+            if not getattr(error.orig, "args", ()) or error.orig.args[0] != 1062:
+                raise
             pass
 
         return cls.select_progress(

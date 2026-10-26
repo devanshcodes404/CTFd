@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import posixpath
 import os
 
 from flask import url_for
 from freezegun import freeze_time
 
 from CTFd.cache import clear_pages
+from CTFd.models import Notifications, Users
 from CTFd.utils import set_config
 from CTFd.utils.config.pages import get_pages
 from CTFd.utils.encoding import hexencode
@@ -15,6 +17,7 @@ from tests.helpers import (
     destroy_ctfd,
     gen_challenge,
     gen_file,
+    gen_notification,
     gen_page,
     login_as_user,
     register_user,
@@ -89,6 +92,45 @@ def test_page_requiring_auth():
         client = login_as_user(app)
         r = client.get("/this-is-a-route")
         assert r.status_code == 200
+    destroy_ctfd(app)
+
+
+def test_notifications_page_requires_authentication_and_scopes_results():
+    app = create_ctfd()
+    with app.app_context():
+        register_user(app)
+        register_user(app, name="other-user", email="other-user@examplectf.com")
+        user_a = Users.query.filter_by(name="user").first()
+        user_b = Users.query.filter_by(name="other-user").first()
+        gen_notification(app.db, title="global notification")
+        app.db.session.add_all(
+            [
+                Notifications(
+                    title="user A notification",
+                    content="private",
+                    user_id=user_a.id,
+                ),
+                Notifications(
+                    title="user B notification",
+                    content="private",
+                    user_id=user_b.id,
+                ),
+            ]
+        )
+        app.db.session.commit()
+
+        with app.test_client() as client:
+            response = client.get("/notifications")
+            assert response.status_code == 302
+            assert response.location.startswith("/login?")
+
+        with login_as_user(app) as client:
+            response = client.get("/notifications")
+            assert response.status_code == 200
+            page = response.get_data(as_text=True)
+            assert "global notification" in page
+            assert "user A notification" in page
+            assert "user B notification" not in page
     destroy_ctfd(app)
 
 
@@ -178,6 +220,58 @@ def test_user_get_profile():
     destroy_ctfd(app)
 
 
+def test_dashboard_requires_authentication_and_renders_sections():
+    """The CyberRealm dashboard renders once on the homepage and dashboard route."""
+    app = create_ctfd(enable_plugins=True, ctf_theme="cyberrealm")
+    try:
+        with app.app_context():
+            with app.test_client() as client:
+                response = client.get("/dashboard")
+                assert response.status_code == 302
+                response = client.get("/")
+                assert response.status_code == 200
+                assert "CYBERREALM COMMAND CENTER" not in response.get_data(
+                    as_text=True
+                )
+
+            register_user(app)
+            client = login_as_user(app)
+
+            for route in ("/", "/dashboard"):
+                response = client.get(route)
+
+                assert response.status_code == 200
+                html = response.get_data(as_text=True)
+                assert html.count('id="esecurityin-xp-hud"') == 1
+                assert "CYBERREALM COMMAND CENTER" in html
+                assert "PLAYER PROGRESSION" in html
+                assert "Today's Operations" in html
+                assert "Recent Solves" in html
+                assert "Achievements" in html
+                assert "ACTIVE MISSIONS" in html
+    finally:
+        destroy_ctfd(app)
+
+
+def test_cyberrealm_notifications_page_loads_shared_runtime():
+    app = create_ctfd(enable_plugins=True, ctf_theme="cyberrealm")
+    try:
+        with app.app_context():
+            register_user(app)
+            with login_as_user(app) as client:
+                response = client.get("/notifications")
+
+            assert response.status_code == 200
+            html = response.get_data(as_text=True)
+            assert "assets/page." in html
+            assert "assets/index." in html
+            assert "Mark all as read" in html
+            assert "View all notifications" in html
+            assert "Back to challenges" in html
+    finally:
+        destroy_ctfd(app)
+
+
 def test_user_can_access_files():
     app = create_ctfd()
     with app.app_context():
@@ -187,9 +281,10 @@ def test_user_can_access_files():
         chal_id = chal.id
         path = app.config.get("UPLOAD_FOLDER")
 
-        location = os.path.join(path, "test_file_path", "test.txt")
+        md5hash = hexencode(os.urandom(16))
+        location = os.path.join(path, md5hash, "test.txt")
         directory = os.path.dirname(location)
-        model_path = os.path.join("test_file_path", "test.txt")
+        model_path = posixpath.join(md5hash, "test.txt")
 
         try:
             os.makedirs(directory)
@@ -286,7 +381,7 @@ def test_admin_access_files_with_auth_token():
         md5hash = hexencode(os.urandom(16))
         location = os.path.join(path, md5hash, "test.txt")
         directory = os.path.dirname(location)
-        model_path = os.path.join(md5hash, "test.txt")
+        model_path = posixpath.join(md5hash, "test.txt")
 
         try:
             os.makedirs(directory)
@@ -361,7 +456,7 @@ def test_user_can_access_files_with_auth_token():
 
         location = os.path.join(path, md5hash, "test.txt")
         directory = os.path.dirname(location)
-        model_path = os.path.join(md5hash, "test.txt")
+        model_path = posixpath.join(md5hash, "test.txt")
 
         try:
             os.makedirs(directory)
@@ -496,7 +591,7 @@ def test_user_can_access_files_if_view_after_ctf():
 
         location = os.path.join(path, md5hash, "test.txt")
         directory = os.path.dirname(location)
-        model_path = os.path.join(md5hash, "test.txt")
+        model_path = posixpath.join(md5hash, "test.txt")
 
         try:
             os.makedirs(directory)

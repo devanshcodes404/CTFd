@@ -1,4 +1,4 @@
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 
 from sqlalchemy import text
 
@@ -38,6 +38,10 @@ class DailyObjectiveService:
             "xp_reward": 50,
         },
     ]
+
+    @classmethod
+    def get_current_date(cls):
+        return datetime.now(timezone.utc).date()
 
     @classmethod
     def seed_objectives(cls):
@@ -99,7 +103,7 @@ class DailyObjectiveService:
         """
 
         if objective_date is None:
-            objective_date = date.today()
+            objective_date = cls.get_current_date()
 
         query = (
             UserDailyObjective.query
@@ -138,7 +142,7 @@ class DailyObjectiveService:
         Return today's objectives and player progress.
         """
 
-        today = date.today()
+        today = cls.get_current_date()
 
         objectives = cls.get_active_objectives()
 
@@ -206,7 +210,7 @@ class DailyObjectiveService:
         Returns newly completed objectives.
         """
 
-        today = date.today()
+        today = cls.get_current_date()
 
         objectives = (
             session.execute(

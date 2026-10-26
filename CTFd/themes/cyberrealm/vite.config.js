@@ -5,7 +5,19 @@ import copy from "rollup-plugin-copy";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    {
+      name: "normalize-howler-license-whitespace",
+      transform(code) {
+        const normalized = code.replace(
+          /( \*  Spatial Plugin - Adds support for stereo and 3D audio where Web Audio is supported\.\r?\n) \*  (?=\r?$)/m,
+          "$1 *",
+        );
+        return normalized === code ? null : normalized;
+      },
+    },
+  ],
   resolve: {
     alias: {
       "~": resolve(__dirname, "./node_modules/"),

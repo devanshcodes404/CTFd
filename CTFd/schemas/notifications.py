@@ -5,6 +5,8 @@ from CTFd.utils import string_types
 
 
 class NotificationSchema(ma.ModelSchema):
+    read = fields.Method("get_read", dump_only=True)
+
     class Meta:
         model = Notifications
         include_fk = True
@@ -12,6 +14,10 @@ class NotificationSchema(ma.ModelSchema):
 
     # Used to force the schema to include the html property from the model
     html = fields.Str()
+
+    def get_read(self, notification):
+        read_ids = self.context.get("read_notification_ids", set())
+        return notification.id in read_ids
 
     def __init__(self, view=None, *args, **kwargs):
         if view:

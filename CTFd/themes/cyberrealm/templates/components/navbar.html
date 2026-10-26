@@ -220,7 +220,7 @@
     </span>
 
     <span
-      x-show="unreadCount > 0"
+      x-show="hasUnread"
       x-text="unreadCount"
       class="badge rounded-pill bg-danger badge-notification"
     ></span>
@@ -243,8 +243,10 @@
         class="cyber-notification-mark-all"
         x-show="unreadCount > 0"
         @click.stop="markAllAsRead()"
+        :disabled="markingAll || markingIds.size > 0"
       >
-        Mark all as read
+        <span x-show="!markingAll">{% trans %}Mark all as read{% endtrans %}</span>
+        <span x-show="markingAll">{% trans %}Marking...{% endtrans %}</span>
       </button>
 
     </div>
@@ -261,7 +263,7 @@
 
     <div
       x-show="
-        !loading &&
+        listLoaded &&
         notifications.length === 0
       "
       class="cyber-notification-empty"
@@ -273,12 +275,25 @@
       </span>
     </div>
 
+    <div
+        x-show="error"
+        class="cyber-notification-error"
+        role="alert"
+    >
+        <span x-text="error"></span>
+        <button
+          type="button"
+          class="cyber-notification-retry"
+          @click.stop="retry()"
+          :disabled="loading || markingAll || markingIds.size > 0"
+        >
+          Retry
+        </button>
+    </div>
+
 
     <div
-      x-show="
-        !loading &&
-        notifications.length > 0
-      "
+      x-show="listLoaded && notifications.length > 0"
       class="cyber-notification-list"
     >
 
@@ -291,12 +306,14 @@
           type="button"
           class="cyber-notification-item"
           :class="{
-            unread:
-              unread.some(
-                n => n.id === notification.id
-              )
+            unread: !notification.read
           }"
           @click="markAsRead(notification.id)"
+          :disabled="
+            notification.read ||
+            isMarking(notification.id) ||
+            markingAll
+          "
         >
 
           <span
@@ -329,9 +346,7 @@
 
           <span
             x-show="
-              unread.some(
-                n => n.id === notification.id
-              )
+              !notification.read
             "
             class="cyber-notification-dot"
           ></span>
@@ -340,6 +355,12 @@
 
       </template>
 
+    </div>
+
+    <div class="cyber-notification-footer">
+      <a href="{{ url_for('views.notifications') }}">
+        {% trans %}View all notifications{% endtrans %}
+      </a>
     </div>
 
   </div>

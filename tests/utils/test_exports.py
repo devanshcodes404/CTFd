@@ -46,9 +46,9 @@ def test_export_ctf():
             with open("export.test_export_ctf.zip", "wb") as f:
                 f.write(backup.read())
 
-            export = zipfile.ZipFile("export.test_export_ctf.zip", "r")
-            data = json.loads(export.read("db/challenges.json"))
-            assert data["results"][1]["requirements"] == {"prerequisites": [1]}
+            with zipfile.ZipFile("export.test_export_ctf.zip", "r") as export:
+                data = json.loads(export.read("db/challenges.json"))
+                assert data["results"][1]["requirements"] == {"prerequisites": [1]}
 
             os.remove("export.test_export_ctf.zip")
     destroy_ctfd(app)

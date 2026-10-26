@@ -43,6 +43,7 @@ from CTFd.utils.config.pages import build_markdown, get_page
 from CTFd.utils.config.visibility import challenges_visible
 from CTFd.utils.dates import ctf_ended, ctftime, view_after_ctf
 from CTFd.utils.decorators import authed_only
+from CTFd.utils.notifications import get_accessible_notifications
 from CTFd.utils.health import check_config, check_database
 from CTFd.utils.helpers import get_errors, get_infos, markup
 from CTFd.utils.modes import USERS_MODE
@@ -298,8 +299,11 @@ def integrations():
 
 
 @views.route("/notifications", methods=["GET"])
+@authed_only
 def notifications():
-    notifications = Notifications.query.order_by(Notifications.id.desc()).all()
+    notifications = (
+        get_accessible_notifications().order_by(Notifications.id.desc()).all()
+    )
     return render_template("notifications.html", notifications=notifications)
 
 

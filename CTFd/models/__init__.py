@@ -75,6 +75,31 @@ class Notifications(db.Model):
         super(Notifications, self).__init__(**kwargs)
 
 
+class NotificationReadReceipt(db.Model):
+    __tablename__ = "notification_read_receipts"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(
+        db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    notification_id = db.Column(
+        db.Integer,
+        db.ForeignKey("notifications.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    read_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+
+    __table_args__ = (
+        db.UniqueConstraint(
+            "user_id", "notification_id", name="uq_notification_read_receipt"
+        ),
+        db.Index("ix_notification_read_receipts_user_id", "user_id"),
+        db.Index("ix_notification_read_receipts_notification_id", "notification_id"),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(NotificationReadReceipt, self).__init__(**kwargs)
+
+
 class Pages(db.Model):
     __tablename__ = "pages"
     id = db.Column(db.Integer, primary_key=True)

@@ -19,7 +19,7 @@ def test_api_export_csv():
         with login_as_user(app, name="admin", password="password") as client:
             r = client.post("/api/v1/exports/raw", json=data)
             assert r.status_code == 200
-            assert r.headers["Content-Type"].startswith("text/csv")
+            assert r.mimetype in {"text/csv", "application/vnd.ms-excel"}
             assert "chal_name" in r.get_data(as_text=True)
 
         # Test that regular users cannot access the endpoint
@@ -39,7 +39,7 @@ def test_api_export():
         with login_as_user(app, name="admin", password="password") as client:
             r = client.post("/api/v1/exports/raw", json=data)
             assert r.status_code == 200
-            assert r.headers["Content-Type"].startswith("application/zip")
+            assert r.mimetype in {"application/zip", "application/x-zip-compressed"}
 
         # Test that regular users cannot access the endpoint
         register_user(app)

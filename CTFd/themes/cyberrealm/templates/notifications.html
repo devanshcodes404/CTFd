@@ -8,27 +8,89 @@
 			</h1>
 		</div>
 	</div>
-	<div class="container">
-		{% if not notifications %}
-		<h2 class="text-center">
-			{% trans %}There are no notifications yet{% endtrans %}
-		</h2>
-		{% endif %}
-		{% for notification in notifications %}
-		<div class="card bg-body-tertiary mb-4">
-			<div class="card-body">
-				<h3 class="card-title">{{ notification.title }}</h3>
-				<blockquote class="blockquote mb-0">
-					<p>{{ notification.html }}</p>
-					<small class="text-muted"><span data-time="{{ notification.date | isoformat }}"></span></small>
-				</blockquote>
-			</div>
+	<div class="container cyber-notifications-page" x-data="CyberRealmNotifications">
+		<div class="cyber-notifications-page-controls mb-3">
+			<a href="{{ url_for('challenges.listing') }}" class="btn btn-outline-secondary btn-sm">
+				<i class="fas fa-arrow-left" aria-hidden="true"></i>
+				{% trans %}Back to challenges{% endtrans %}
+			</a>
+			<button
+				type="button"
+				class="btn btn-outline-primary btn-sm"
+				@click="markAllAsRead()"
+				:disabled="markingAll || markingIds.size > 0"
+				x-show="hasUnread"
+			>
+				<span x-show="!markingAll">{% trans %}Mark all as read{% endtrans %}</span>
+				<span x-show="markingAll">{% trans %}Marking...{% endtrans %}</span>
+			</button>
 		</div>
-		{% endfor %}
+		<div
+			x-show="loading && !listLoaded"
+			class="cyber-notifications-page-state"
+			role="status"
+		>
+			<i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i>
+			<span>{% trans %}Loading notifications...{% endtrans %}</span>
+		</div>
+		<div
+			x-show="error"
+			class="cyber-notifications-error"
+			role="alert"
+		>
+			<span class="cyber-notifications-error-message" x-text="error"></span>
+			<button type="button" class="btn btn-outline-danger btn-sm" @click="retry()" :disabled="loading || markingAll || markingIds.size > 0">
+				{% trans %}Retry{% endtrans %}
+			</button>
+		</div>
+		<div
+			x-show="listLoaded && notifications.length === 0"
+			class="cyber-notifications-page-state"
+		>
+			{% trans %}There are no notifications yet{% endtrans %}
+		</div>
+		<div
+			x-show="listLoaded && notifications.length > 0"
+			class="cyber-notifications-page-list"
+		>
+			<template x-for="notification in notifications" :key="notification.id">
+				<article
+					class="card mb-4 cyber-notifications-page-item"
+					:class="{ 'cyber-notifications-page-item-unread': !notification.read }"
+				>
+					<div class="card-body">
+						<div class="d-flex justify-content-between align-items-start gap-3">
+							<h3 class="card-title" x-text="notification.title"></h3>
+							<span
+								x-show="!notification.read"
+								class="badge rounded-pill cyber-notification-status-unread"
+							>{% trans %}Unread{% endtrans %}</span>
+							<span
+								x-show="notification.read"
+								class="badge rounded-pill cyber-notification-status-read"
+							>{% trans %}Read{% endtrans %}</span>
+						</div>
+						<blockquote class="blockquote mb-0">
+							<div x-html="notification.html"></div>
+							<small class="text-muted" x-text="formatDate(notification.date)"></small>
+						</blockquote>
+						<button
+							type="button"
+							class="btn btn-sm btn-outline-primary mt-3"
+							@click="markAsRead(notification.id)"
+							:disabled="notification.read || isMarking(notification.id) || markingAll"
+							x-show="!notification.read"
+						>
+							<span x-show="!isMarking(notification.id)">{% trans %}Mark as read{% endtrans %}</span>
+							<span x-show="isMarking(notification.id)">{% trans %}Saving...{% endtrans %}</span>
+						</button>
+					</div>
+				</article>
+			</template>
+		</div>
 	</div>
 {% endblock %}
 
 {% block scripts %}
-  {{ Assets.js("assets/js/notifications.js") }}
+  {{ Assets.js("assets/js/page.js") }}
 {% endblock %}
-

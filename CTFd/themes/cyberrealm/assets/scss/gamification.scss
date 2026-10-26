@@ -3620,6 +3620,7 @@ textarea:focus {
 }
 .cyber-notification-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -3636,13 +3637,15 @@ textarea:focus {
   text-transform: uppercase;
 }
 .cyber-notification-mark-all {
-  border: 0;
-  background: transparent;
-  padding: 0;
+  flex: 0 0 auto;
+  border: 1px solid rgba(0, 255, 200, 0.45);
+  border-radius: 6px;
+  background: rgba(0, 255, 200, 0.08);
+  padding: 6px 9px;
   color: #00ffc8;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.2px;
   cursor: pointer;
   transition:
     opacity 0.2s ease,
@@ -3651,6 +3654,25 @@ textarea:focus {
 .cyber-notification-mark-all:hover {
   color: #00d9ff;
   opacity: 0.9;
+}
+.cyber-notification-mark-all:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.cyber-notification-footer {
+  padding: 10px 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+.cyber-notification-footer a {
+  color: #00ffc8;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.cyber-notification-footer a:hover {
+  color: #00d9ff;
+  text-decoration: underline;
 }
 .cyber-notification-list {
   max-height: 420px;
@@ -3796,6 +3818,38 @@ textarea:focus {
   font-size: 9px;
   text-align: center;
 }
+.cyber-notification-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 15px;
+  border: 1px solid rgba(248, 113, 113, 0.55);
+  border-radius: 8px;
+  background: rgba(127, 29, 29, 0.45);
+  color: #fff1f2;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.cyber-notification-error > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.cyber-notification-retry {
+  flex: 0 0 auto;
+  border: 1px solid rgba(252, 165, 165, 0.45);
+  border-radius: 6px;
+  background: transparent;
+  padding: 4px 8px;
+  color: #fff1f2;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cyber-notification-retry:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
 .cyber-notification-loading i {
   color: #00ffc8;
   font-size: 16px;
@@ -3803,6 +3857,86 @@ textarea:focus {
 .cyber-notification-empty i {
   color: #475569;
   font-size: 20px;
+}
+.cyber-notifications-page {
+  max-width: 960px;
+  padding-bottom: 2rem;
+}
+.cyber-notifications-page-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.cyber-notifications-error {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 1rem;
+  padding: 12px 15px;
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  background: #3b1117;
+  color: #fff1f2;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.cyber-notifications-error-message {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.cyber-notifications-error .btn {
+  flex: 0 0 auto;
+  color: #fff1f2;
+  border-color: #fca5a5;
+}
+.cyber-notifications-page-state {
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #64748b;
+  text-align: center;
+}
+.cyber-notifications-page-item-unread {
+  border-left: 3px solid #00ffc8;
+}
+.cyber-notifications-page-item {
+  border: 1px solid #334155;
+  background: #101b2b;
+  color: #e5edf7;
+}
+.cyber-notifications-page-item .card-title {
+  overflow-wrap: anywhere;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.cyber-notifications-page-item blockquote {
+  overflow-wrap: anywhere;
+  color: #d7e1ee;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.cyber-notifications-page-item blockquote strong {
+  color: #ffffff;
+}
+.cyber-notifications-page-item blockquote small {
+  display: block;
+  margin-top: 0.5rem;
+  color: #b6c5d8 !important;
+}
+.cyber-notification-status-unread {
+  background: #087f70;
+  color: #ffffff;
+}
+.cyber-notification-status-read {
+  border: 1px solid #64748b;
+  background: #243247;
+  color: #e2e8f0;
 }
 .cyber-notification-trigger
 .badge-notification {
@@ -3844,9 +3978,19 @@ textarea:focus {
 }
 @media (max-width: 480px) {
   .cyber-notification-menu {
-    right: -8px;
-    width: 390px;
-  max-height: min(520px, calc(100vh - 100px));
+    right: 0;
+    width: min(390px, calc(100vw - 24px));
+    max-height: min(520px, calc(100vh - 100px));
+  }
+  .cyber-notification-header {
+    align-items: flex-start;
+  }
+  .cyber-notification-header-title {
+    flex: 1 1 100%;
+  }
+  .cyber-notification-mark-all {
+    max-width: 100%;
+    white-space: normal;
   }
   .cyber-notification-item {
     padding: 14px 15px;
@@ -3856,5 +4000,18 @@ textarea:focus {
     width: 32px;
     height: 32px;
     font-size: 15px;
+  }
+  .cyber-notification-error {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .cyber-notifications-page-controls {
+    align-items: stretch;
+  }
+  .cyber-notifications-page-controls > * {
+    align-self: flex-start;
+  }
+  .cyber-notifications-error {
+    flex-direction: column;
   }
 }

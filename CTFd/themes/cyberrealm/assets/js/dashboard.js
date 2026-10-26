@@ -45,9 +45,31 @@ Alpine.data(
 
     recentSolves: [],
 
-    missions: [],
+    missions: {
+      daily: [],
+      weekly: [],
+      special: [],
+    },
 
-    recentAchievements: [],
+    missionCategories: [
+      { key: "daily", label: "DAILY MISSIONS" },
+      { key: "weekly", label: "WEEKLY MISSIONS" },
+      { key: "special", label: "SPECIAL MISSIONS" },
+    ],
+
+    achievements: [],
+
+    sectionStatus: {
+      profile: "loading",
+      solves: "loading",
+      dailyObjectives: "loading",
+    },
+
+    missionStatus: {
+      daily: "loading",
+      weekly: "loading",
+      special: "loading",
+    },
 
     dailyObjectives: [],
 
@@ -55,32 +77,55 @@ Alpine.data(
 
     initialized: false,
 
+    async loadSection(name, loader) {
+      this.sectionStatus[name] = "loading";
+
+      try {
+        await loader();
+        this.sectionStatus[name] = "loaded";
+      } catch (error) {
+        console.error(`[CyberRealm] Failed to load ${name}:`, error);
+        this.sectionStatus[name] = "error";
+      }
+    },
+
     async loadMissions() {
-    try {
-        const response = await fetch(
-            "/api/v1/esecurityin/missions?type=daily",
-            {
+      await Promise.all(
+        this.missionCategories.map(async ({ key }) => {
+          this.missionStatus[key] = "loading";
+
+          try {
+            const response = await fetch(
+              `/api/v1/esecurityin/missions?type=${key}`,
+              {
                 credentials: "same-origin",
                 headers: {
-                    Accept: "application/json",
+                  Accept: "application/json",
                 },
+              },
+            );
+
+            if (!response.ok) {
+              throw new Error(`Mission API returned ${response.status}`);
             }
-        );
 
-        if (!response.ok) {
-            throw new Error(`Mission API returned ${response.status}`);
-        }
+            const data = await response.json();
+            if (!Array.isArray(data.missions)) {
+              throw new Error("Mission API returned an invalid mission list");
+            }
 
-        const data = await response.json();
-
-        this.missions = data.missions || [];
-
-        console.log("[CyberRealm] Missions loaded:", this.missions);
-    } catch (error) {
-        console.error("[CyberRealm] Failed to load missions:", error);
-        this.missions = [];
-    }
-},
+            this.missions[key] = data.missions;
+            this.missionStatus[key] = "loaded";
+          } catch (error) {
+            console.error(
+              `[CyberRealm] Failed to load ${key} missions:`,
+              error,
+            );
+            this.missionStatus[key] = "error";
+          }
+        }),
+      );
+    },
 
     /* =========================================
        INITIALIZE
@@ -130,21 +175,14 @@ Alpine.data(
       try {
 
         await Promise.all([
-
-          this.loadProfile(),
-          this.loadRecentSolves(),
-          this.loadDailyObjectives(),
+          this.loadSection("profile", () => this.loadProfile()),
+          this.loadSection("solves", () => this.loadRecentSolves()),
+          this.loadSection(
+            "dailyObjectives",
+            () => this.loadDailyObjectives(),
+          ),
           this.loadMissions(),
-
-
         ]);
-
-      } catch (error) {
-
-        console.error(
-          "[CyberRealm] Dashboard initialization failed:",
-          error,
-        );
 
       } finally {
 
@@ -202,6 +240,10 @@ Alpine.data(
 
       const achievements =
         data.achievements || {};
+
+      if (!data.progression || !Array.isArray(achievements.items)) {
+        throw new Error("Profile API returned invalid dashboard data");
+      }
 
 
       const XP_PER_LEVEL =
@@ -290,26 +332,39 @@ Alpine.data(
       };
 
 
-      /*
-       * Only show unlocked achievements
-       * in the dashboard.
-       */
+      this.achievements = achievements.items.map((achievement) =>
+        this.enrichAchievementProgress(achievement, {
+          xp,
+          level,
+          streak: Number(progression.streak || 0),
+          totalSolves: Number(progression.total_solves || 0),
+          totalMissions: Number(progression.total_missions || 0),
+        }),
+      );
 
-      this.recentAchievements =
-        (
-          achievements.items || []
-        )
-          .filter(
-            (
-              achievement,
-            ) =>
-              achievement.unlocked ===
-              true,
-          )
-          .slice(
-            0,
-            3,
-          );
+    },
+
+    enrichAchievementProgress(achievement, progression) {
+      const requirementValues = {
+        total_solves: progression.totalSolves,
+        streak: progression.streak,
+        level: progression.level,
+        total_xp: progression.xp,
+        total_missions: progression.totalMissions,
+      };
+      const current = requirementValues[achievement.requirement_type] || 0;
+      const target = achievement.requirement_value || 1;
+
+      return {
+        ...achievement,
+        progressCurrent: Math.min(current, target),
+        progressTarget: target,
+        remaining: Math.max(0, target - current),
+        progressPercent: Math.min(
+          100,
+          Number(((current / target) * 100).toFixed(1)),
+        ),
+      };
 
     },
 
@@ -326,11 +381,12 @@ Alpine.data(
             "me",
           );
 
+      if (!solves.success || !Array.isArray(solves.data)) {
+        throw new Error("Solve API returned invalid dashboard data");
+      }
 
       this.recentSolves =
-        (
-          solves.data || []
-        )
+        solves.data
           .slice(
             0,
             5,
@@ -398,9 +454,12 @@ Alpine.data(
       const data =
         await response.json();
 
+      if (!Array.isArray(data.objectives)) {
+        throw new Error("Daily objectives API returned an invalid list");
+      }
 
       this.dailyObjectives =
-        data.objectives || [];
+        data.objectives;
 
     },
 

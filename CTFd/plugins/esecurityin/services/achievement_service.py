@@ -1,4 +1,5 @@
 from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
 
 from CTFd.models import db
 
@@ -183,6 +184,7 @@ class AchievementService:
                     WHERE a.active = 1
                       AND ua.id IS NULL
                     ORDER BY a.id ASC
+                    FOR UPDATE
                     """
                 ),
                 {
@@ -262,28 +264,34 @@ class AchievementService:
                 # Unlock achievement
                 # -------------------------------------------------
 
-                session.execute(
-                    text(
-                        """
-                        INSERT INTO esecurityin_user_achievements
-                        (
-                            user_id,
-                            achievement_id,
-                            unlocked_at
+                try:
+                    with session.begin_nested():
+                        session.execute(
+                            text(
+                                """
+                                INSERT INTO esecurityin_user_achievements
+                                (
+                                    user_id,
+                                    achievement_id,
+                                    unlocked_at
+                                )
+                                VALUES
+                                (
+                                    :user_id,
+                                    :achievement_id,
+                                    CURRENT_TIMESTAMP(6)
+                                )
+                                """
+                            ),
+                            {
+                                "user_id": user_id,
+                                "achievement_id": achievement_id,
+                            },
                         )
-                        VALUES
-                        (
-                            :user_id,
-                            :achievement_id,
-                            CURRENT_TIMESTAMP(6)
-                        )
-                        """
-                    ),
-                    {
-                        "user_id": user_id,
-                        "achievement_id": achievement_id,
-                    },
-                )
+                except IntegrityError as error:
+                    if not getattr(error.orig, "args", ()) or error.orig.args[0] != 1062:
+                        raise
+                    continue
 
                 newly_unlocked.append(
                     {
