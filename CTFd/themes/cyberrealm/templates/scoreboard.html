@@ -671,10 +671,7 @@
 
                           <span
                             x-text="
-                              standing
-                                .cyberrealm
-                                ?.rank ||
-                              'RECRUIT'
+                              standing.rank || standing.cyberrealm?.rank || 'RECRUIT'
                             "
                           >
                             RECRUIT
@@ -699,9 +696,7 @@
                         class="score-badge"
                         x-text="
                           `LVL ${
-                            standing
-                              .cyberrealm
-                              ?.level || 1
+                            standing.level || standing.cyberrealm?.level || 1
                           }`
                         "
                       >
@@ -721,9 +716,7 @@
                           "
                           :style="
                             `width: ${
-                              standing
-                                .cyberrealm
-                                ?.level_progress_percent || 0
+                              standing.level_progress_percent || standing.cyberrealm?.level_progress_percent || 0
                             }%`
                           "
                         ></div>
@@ -744,10 +737,7 @@
                         participant-rank
                       "
                       x-text="
-                        standing
-                          .cyberrealm
-                          ?.rank ||
-                        'RECRUIT'
+                        standing.rank || standing.cyberrealm?.rank || 'RECRUIT'
                       "
                     >
                       RECRUIT
@@ -764,9 +754,7 @@
                       class="score-badge"
                       x-text="
                         `🔥 ${
-                          standing
-                            .cyberrealm
-                            ?.streak || 0
+                          standing.streak != null ? standing.streak : (standing.cyberrealm?.streak || 0)
                         }`
                       "
                     >
@@ -784,9 +772,7 @@
                       class="score-badge"
                       x-text="
                         `${
-                          standing
-                            .cyberrealm
-                            ?.xp || 0
+                          standing.xp != null ? standing.xp : (standing.cyberrealm?.xp || 0)
                         } XP`
                       "
                     >

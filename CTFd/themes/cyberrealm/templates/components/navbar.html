@@ -3,17 +3,24 @@
 
     <a
       href="{{ url_for('views.static_html', route='/') }}"
-      class="navbar-brand"
+      class="navbar-brand d-flex align-items-center"
     >
       {% if Configs.ctf_logo %}
         <img
           class="img-responsive ctf_logo"
           src="{{ url_for('views.files', path=Configs.ctf_logo) }}"
           alt="{{ Configs.ctf_name }}"
-          height="25"
+          height="28"
         >
       {% else %}
-        {{ Configs.ctf_name }}
+        <img
+          class="img-responsive ctf_logo me-2"
+          src="{{ url_for('views.themes', path='img/logo.png') }}"
+          alt="{{ Configs.ctf_name }}"
+          height="28"
+          onerror="this.style.display='none'"
+        >
+        <span>{{ Configs.ctf_name }}</span>
       {% endif %}
     </a>
 
@@ -74,19 +81,6 @@
 
 
         {% if Configs.account_visibility != 'admins' %}
-
-          <li class="nav-item">
-
-            <a
-              class="nav-link"
-              href="{{ url_for('users.listing') }}"
-            >
-              {% trans %}Labs{% endtrans %}
-            </a>
-
-          </li>
-
-
           {% if Configs.user_mode == 'teams' %}
 
             <li class="nav-item">

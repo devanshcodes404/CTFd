@@ -1,106 +1,117 @@
+{% extends "base.html" %}
+
 {% block content %}
+<div class="auth-page login-page" x-data="{ showPassword: false }">
+  <div class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
 
-<div class="login-page">
+      <!-- Left Hero Banner -->
+      <div class="col-lg-6 auth-left login-left d-none d-lg-flex">
+        <div class="auth-brand login-brand">
+          <img
+            src="{{ url_for('views.themes', path='img/esecurityin-logo.jpeg') }}"
+            class="img-fluid mb-4"
+            style="max-width: 280px;"
+            alt="eSecurityIn CyberRealm"
+          >
+          <h1>Cybersecurity AI Simplified</h1>
+          <p>
+            Learn. Practice. Defend. Build practical offensive and defensive skills through enterprise-grade cybersecurity challenges.
+          </p>
+        </div>
+      </div>
 
-    <div class="container-fluid">
+      <!-- Right Form Card -->
+      <div class="col-lg-6 auth-right login-right">
+        <div class="auth-card login-card">
+          <div class="text-center d-lg-none mb-4">
+            <img
+              src="{{ url_for('views.themes', path='img/esecurityin-logo.jpeg') }}"
+              class="img-fluid mb-2"
+              style="max-width: 180px;"
+              alt="eSecurityIn CyberRealm"
+            >
+          </div>
 
-        <div class="row min-vh-100">
+          <h2 class="mb-2">Welcome Back</h2>
+          <p class="text-muted small mb-4">Enter your credentials to access the CyberRealm terminal</p>
 
-            <!-- Left Side -->
+          {% include "components/errors.html" %}
 
-            <div class="col-lg-6 login-left d-none d-lg-flex">
+          {% if integrations.mlc() %}
+            <a class="btn btn-secondary btn-lg w-100 mb-3" href="{{ url_for('auth.oauth_login') }}">
+              Login with Major League Cyber
+            </a>
+            <hr class="border-secondary my-3">
+          {% endif %}
 
-                <div class="login-brand">
+          {% with form = Forms.auth.LoginForm() %}
+          <form method="post" accept-charset="utf-8">
 
-                    <img
-                        src="{{ url_for('views.themes', path='img/esecurityin-logo.jpeg') }}"
-                        class="img-fluid mb-5"
-                        style="max-width:260px;">
-
-                    <h1>Cybersecurity AI Simplified</h1>
-
-                    <p>
-                        Learn. Practice. Defend.
-                        Build practical cybersecurity skills through
-                        enterprise-grade Capture The Flag challenges.
-                    </p>
-
-                </div>
-
+            <!-- Username / Email -->
+            <div class="mb-3">
+              <label class="form-label" for="name">
+                {{ form.name.label.text }} <span class="text-danger">*</span>
+              </label>
+              {{ form.name(
+                class="form-control",
+                value=name,
+                autocomplete="username email",
+                placeholder="Enter username or email"
+              ) }}
             </div>
 
-            <!-- Right Side -->
-
-            <div class="col-lg-6 login-right">
-
-                <div class="login-card">
-
-                    <h2 class="mb-4">Welcome Back</h2>
-
-                    {% include "components/errors.html" %}
-
-                    {% with form = Forms.auth.LoginForm() %}
-
-                    <form method="post">
-
-                        <div class="mb-4">
-
-                            {{ form.name.label(class="form-label") }}
-
-                            {{ form.name(
-                                class="form-control",
-                                value=name,
-                                autocomplete="username email"
-                            ) }}
-
-                        </div>
-
-                        <div class="mb-4">
-
-                            {{ form.password.label(class="form-label") }}
-
-                            {{ form.password(
-                                class="form-control",
-                                value=password,
-                                autocomplete="current-password"
-                            ) }}
-
-                        </div>
-
-                        <div class="d-flex justify-content-between mb-4">
-
-                            <a href="{{ url_for('auth.reset_password') }}">
-                                Forgot Password?
-                            </a>
-
-                        </div>
-
-                        {{ form.submit(class="btn btn-primary w-100") }}
-
-                        <div class="text-center mt-4">
-                            <span class="text-secondary">
-                               Don't have an account?
-                           </span>
-
-                           <a href="{{ url_for('auth.register') }}">
-                                  Register
-                           </a>
-                        </div>
-
-                        {{ form.nonce() }}
-
-                    </form>
-
-                    {% endwith %}
-
-                </div>
-
+            <!-- Password with Show/Hide -->
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label class="form-label mb-0" for="password">
+                  {{ form.password.label.text }} <span class="text-danger">*</span>
+                </label>
+                <a href="{{ url_for('auth.reset_password') }}" class="auth-link small">
+                  Forgot Password?
+                </a>
+              </div>
+              <div class="password-toggle-wrapper">
+                {{ form.password(
+                  class="form-control",
+                  value=password,
+                  autocomplete="current-password",
+                  placeholder="Enter password",
+                  **{':type': "showPassword ? 'text' : 'password'"}
+                ) }}
+                <button
+                  type="button"
+                  class="password-toggle-btn"
+                  @click="showPassword = !showPassword"
+                  :aria-label="showPassword ? 'Hide password' : 'Show password'"
+                  tabindex="-1"
+                >
+                  <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
             </div>
+
+            <!-- Submit Button -->
+            <div class="mt-4">
+              {{ form.submit(class="btn btn-primary w-100", value="Sign In to CyberRealm") }}
+            </div>
+
+            <!-- Register Navigation -->
+            <div class="text-center mt-4">
+              <span class="text-muted small">Don't have an account?</span>
+              <a href="{{ url_for('auth.register') }}" class="auth-link ms-1 small">
+                Register
+              </a>
+            </div>
+
+            {{ form.nonce() }}
+          </form>
+          {% endwith %}
 
         </div>
+      </div>
 
     </div>
-
+  </div>
 </div>
-
 {% endblock %}

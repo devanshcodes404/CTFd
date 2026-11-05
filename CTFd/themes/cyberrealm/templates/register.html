@@ -1,92 +1,145 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="jumbotron">
-    <div class="container">
-      <h1>
-        {% trans %}Register{% endtrans %}
-      </h1>
-    </div>
-  </div>
+<div class="auth-page register-page" x-data="{ showPassword: false }">
+  <div class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        {% include "components/errors.html" %}
+      <!-- Left Hero Banner -->
+      <div class="col-lg-6 auth-left d-none d-lg-flex">
+        <div class="auth-brand">
+          <img
+            src="{{ url_for('views.themes', path='img/esecurityin-logo.jpeg') }}"
+            class="img-fluid mb-4"
+            style="max-width: 280px;"
+            alt="eSecurityIn CyberRealm"
+          >
+          <h1>Join CyberRealm</h1>
+          <p>
+            Create your operative identity. Compete in CTF challenges, earn XP and rank insignias, and advance your cybersecurity journey.
+          </p>
+        </div>
+      </div>
 
-        {% if integrations.mlc() %}
-          <a class="btn btn-secondary btn-lg btn-block w-100" href="{{ url_for('auth.oauth_login') }}">
-            Login with Major League Cyber
-          </a>
+      <!-- Right Form Card -->
+      <div class="col-lg-6 auth-right">
+        <div class="auth-card">
+          <div class="text-center d-lg-none mb-4">
+            <img
+              src="{{ url_for('views.themes', path='img/esecurityin-logo.jpeg') }}"
+              class="img-fluid mb-2"
+              style="max-width: 180px;"
+              alt="eSecurityIn CyberRealm"
+            >
+          </div>
 
-          <hr>
-        {% endif %}
+          <h2 class="mb-2">Create Account</h2>
+          <p class="text-muted small mb-4">Register your operative profile on CyberRealm</p>
 
-        {% with form = Forms.auth.RegistrationForm() %}
+          {% include "components/errors.html" %}
 
+          {% if integrations.mlc() %}
+            <a class="btn btn-secondary btn-lg w-100 mb-3" href="{{ url_for('auth.oauth_login') }}">
+              Register with Major League Cyber
+            </a>
+            <hr class="border-secondary my-3">
+          {% endif %}
+
+          {% with form = Forms.auth.RegistrationForm() %}
           {% from "macros/forms.html" import render_extra_fields %}
 
           <form method="post" accept-charset="utf-8" role="form">
 
+            <!-- Username -->
             <div class="mb-3">
-              <b>
-                {{ form.name.label(class="form-label") }}
-                <span class="text-danger">*</span>
-              </b>
-              {{ form.name(class="form-control", value=name, autocomplete="username") }}
-              <small class="form-text text-muted">
-                {% trans %}Your username on the site{% endtrans %}
-              </small>
+              <label class="form-label" for="name">
+                {{ form.name.label.text }} <span class="text-danger">*</span>
+              </label>
+              {{ form.name(
+                class="form-control",
+                value=name,
+                autocomplete="username",
+                placeholder="Choose your operative handle"
+              ) }}
+              <small class="form-text text-muted">Your public competitor callsign</small>
             </div>
 
+            <!-- Email -->
             <div class="mb-3">
-              <b>
-                {{ form.email.label(class="form-label") }}
-                <span class="text-danger">*</span>
-              </b>
-              {{ form.email(class="form-control", value=email, autocomplete="email") }}
-              <small class="form-text text-muted">
-                {% trans %}Never shown to the public{% endtrans %}
-              </small>
+              <label class="form-label" for="email">
+                {{ form.email.label.text }} <span class="text-danger">*</span>
+              </label>
+              {{ form.email(
+                class="form-control",
+                value=email,
+                autocomplete="email",
+                placeholder="name@example.com"
+              ) }}
+              <small class="form-text text-muted">Never shared publicly</small>
             </div>
 
+            <!-- Password with Show/Hide -->
             <div class="mb-3">
-              <b>
-                {{ form.password.label(class="form-label") }}
-                <span class="text-danger">*</span>
-              </b>
-              {{ form.password(class="form-control", value=password, autocomplete="new-password") }}
-              <small class="form-text text-muted">
-                {% trans %}Password used to log into your account{% endtrans %}
-              </small>
+              <label class="form-label" for="password">
+                {{ form.password.label.text }} <span class="text-danger">*</span>
+              </label>
+              <div class="password-toggle-wrapper">
+                {{ form.password(
+                  class="form-control",
+                  value=password,
+                  autocomplete="new-password",
+                  placeholder="Create a strong passphrase",
+                  **{':type': "showPassword ? 'text' : 'password'"}
+                ) }}
+                <button
+                  type="button"
+                  class="password-toggle-btn"
+                  @click="showPassword = !showPassword"
+                  :aria-label="showPassword ? 'Hide password' : 'Show password'"
+                  tabindex="-1"
+                >
+                  <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
+              <small class="form-text text-muted">Used to authenticate your terminal access</small>
             </div>
 
             {{ form.nonce() }}
-
             {{ render_extra_fields(form.extra) }}
 
-            <div class="row pt-3">
-              <div class="col-6 col-md-4 offset-6 offset-md-8">
-                {{ form.submit(class="btn btn-block btn-primary w-100") }}
-              </div>
+            <!-- Submit Button -->
+            <div class="mt-4">
+              {{ form.submit(class="btn btn-primary w-100", value="Complete Registration") }}
             </div>
 
+            <!-- Terms & Privacy -->
             {% if Configs.tos_or_privacy %}
-              <div class="row pt-3">
-                <div class="col-md-12 text-center">
-                  <small class="text-muted text-center">
-                    {% trans trimmed privacy_link=Configs.privacy_link, tos_link=Configs.tos_link %}
-                    By registering, you agree to the
-                    <a href="{{ privacy_link }}" target="_blank">privacy policy</a>
-                    and <a href="{{ tos_link }}" target="_blank">terms of service</a>
-                    {% endtrans %}
-                  </small>
-                </div>
+              <div class="text-center mt-3">
+                <small class="text-muted">
+                  {% trans trimmed privacy_link=Configs.privacy_link, tos_link=Configs.tos_link %}
+                  By registering, you agree to the
+                  <a href="{{ privacy_link }}" target="_blank" class="auth-link">privacy policy</a>
+                  and <a href="{{ tos_link }}" target="_blank" class="auth-link">terms of service</a>
+                  {% endtrans %}
+                </small>
               </div>
             {% endif %}
+
+            <!-- Login Navigation -->
+            <div class="text-center mt-4">
+              <span class="text-muted small">Already registered?</span>
+              <a href="{{ url_for('auth.login') }}" class="auth-link ms-1 small">
+                Log In
+              </a>
+            </div>
+
           </form>
-        {% endwith %}
+          {% endwith %}
+
+        </div>
       </div>
+
     </div>
   </div>
+</div>
 {% endblock %}

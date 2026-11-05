@@ -67,9 +67,9 @@
 
             </div>
 
-            <div class="profile-stat">
+            <div class="profile-stat" x-data="PublicProfileAwards">
 
-                <h2>
+                <h2 x-text="totalAwardsCount > 0 ? totalAwardsCount : '{{ awards|length }}'">
 
                     {{ awards|length }}
 
@@ -119,6 +119,64 @@
       </div>
       {% endif %}
       <div class="row mt-5"></div>
+
+    <!-- =========================================
+         CYBERREALM ACHIEVEMENTS & BROOCHES
+    ========================================== -->
+    <div x-data="PublicProfileAwards">
+      <!-- ACHIEVEMENTS SECTION -->
+      <div class="row g-4 mb-5" x-show="!loading && achievements.length > 0">
+        <div class="col-12">
+          <h2 class="section-title">
+            <i class="fas fa-trophy"></i>
+            CyberRealm Achievements
+            <span class="badge bg-primary ms-2" x-text="`${achievementsCount} Unlocked`"></span>
+          </h2>
+        </div>
+        <template x-for="achievement in achievements" :key="achievement.id">
+          <div class="col-lg-3 col-md-6">
+            <div class="achievement-card unlocked">
+              <div class="achievement-icon">
+                <span x-text="achievement.icon || '🏆'"></span>
+              </div>
+              <h4 x-text="achievement.name"></h4>
+              <p x-text="achievement.description || 'CyberRealm unlocked achievement'"></p>
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <span class="badge bg-success">
+                  <i class="fas fa-check"></i> UNLOCKED
+                </span>
+                <span class="achievement-value" x-text="`+${achievement.xp_reward || 0} XP`"></span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- BROOCHES SECTION -->
+      <div class="row g-4 mb-5" x-show="!loading && brooches.length > 0">
+        <div class="col-12">
+          <h2 class="section-title">
+            <i class="fas fa-award"></i>
+            Brooch Insignias
+            <span class="badge bg-info ms-2" x-text="`${broochesCount} Earned`"></span>
+          </h2>
+        </div>
+        <template x-for="brooch in brooches" :key="brooch.id">
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="cyberrealm-brooch-card is-unlocked p-3 text-center border rounded">
+              <div class="cyberrealm-brooch-emblem mb-2">
+                <img :src="brooch.assetUrl" :alt="brooch.name" style="max-height: 80px;" class="img-fluid" x-show="brooch.assetUrl">
+                <i class="fas fa-certificate fa-3x text-warning" x-show="!brooch.assetUrl"></i>
+              </div>
+              <h5 class="text-white mt-2" x-text="brooch.name"></h5>
+              <p class="text-muted small mb-1" x-text="brooch.description"></p>
+              <span class="badge bg-warning text-dark">COLLECTION ACQUIRED</span>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
 
     <div class="col-12">
 

@@ -701,6 +701,95 @@ def get_profile(user_id):
 
 
 # =========================================================
+# =========================================================
+# PUBLIC AWARDS / ACHIEVEMENTS & BROOCHES (PUBLIC SAFE)
+# =========================================================
+
+@api.route("/profile/<int:user_id>/public-awards", methods=["GET"])
+def get_public_profile_awards(user_id):
+    from CTFd.models import Users
+    from CTFd.utils.user import is_admin, authed
+    from CTFd.utils import get_config
+
+    account_vis = get_config("account_visibility")
+    if account_vis == "admins" and not is_admin():
+        return jsonify({"error": "not_found"}), 404
+    elif account_vis == "private" and not authed():
+        return jsonify({"error": "unauthorized"}), 401
+
+    target_user = Users.query.filter_by(id=user_id, banned=False, hidden=False).first()
+    if not target_user and not is_admin():
+        return jsonify({"error": "not_found"}), 404
+
+    # Earned achievements
+    result = db.session.execute(
+        text(
+            """
+            SELECT
+                a.id,
+                a.`key`,
+                a.name,
+                a.description,
+                a.icon,
+                a.xp_reward,
+                ua.unlocked_at
+            FROM esecurityin_user_achievements AS ua
+            JOIN esecurityin_achievements AS a
+                ON a.id = ua.achievement_id
+            WHERE ua.user_id = :user_id
+              AND a.active = 1
+            ORDER BY ua.unlocked_at DESC, a.id ASC
+            """
+        ),
+        {"user_id": user_id},
+    )
+
+    achievements = []
+    for row in result.fetchall():
+        achievements.append({
+            "id": row[0],
+            "key": row[1],
+            "name": row[2],
+            "description": row[3],
+            "icon": row[4],
+            "xp_reward": row[5],
+            "unlocked": True,
+            "unlocked_at": (row[6].isoformat() if hasattr(row[6], "isoformat") else str(row[6])) if row[6] else None,
+        })
+
+    # Earned brooches
+    all_brooches = BroochService.get_player_brooches(user_id=user_id)
+    earned_brooches = [b for b in all_brooches if b["unlocked"]]
+
+    user_progression = db.session.execute(
+        text(
+            """
+            SELECT xp, level, streak, total_solves
+            FROM user_xp
+            WHERE user_id = :user_id
+            """
+        ),
+        {"user_id": user_id},
+    ).fetchone()
+
+    xp = user_progression[0] if user_progression else 0
+    level = user_progression[1] if user_progression else 1
+
+    return jsonify({
+        "user_id": user_id,
+        "level": level,
+        "xp": xp,
+        "achievements": {
+            "unlocked": len(achievements),
+            "items": achievements,
+        },
+        "brooches": {
+            "unlocked": len(earned_brooches),
+            "items": earned_brooches,
+        },
+    })
+
+# =========================================================
 # DAILY OBJECTIVES
 # =========================================================
 

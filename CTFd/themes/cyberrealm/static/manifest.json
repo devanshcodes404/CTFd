@@ -1,15 +1,15 @@
 {
-  "assets/img/brooches/first-breach.png": {
-    "file": "assets/first-breach.d2768eff.png",
-    "src": "assets/img/brooches/first-breach.png"
+  "assets/img/brooches/elite-operator.png": {
+    "file": "assets/elite-operator.7a482e2b.png",
+    "src": "assets/img/brooches/elite-operator.png"
   },
   "assets/img/brooches/breach-runner.png": {
     "file": "assets/breach-runner.b12c400c.png",
     "src": "assets/img/brooches/breach-runner.png"
   },
-  "assets/img/brooches/elite-operator.png": {
-    "file": "assets/elite-operator.7a482e2b.png",
-    "src": "assets/img/brooches/elite-operator.png"
+  "assets/img/brooches/first-breach.png": {
+    "file": "assets/first-breach.d2768eff.png",
+    "src": "assets/img/brooches/first-breach.png"
   },
   "assets/img/brooches/crypto-specialist.png": {
     "file": "assets/crypto-specialist.2e63576c.png",
@@ -19,13 +19,13 @@
     "file": "assets/web-defender.5054cabe.png",
     "src": "assets/img/brooches/web-defender.png"
   },
-  "assets/img/brooches/mission-commander.png": {
-    "file": "assets/mission-commander.e0744483.png",
-    "src": "assets/img/brooches/mission-commander.png"
-  },
   "assets/img/brooches/xp-hunter.png": {
     "file": "assets/xp-hunter.28eedeb9.png",
     "src": "assets/img/brooches/xp-hunter.png"
+  },
+  "assets/img/brooches/mission-commander.png": {
+    "file": "assets/mission-commander.e0744483.png",
+    "src": "assets/img/brooches/mission-commander.png"
   },
   "assets/img/brooches/stage-master.png": {
     "file": "assets/stage-master.7240aa28.png",
@@ -136,7 +136,7 @@
     ]
   },
   "assets/js/users/public.js": {
-    "file": "assets/users_public.00f9766b.js",
+    "file": "assets/users_public.95686d86.js",
     "src": "assets/js/users/public.js",
     "isEntry": true,
     "imports": [
@@ -144,11 +144,12 @@
       "assets/js/notifications.js",
       "_userscore.81707235.js",
       "_index.7276ae65.js",
+      "_stage-master.40161224.js",
       "_echarts.128204f2.js"
     ]
   },
   "assets/js/users/private.js": {
-    "file": "assets/users_private.09672090.js",
+    "file": "assets/users_private.8a017c54.js",
     "src": "assets/js/users/private.js",
     "isEntry": true,
     "imports": [
@@ -156,17 +157,8 @@
       "assets/js/index.js",
       "_userscore.81707235.js",
       "_index.7276ae65.js",
+      "_stage-master.40161224.js",
       "_echarts.128204f2.js"
-    ],
-    "assets": [
-      "assets/first-breach.d2768eff.png",
-      "assets/breach-runner.b12c400c.png",
-      "assets/elite-operator.7a482e2b.png",
-      "assets/crypto-specialist.2e63576c.png",
-      "assets/web-defender.5054cabe.png",
-      "assets/xp-hunter.28eedeb9.png",
-      "assets/mission-commander.e0744483.png",
-      "assets/stage-master.7240aa28.png"
     ]
   },
   "assets/js/users/list.js": {
@@ -200,8 +192,21 @@
       "assets/js/notifications.js"
     ]
   },
+  "_stage-master.40161224.js": {
+    "file": "assets/stage-master.40161224.js",
+    "assets": [
+      "assets/first-breach.d2768eff.png",
+      "assets/breach-runner.b12c400c.png",
+      "assets/elite-operator.7a482e2b.png",
+      "assets/crypto-specialist.2e63576c.png",
+      "assets/web-defender.5054cabe.png",
+      "assets/xp-hunter.28eedeb9.png",
+      "assets/mission-commander.e0744483.png",
+      "assets/stage-master.7240aa28.png"
+    ]
+  },
   "assets/scss/main.scss": {
-    "file": "assets/main.4edf5526.css",
+    "file": "assets/main.676518eb.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
   }
