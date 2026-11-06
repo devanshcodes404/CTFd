@@ -845,3 +845,192 @@ def get_missions():
             "missions": missions,
         }
     )
+
+
+# =========================================================
+# QUIZZES
+# =========================================================
+
+@api.route("/quizzes", methods=["GET"])
+@authed_only
+def list_quizzes():
+    from .models import QuizChallenge, QuizAttempt
+    from .services.quiz_service import QuizService
+    from CTFd.models import Solves
+
+    user = get_current_user()
+    quizzes = QuizService.get_quizzes_summary()
+
+    # Query all quiz challenges
+    quiz_chals = {qc.quiz_id: qc for qc in QuizChallenge.query.all()}
+
+    # Query solved challenge IDs for this user
+    user_solves = set(
+        s.challenge_id
+        for s in Solves.query.filter_by(user_id=user.id).all()
+    )
+
+    # Query latest attempt per quiz for this user
+    attempts = QuizAttempt.query.filter_by(user_id=user.id).order_by(QuizAttempt.created_at.desc()).all()
+    attempts_by_quiz = {}
+    for a in attempts:
+        if a.quiz_id not in attempts_by_quiz:
+            attempts_by_quiz[a.quiz_id] = a
+
+    result = []
+    for q in quizzes:
+        quiz_id = q["quiz_id"]
+        qc = quiz_chals.get(quiz_id)
+        is_solved = (qc.id in user_solves) if qc else False
+        last_attempt = attempts_by_quiz.get(quiz_id)
+
+        result.append({
+            "quiz_id": quiz_id,
+            "title": q["title"],
+            "category": qc.category if qc else q["title"],
+            "description": qc.description if qc else f"Assessment covering {q['title']}.",
+            "question_count": q["question_count"],
+            "passing_threshold": q["passing_score"],
+            "points": qc.value if qc and qc.value is not None else 0,
+            "solved": is_solved,
+            "last_attempt": {
+                "score_percent": last_attempt.score,
+                "passed": last_attempt.passed,
+                "date": last_attempt.created_at.isoformat(),
+            } if last_attempt else None,
+        })
+
+    return jsonify({"success": True, "quizzes": result})
+
+
+@api.route("/quizzes/<quiz_id>", methods=["GET"])
+@authed_only
+def get_quiz(quiz_id):
+    from .services.quiz_service import QuizService
+    from .models import QuizChallenge
+    from CTFd.models import Solves
+
+    user = get_current_user()
+    safe_quiz = QuizService.get_learner_quiz(quiz_id)
+    if not safe_quiz:
+        return jsonify({"success": False, "error": "Quiz not found"}), 404
+
+    qc = QuizChallenge.query.filter_by(quiz_id=quiz_id).first()
+    is_solved = False
+    if qc:
+        is_solved = bool(Solves.query.filter_by(challenge_id=qc.id, user_id=user.id).first())
+
+    safe_quiz["points"] = qc.value if qc and qc.value is not None else 0
+    safe_quiz["solved"] = is_solved
+
+    return jsonify({"success": True, "quiz": safe_quiz})
+
+
+@api.route("/quizzes/<quiz_id>/submit", methods=["POST"])
+@authed_only
+def submit_quiz(quiz_id):
+    from .services.quiz_service import QuizService
+    from .models import QuizChallenge, QuizAttempt
+    from CTFd.models import Solves, db
+    from CTFd.cache import cache
+    from CTFd.utils.user import get_ip
+    from sqlalchemy.exc import IntegrityError
+
+    user = get_current_user()
+
+    # Rate limiting: 10 submissions per 60 seconds per user
+    # Shared across production workers via Flask-Caching (Redis/Cache backend)
+    rl_limit = 10
+    rl_interval = 60
+    rl_key = f"rl:quiz_submit:{user.id}"
+    current_count = cache.get(rl_key)
+
+    if current_count and int(current_count) >= rl_limit:
+        return jsonify({
+            "success": False,
+            "error": f"Too many quiz submissions. Please wait before attempting again (limit: {rl_limit} per minute).",
+            "rate_limited": True,
+        }), 429
+
+    if current_count is None:
+        cache.set(rl_key, 1, timeout=rl_interval)
+    else:
+        cache.set(rl_key, int(current_count) + 1, timeout=rl_interval)
+
+    qc = QuizChallenge.query.filter_by(quiz_id=quiz_id).first()
+    if not qc:
+        return jsonify({"success": False, "error": "Quiz not found"}), 404
+
+    # Check if user already solved this quiz
+    existing_solve = Solves.query.filter_by(challenge_id=qc.id, user_id=user.id).first()
+    if existing_solve:
+        return jsonify({
+            "success": False,
+            "error": "You have already completed this quiz. Duplicate completions are not permitted.",
+            "already_solved": True,
+        }), 400
+
+    data = request.get_json(silent=True)
+    if data is None or not isinstance(data, dict):
+        return jsonify({"success": False, "error": "Invalid request body: expected JSON object"}), 400
+
+    answers = data.get("answers")
+    if not isinstance(answers, dict):
+        return jsonify({"success": False, "error": "Malformed submission: 'answers' must be a JSON object"}), 400
+
+    try:
+        eval_result = QuizService.evaluate_submission(quiz_id, answers)
+    except ValueError as e:
+        return jsonify({"success": False, "error": str(e)}), 400
+
+    # Record the attempt
+    attempt = QuizAttempt(
+        user_id=user.id,
+        quiz_id=quiz_id,
+        score=int(eval_result["score_percent"]),
+        correct_count=eval_result["correct_count"],
+        total_count=eval_result["total_count"],
+        passed=eval_result["passed"],
+    )
+    db.session.add(attempt)
+
+    solve_created = False
+    if eval_result["passed"]:
+        solve = Solves(
+            user_id=user.id,
+            team_id=user.team_id if user.team_id else None,
+            challenge_id=qc.id,
+            ip=get_ip(req=request),
+            provided=f"Score: {eval_result['correct_count']}/{eval_result['total_count']} ({eval_result['score_percent']}%)",
+        )
+        db.session.add(solve)
+        try:
+            db.session.commit()
+            solve_created = True
+        except IntegrityError:
+            db.session.rollback()
+            # Handle concurrent solve gracefully
+            return jsonify({
+                "success": False,
+                "error": "Quiz was already completed in a concurrent session.",
+                "already_solved": True,
+            }), 409
+    else:
+        db.session.commit()
+
+    # Reward CTFd challenge points configured by administrator (qc.value)
+    points_awarded = qc.value if (solve_created and qc.value is not None) else 0
+
+    return jsonify({
+        "success": True,
+        "result": {
+            "quiz_id": quiz_id,
+            "total_questions": eval_result["total_count"],
+            "correct_count": eval_result["correct_count"],
+            "incorrect_count": eval_result["incorrect_count"],
+            "score_percent": eval_result["score_percent"],
+            "passed": eval_result["passed"],
+            "points_earned": points_awarded,
+            "solved": solve_created,
+        }
+    })

@@ -15,6 +15,8 @@ from .services.brooch_service import BroochService
 from .services.daily_objective_service import DailyObjectiveService
 from .services.mission_service import MissionService
 from .services.notification_service import NotificationService
+from .services.quiz_service import CTFdQuizChallenge, QuizService
+from CTFd.plugins.challenges import CHALLENGE_CLASSES
 
 _plugin_engines = WeakSet()
 
@@ -47,8 +49,23 @@ def load(app):
             user=user,
         )
 
+    @app.route("/quizzes", methods=["GET"])
+    @authed_only
+    def cyberrealm_quizzes():
+        user = get_current_user()
+        return render_template("quizzes.html", user=user)
+
+    @app.route("/quizzes/<quiz_id>", methods=["GET"])
+    @authed_only
+    def cyberrealm_quiz_runner(quiz_id):
+        user = get_current_user()
+        return render_template("quiz.html", user=user, quiz_id=quiz_id)
+
     app.register_blueprint(bp)
     app.register_blueprint(api)
+
+    # Register Quiz challenge type
+    CHALLENGE_CLASSES["quiz"] = CTFdQuizChallenge
 
     # Create plugin tables.
     db.create_all()
@@ -58,6 +75,7 @@ def load(app):
     DailyObjectiveService.seed_objectives()
     MissionService.seed_missions()
     BroochService.seed_brooches()
+    QuizService.sync_quiz_challenges()
 
 
 @event.listens_for(Session, "before_flush")

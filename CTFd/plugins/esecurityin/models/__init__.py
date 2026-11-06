@@ -7,6 +7,8 @@ from .mission import Mission
 from .user_mission import UserMission
 from .brooch import Brooch
 from .user_brooch import UserBrooch
+from .quiz_challenge import QuizChallenge
+from .quiz_attempt import QuizAttempt
 
 __all__ = [
     "UserXP",
@@ -18,4 +20,6 @@ __all__ = [
     "UserMission",
     "Brooch",
     "UserBrooch",
+    "QuizChallenge",
+    "QuizAttempt",
 ]

@@ -1,0 +1,1671 @@
+{
+  "version": "1.0",
+  "total_quizzes": 13,
+  "total_questions": 120,
+  "quizzes": [
+    {
+      "quiz_id": "footprinting-osint",
+      "title": "Footprinting & OSINT",
+      "question_count": 9,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q1",
+          "source_number": 1,
+          "difficulty": "beginner",
+          "question": "Which DNS record maps a domain name to an IPv4 address?",
+          "options": {
+            "A": "AAAA",
+            "B": "A",
+            "C": "MX",
+            "D": "PTR"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q2",
+          "source_number": 2,
+          "difficulty": "beginner",
+          "question": "What is the primary purpose of WHOIS lookups?",
+          "options": {
+            "A": "Crack passwords",
+            "B": "Identify domain registration details",
+            "C": "Scan open ports",
+            "D": "Decrypt TLS traffic"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q3",
+          "source_number": 3,
+          "difficulty": "beginner",
+          "question": "Which tool is commonly used to query DNS records?",
+          "options": {
+            "A": "dig",
+            "B": "John the Ripper",
+            "C": "Aircrack-ng",
+            "D": "Volatility"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q4",
+          "source_number": 4,
+          "difficulty": "beginner",
+          "question": "What does the robots.txt file commonly communicate?",
+          "options": {
+            "A": "Firewall rules",
+            "B": "Search-engine crawling preferences",
+            "C": "User passwords",
+            "D": "TLS cipher suites"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q5",
+          "source_number": 5,
+          "difficulty": "intermediate",
+          "question": "Which search operator can restrict results to a specific website?",
+          "options": {
+            "A": "cache:",
+            "B": "site:",
+            "C": "link:",
+            "D": "intitleonly:"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q6",
+          "source_number": 6,
+          "difficulty": "intermediate",
+          "question": "What is passive reconnaissance?",
+          "options": {
+            "A": "Sending exploit payloads",
+            "B": "Gathering information without directly interacting with target systems",
+            "C": "Brute-forcing SSH",
+            "D": "Changing DNS records"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q7",
+          "source_number": 7,
+          "difficulty": "intermediate",
+          "question": "Which record is used to identify mail servers for a domain?",
+          "options": {
+            "A": "MX",
+            "B": "TXT",
+            "C": "NS",
+            "D": "SOA"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q8",
+          "source_number": 8,
+          "difficulty": "advanced",
+          "question": "What is certificate transparency primarily useful for during domain reconnaissance?",
+          "options": {
+            "A": "Recovering private keys",
+            "B": "Discovering publicly logged TLS certificates and related hostnames",
+            "C": "Bypassing MFA",
+            "D": "Testing SQL injection"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q9",
+          "source_number": 9,
+          "difficulty": "advanced",
+          "question": "What is a key limitation of using Shodan data for an assessment?",
+          "options": {
+            "A": "It only indexes private IPs",
+            "B": "Results may be stale and do not prove current exploitability",
+            "C": "It cannot identify services",
+            "D": "It requires source code"
+          },
+          "correct_option": "B"
+        }
+      ]
+    },
+    {
+      "quiz_id": "enumeration",
+      "title": "Enumeration",
+      "question_count": 9,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q10",
+          "source_number": 10,
+          "difficulty": "beginner",
+          "question": "Which protocol commonly uses TCP port 22?",
+          "options": {
+            "A": "FTP",
+            "B": "SSH",
+            "C": "DNS",
+            "D": "SMTP"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q11",
+          "source_number": 11,
+          "difficulty": "beginner",
+          "question": "Which command-line tool can list SMB shares on an authorized network?",
+          "options": {
+            "A": "smbclient",
+            "B": "tcpdump",
+            "C": "traceroute",
+            "D": "openssl"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q12",
+          "source_number": 12,
+          "difficulty": "beginner",
+          "question": "What does an open TCP port generally indicate?",
+          "options": {
+            "A": "A service is accepting connections",
+            "B": "The host is powered off",
+            "C": "The port is encrypted",
+            "D": "The service is vulnerable"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q13",
+          "source_number": 13,
+          "difficulty": "intermediate",
+          "question": "Which Nmap option performs service/version detection?",
+          "options": {
+            "A": "-O",
+            "B": "-sV",
+            "C": "-sn",
+            "D": "-Pn"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q14",
+          "source_number": 14,
+          "difficulty": "intermediate",
+          "question": "What is the purpose of SNMP enumeration?",
+          "options": {
+            "A": "Discover management data and device information",
+            "B": "Decode passwords in TLS",
+            "C": "Test browser storage",
+            "D": "Enumerate Git commits"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q15",
+          "source_number": 15,
+          "difficulty": "intermediate",
+          "question": "Which LDAP attribute commonly contains a user's login name?",
+          "options": {
+            "A": "uid",
+            "B": "jpegPhoto",
+            "C": "userCertificate",
+            "D": "createTimestamp"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q16",
+          "source_number": 16,
+          "difficulty": "intermediate",
+          "question": "What does a DNS zone transfer attempt retrieve?",
+          "options": {
+            "A": "A copy of DNS zone data",
+            "B": "TLS session keys",
+            "C": "Firewall logs",
+            "D": "Wi-Fi handshakes"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q17",
+          "source_number": 17,
+          "difficulty": "advanced",
+          "question": "Why should an assessor enumerate both TCP and UDP services where in scope?",
+          "options": {
+            "A": "All services use TCP",
+            "B": "Some services are exposed over UDP and would otherwise be missed",
+            "C": "UDP is always encrypted",
+            "D": "UDP scans reveal source code"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q18",
+          "source_number": 18,
+          "difficulty": "advanced",
+          "question": "What does an Nmap 'filtered' port state usually mean?",
+          "options": {
+            "A": "A response confirms the port is open",
+            "B": "A filtering device prevents the probe from determining the state",
+            "C": "The port is definitely closed",
+            "D": "The service is vulnerable"
+          },
+          "correct_option": "B"
+        }
+      ]
+    },
+    {
+      "quiz_id": "cryptography",
+      "title": "Cryptography",
+      "question_count": 9,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q19",
+          "source_number": 19,
+          "difficulty": "beginner",
+          "question": "Which cryptographic property ensures data has not been altered?",
+          "options": {
+            "A": "Confidentiality",
+            "B": "Integrity",
+            "C": "Availability",
+            "D": "Non-repudiation"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q20",
+          "source_number": 20,
+          "difficulty": "beginner",
+          "question": "Which is a symmetric encryption algorithm?",
+          "options": {
+            "A": "AES",
+            "B": "RSA",
+            "C": "ECC",
+            "D": "Diffie-Hellman"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q21",
+          "source_number": 21,
+          "difficulty": "beginner",
+          "question": "What is a cryptographic hash designed to produce?",
+          "options": {
+            "A": "A fixed-length digest",
+            "B": "A reversible ciphertext",
+            "C": "A private key",
+            "D": "A network route"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q22",
+          "source_number": 22,
+          "difficulty": "intermediate",
+          "question": "Why should passwords generally be stored using a salted password-hashing scheme?",
+          "options": {
+            "A": "To make them reversible",
+            "B": "To slow offline guessing and prevent identical passwords having identical hashes",
+            "C": "To avoid authentication",
+            "D": "To compress the database"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q23",
+          "source_number": 23,
+          "difficulty": "intermediate",
+          "question": "Which algorithm is commonly used for authenticated encryption?",
+          "options": {
+            "A": "AES-GCM",
+            "B": "MD5",
+            "C": "Base64",
+            "D": "ROT13"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q24",
+          "source_number": 24,
+          "difficulty": "intermediate",
+          "question": "What does a digital signature primarily provide?",
+          "options": {
+            "A": "Confidentiality only",
+            "B": "Authenticity, integrity, and support for non-repudiation",
+            "C": "Data compression",
+            "D": "Availability"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q25",
+          "source_number": 25,
+          "difficulty": "intermediate",
+          "question": "What is the purpose of a key-exchange protocol such as Diffie-Hellman?",
+          "options": {
+            "A": "Agree on shared secret material over an insecure channel",
+            "B": "Hash a file",
+            "C": "Store passwords",
+            "D": "Sign a certificate"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q26",
+          "source_number": 26,
+          "difficulty": "advanced",
+          "question": "Why is nonce reuse dangerous with AES-GCM?",
+          "options": {
+            "A": "It weakens DNS",
+            "B": "It can expose plaintext relationships and undermine authentication security",
+            "C": "It increases key length",
+            "D": "It disables hashing"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q27",
+          "source_number": 27,
+          "difficulty": "advanced",
+          "question": "What is forward secrecy in TLS?",
+          "options": {
+            "A": "Old sessions remain protected if the server's long-term private key is later compromised",
+            "B": "Certificates never expire",
+            "C": "All traffic is public",
+            "D": "Passwords are never transmitted"
+          },
+          "correct_option": "A"
+        }
+      ]
+    },
+    {
+      "quiz_id": "network-security",
+      "title": "Network Security",
+      "question_count": 9,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q28",
+          "source_number": 28,
+          "difficulty": "beginner",
+          "question": "Which OSI layer is responsible for routing between networks?",
+          "options": {
+            "A": "Physical",
+            "B": "Data Link",
+            "C": "Network",
+            "D": "Presentation"
+          },
+          "correct_option": "C"
+        },
+        {
+          "id": "q29",
+          "source_number": 29,
+          "difficulty": "beginner",
+          "question": "What is the default port for HTTPS?",
+          "options": {
+            "A": "21",
+            "B": "25",
+            "C": "80",
+            "D": "443"
+          },
+          "correct_option": "D"
+        },
+        {
+          "id": "q30",
+          "source_number": 30,
+          "difficulty": "beginner",
+          "question": "What does a firewall primarily do?",
+          "options": {
+            "A": "Filter network traffic according to rules",
+            "B": "Replace endpoint antivirus",
+            "C": "Encrypt every file",
+            "D": "Manage source code"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q31",
+          "source_number": 31,
+          "difficulty": "intermediate",
+          "question": "What is the purpose of a VLAN?",
+          "options": {
+            "A": "Segment a Layer 2 network logically",
+            "B": "Encrypt DNS responses",
+            "C": "Replace routing",
+            "D": "Store certificates"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q32",
+          "source_number": 32,
+          "difficulty": "intermediate",
+          "question": "Which protocol securely replaces Telnet for remote command-line access?",
+          "options": {
+            "A": "FTP",
+            "B": "SSH",
+            "C": "TFTP",
+            "D": "HTTP"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q33",
+          "source_number": 33,
+          "difficulty": "intermediate",
+          "question": "What is ARP spoofing?",
+          "options": {
+            "A": "Forging ARP messages to associate an attacker's MAC address with another IP",
+            "B": "Forging TLS certificates",
+            "C": "Guessing DNS names",
+            "D": "Flooding SMTP"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q34",
+          "source_number": 34,
+          "difficulty": "intermediate",
+          "question": "What is the main purpose of a VPN?",
+          "options": {
+            "A": "Create an encrypted tunnel across an untrusted network",
+            "B": "Increase CPU speed",
+            "C": "Remove endpoint logs",
+            "D": "Disable authentication"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q35",
+          "source_number": 35,
+          "difficulty": "advanced",
+          "question": "Which control helps mitigate IP spoofing at a network edge?",
+          "options": {
+            "A": "Ingress/egress filtering",
+            "B": "Open relay",
+            "C": "Anonymous FTP",
+            "D": "Disabling logs"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q36",
+          "source_number": 36,
+          "difficulty": "advanced",
+          "question": "What does mutual TLS add beyond typical server-authenticated TLS?",
+          "options": {
+            "A": "Client certificate authentication as well",
+            "B": "No encryption",
+            "C": "Password storage",
+            "D": "DNSSEC validation"
+          },
+          "correct_option": "A"
+        }
+      ]
+    },
+    {
+      "quiz_id": "web-api-security",
+      "title": "Web & API Security",
+      "question_count": 9,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q37",
+          "source_number": 37,
+          "difficulty": "beginner",
+          "question": "What does XSS allow an attacker to do in a victim's browser?",
+          "options": {
+            "A": "Execute attacker-controlled script in a trusted site context",
+            "B": "Physically access the server",
+            "C": "Decrypt the disk",
+            "D": "Change BGP routes"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q38",
+          "source_number": 38,
+          "difficulty": "beginner",
+          "question": "What is SQL injection?",
+          "options": {
+            "A": "Injecting untrusted input into database queries as executable SQL",
+            "B": "Encrypting SQL backups",
+            "C": "Scanning a database port",
+            "D": "Compressing tables"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q39",
+          "source_number": 39,
+          "difficulty": "beginner",
+          "question": "Which HTTP method is generally intended to retrieve a resource?",
+          "options": {
+            "A": "GET",
+            "B": "DELETE",
+            "C": "PATCH",
+            "D": "CONNECT"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q40",
+          "source_number": 40,
+          "difficulty": "intermediate",
+          "question": "Which is the strongest general defense against SQL injection?",
+          "options": {
+            "A": "Parameterized queries",
+            "B": "Hiding error messages only",
+            "C": "Client-side validation only",
+            "D": "Changing the database port"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q41",
+          "source_number": 41,
+          "difficulty": "intermediate",
+          "question": "What does CSRF exploit?",
+          "options": {
+            "A": "A browser's authenticated session to perform an unwanted action",
+            "B": "Weak Wi-Fi encryption",
+            "C": "Unpatched firmware only",
+            "D": "DNS cache poisoning"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q42",
+          "source_number": 42,
+          "difficulty": "intermediate",
+          "question": "What is an IDOR/BOLA vulnerability?",
+          "options": {
+            "A": "Missing object-level authorization checks",
+            "B": "Incorrect TLS version",
+            "C": "Weak password hashing",
+            "D": "Excessive logging"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q43",
+          "source_number": 43,
+          "difficulty": "intermediate",
+          "question": "Which cookie attribute helps prevent JavaScript from reading a session cookie?",
+          "options": {
+            "A": "HttpOnly",
+            "B": "Domain",
+            "C": "Path",
+            "D": "Max-Age"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q44",
+          "source_number": 44,
+          "difficulty": "advanced",
+          "question": "What is a common risk of permissive CORS configuration using wildcard origins with credentials?",
+          "options": {
+            "A": "Cross-origin exposure of sensitive responses",
+            "B": "Stronger encryption",
+            "C": "Automatic rate limiting",
+            "D": "Database normalization"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q45",
+          "source_number": 45,
+          "difficulty": "advanced",
+          "question": "What does mass assignment in an API commonly involve?",
+          "options": {
+            "A": "Binding user-controlled fields to sensitive model properties without adequate allowlisting",
+            "B": "Sending too many packets",
+            "C": "Hashing all API responses",
+            "D": "Using a reverse proxy"
+          },
+          "correct_option": "A"
+        }
+      ]
+    },
+    {
+      "quiz_id": "penetration-testing",
+      "title": "Penetration Testing",
+      "question_count": 9,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q46",
+          "source_number": 46,
+          "difficulty": "beginner",
+          "question": "What is the first essential step before a penetration test?",
+          "options": {
+            "A": "Obtain authorization and define scope",
+            "B": "Exploit the target",
+            "C": "Delete logs",
+            "D": "Publish findings"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q47",
+          "source_number": 47,
+          "difficulty": "beginner",
+          "question": "What is the purpose of a rules-of-engagement document?",
+          "options": {
+            "A": "Define permitted activities, limits, contacts, and timing",
+            "B": "List employee passwords",
+            "C": "Guarantee no findings",
+            "D": "Replace the final report"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q48",
+          "source_number": 48,
+          "difficulty": "beginner",
+          "question": "What does a vulnerability assessment primarily identify?",
+          "options": {
+            "A": "Potential weaknesses, often without proving exploitation",
+            "B": "Only successful data theft",
+            "C": "Employee performance",
+            "D": "Software licensing"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q49",
+          "source_number": 49,
+          "difficulty": "intermediate",
+          "question": "In a typical penetration test, what follows reconnaissance and scanning?",
+          "options": {
+            "A": "Enumeration and vulnerability analysis",
+            "B": "Public disclosure immediately",
+            "C": "Billing",
+            "D": "Data destruction"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q50",
+          "source_number": 50,
+          "difficulty": "intermediate",
+          "question": "What is the purpose of a proof of concept (PoC)?",
+          "options": {
+            "A": "Demonstrate that a vulnerability is real with controlled evidence",
+            "B": "Replace authorization",
+            "C": "Guarantee remediation",
+            "D": "Hide the issue"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q51",
+          "source_number": 51,
+          "difficulty": "intermediate",
+          "question": "What should a tester do if testing unexpectedly impacts production availability?",
+          "options": {
+            "A": "Stop or pause testing and follow the agreed escalation process",
+            "B": "Continue at higher intensity",
+            "C": "Delete monitoring alerts",
+            "D": "Expand scope"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q52",
+          "source_number": 52,
+          "difficulty": "intermediate",
+          "question": "Which item is most useful in a finding's evidence section?",
+          "options": {
+            "A": "Reproducible steps and sanitized request/response evidence",
+            "B": "Unsupported speculation",
+            "C": "Personal opinions only",
+            "D": "Unrelated screenshots"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q53",
+          "source_number": 53,
+          "difficulty": "advanced",
+          "question": "What is the main difference between black-box and white-box testing?",
+          "options": {
+            "A": "Amount of internal knowledge provided to the tester",
+            "B": "Whether the target uses Linux",
+            "C": "Whether tools are automated",
+            "D": "Whether reports are required"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q54",
+          "source_number": 54,
+          "difficulty": "advanced",
+          "question": "Why should post-exploitation actions be tightly controlled?",
+          "options": {
+            "A": "They can expose data, alter systems, or disrupt operations",
+            "B": "They always improve security",
+            "C": "They are legally required in every test",
+            "D": "They remove the need for evidence"
+          },
+          "correct_option": "A"
+        }
+      ]
+    },
+    {
+      "quiz_id": "linux-endpoint-security",
+      "title": "Linux & Endpoint Security",
+      "question_count": 9,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q55",
+          "source_number": 55,
+          "difficulty": "beginner",
+          "question": "Which Linux command displays the current user?",
+          "options": {
+            "A": "whoami",
+            "B": "chmod",
+            "C": "grep",
+            "D": "mount"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q56",
+          "source_number": 56,
+          "difficulty": "beginner",
+          "question": "What does chmod 600 file typically mean?",
+          "options": {
+            "A": "Owner can read/write; group and others have no permissions",
+            "B": "Everyone can read/write",
+            "C": "Owner can execute only",
+            "D": "File is deleted"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q57",
+          "source_number": 57,
+          "difficulty": "beginner",
+          "question": "Which file commonly stores local user account information on Linux?",
+          "options": {
+            "A": "/etc/passwd",
+            "B": "/etc/hosts.allow",
+            "C": "/var/log/dmesg",
+            "D": "/boot/grub"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q58",
+          "source_number": 58,
+          "difficulty": "intermediate",
+          "question": "What is the principle of least privilege?",
+          "options": {
+            "A": "Give users/processes only permissions needed for their tasks",
+            "B": "Give all users root",
+            "C": "Disable all accounts",
+            "D": "Share credentials"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q59",
+          "source_number": 59,
+          "difficulty": "intermediate",
+          "question": "Which command is commonly used to inspect listening sockets on modern Linux?",
+          "options": {
+            "A": "ss -lntup",
+            "B": "pwd -P",
+            "C": "touch -a",
+            "D": "uname -r"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q60",
+          "source_number": 60,
+          "difficulty": "intermediate",
+          "question": "What is a systemd service unit used for?",
+          "options": {
+            "A": "Define and manage a system service",
+            "B": "Encrypt a partition automatically",
+            "C": "Compile a kernel module",
+            "D": "Resolve DNS only"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q61",
+          "source_number": 61,
+          "difficulty": "intermediate",
+          "question": "Which Windows feature can isolate suspicious files and processes for analysis?",
+          "options": {
+            "A": "Windows Sandbox",
+            "B": "Disk Cleanup",
+            "C": "Sticky Keys",
+            "D": "Paint"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q62",
+          "source_number": 62,
+          "difficulty": "advanced",
+          "question": "What is the security benefit of Linux capabilities?",
+          "options": {
+            "A": "Grant specific privileged operations without giving full root privileges",
+            "B": "Disable all kernel checks",
+            "C": "Replace file permissions entirely",
+            "D": "Encrypt user home directories"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q63",
+          "source_number": 63,
+          "difficulty": "advanced",
+          "question": "What does Secure Boot aim to protect?",
+          "options": {
+            "A": "Integrity of the boot chain by verifying trusted boot components",
+            "B": "Browser cookies",
+            "C": "Wi-Fi passwords",
+            "D": "Database backups"
+          },
+          "correct_option": "A"
+        }
+      ]
+    },
+    {
+      "quiz_id": "cloud-security",
+      "title": "Cloud Security",
+      "question_count": 9,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q64",
+          "source_number": 64,
+          "difficulty": "beginner",
+          "question": "What is the shared responsibility model?",
+          "options": {
+            "A": "Cloud provider and customer have different security responsibilities",
+            "B": "Provider is responsible for everything",
+            "C": "Customer is responsible for physical data centers",
+            "D": "Security is optional"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q65",
+          "source_number": 65,
+          "difficulty": "beginner",
+          "question": "What does IAM primarily control?",
+          "options": {
+            "A": "Identity and access permissions",
+            "B": "CPU temperature",
+            "C": "DNS caching",
+            "D": "Image compression"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q66",
+          "source_number": 66,
+          "difficulty": "beginner",
+          "question": "Why should cloud storage buckets avoid public access by default?",
+          "options": {
+            "A": "To prevent unintended exposure of stored data",
+            "B": "To improve download speed",
+            "C": "To enable anonymous administration",
+            "D": "To disable encryption"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q67",
+          "source_number": 67,
+          "difficulty": "intermediate",
+          "question": "What is the purpose of AWS CloudTrail?",
+          "options": {
+            "A": "Record account/API activity for auditing",
+            "B": "Scan container images only",
+            "C": "Replace IAM",
+            "D": "Manage DNS zones"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q68",
+          "source_number": 68,
+          "difficulty": "intermediate",
+          "question": "Which AWS service detects suspicious activity using threat intelligence and behavioral analysis?",
+          "options": {
+            "A": "GuardDuty",
+            "B": "CloudFormation",
+            "C": "S3 Transfer Acceleration",
+            "D": "Route 53"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q69",
+          "source_number": 69,
+          "difficulty": "intermediate",
+          "question": "What is a security group in AWS?",
+          "options": {
+            "A": "Stateful virtual firewall for supported resources",
+            "B": "Physical security team",
+            "C": "Object storage bucket",
+            "D": "Billing report"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q70",
+          "source_number": 70,
+          "difficulty": "intermediate",
+          "question": "What is the main benefit of using short-lived cloud credentials?",
+          "options": {
+            "A": "Reduce exposure window if credentials are compromised",
+            "B": "Remove need for authorization",
+            "C": "Make keys public",
+            "D": "Disable audit trails"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q71",
+          "source_number": 71,
+          "difficulty": "advanced",
+          "question": "What is the risk of an overly permissive cloud IAM policy?",
+          "options": {
+            "A": "Excessive privileges can enable data access or resource control",
+            "B": "It prevents API calls",
+            "C": "It encrypts all data",
+            "D": "It blocks logging"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q72",
+          "source_number": 72,
+          "difficulty": "advanced",
+          "question": "What is workload identity federation commonly used for?",
+          "options": {
+            "A": "Let external workloads obtain scoped cloud credentials without long-lived static keys",
+            "B": "Share root passwords",
+            "C": "Disable MFA",
+            "D": "Store access keys in source code"
+          },
+          "correct_option": "A"
+        }
+      ]
+    },
+    {
+      "quiz_id": "soc-incident-response",
+      "title": "SOC & Incident Response",
+      "question_count": 9,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q73",
+          "source_number": 73,
+          "difficulty": "beginner",
+          "question": "What does SIEM stand for?",
+          "options": {
+            "A": "Security Information and Event Management",
+            "B": "Secure Internet Email Method",
+            "C": "System Identity Encryption Module",
+            "D": "Security Inspection Endpoint Monitor"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q74",
+          "source_number": 74,
+          "difficulty": "beginner",
+          "question": "What is a security alert?",
+          "options": {
+            "A": "A notification that a rule or analytic detected potentially suspicious activity",
+            "B": "Proof of a confirmed breach",
+            "C": "A software update",
+            "D": "A backup file"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q75",
+          "source_number": 75,
+          "difficulty": "beginner",
+          "question": "What is phishing?",
+          "options": {
+            "A": "Deceptive communication intended to trick users into actions or disclosure",
+            "B": "A network routing protocol",
+            "C": "Disk encryption",
+            "D": "A patching method"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q76",
+          "source_number": 76,
+          "difficulty": "intermediate",
+          "question": "What is the first priority when responding to an active incident?",
+          "options": {
+            "A": "Follow the response plan, assess safety/business impact, and contain appropriately",
+            "B": "Wipe every affected system immediately",
+            "C": "Post details publicly",
+            "D": "Delete evidence"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q77",
+          "source_number": 77,
+          "difficulty": "intermediate",
+          "question": "What is a false positive in security monitoring?",
+          "options": {
+            "A": "Benign activity incorrectly flagged as malicious",
+            "B": "Malicious activity missed by detection",
+            "C": "A confirmed compromise",
+            "D": "A failed backup"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q78",
+          "source_number": 78,
+          "difficulty": "intermediate",
+          "question": "What is the purpose of a playbook in a SOC?",
+          "options": {
+            "A": "Provide repeatable investigation and response steps",
+            "B": "Store encryption keys",
+            "C": "Replace incident ownership",
+            "D": "Disable alerts"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q79",
+          "source_number": 79,
+          "difficulty": "intermediate",
+          "question": "Which data source is especially useful for investigating a suspicious process launch?",
+          "options": {
+            "A": "Endpoint process and command-line telemetry",
+            "B": "Marketing analytics",
+            "C": "Printer toner level",
+            "D": "Website theme"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q80",
+          "source_number": 80,
+          "difficulty": "advanced",
+          "question": "What is the purpose of preserving chain of custody?",
+          "options": {
+            "A": "Document evidence handling to support integrity and admissibility",
+            "B": "Improve network speed",
+            "C": "Encrypt all email",
+            "D": "Rotate user passwords"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q81",
+          "source_number": 81,
+          "difficulty": "advanced",
+          "question": "What does mean time to detect (MTTD) measure?",
+          "options": {
+            "A": "Average time taken to identify an incident",
+            "B": "Time to patch a server",
+            "C": "Time to restore a backup only",
+            "D": "Time to onboard a user"
+          },
+          "correct_option": "A"
+        }
+      ]
+    },
+    {
+      "quiz_id": "malware-analysis",
+      "title": "Malware Analysis",
+      "question_count": 9,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q82",
+          "source_number": 82,
+          "difficulty": "beginner",
+          "question": "What is ransomware?",
+          "options": {
+            "A": "Malware that encrypts or blocks access to data and demands payment",
+            "B": "A secure backup format",
+            "C": "A firewall rule",
+            "D": "A password manager"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q83",
+          "source_number": 83,
+          "difficulty": "beginner",
+          "question": "What is a hash commonly used for in malware analysis?",
+          "options": {
+            "A": "Identify and compare files",
+            "B": "Execute code safely",
+            "C": "Decrypt all malware",
+            "D": "Block every network port"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q84",
+          "source_number": 84,
+          "difficulty": "beginner",
+          "question": "What is a sandbox in malware analysis?",
+          "options": {
+            "A": "An isolated environment for observing suspicious files",
+            "B": "A production domain controller",
+            "C": "A public file share",
+            "D": "A password vault"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q85",
+          "source_number": 85,
+          "difficulty": "intermediate",
+          "question": "What is static malware analysis?",
+          "options": {
+            "A": "Examining a sample without executing it",
+            "B": "Running it on a live corporate network",
+            "C": "Deleting its strings",
+            "D": "Blocking its IP address"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q86",
+          "source_number": 86,
+          "difficulty": "intermediate",
+          "question": "What can strings extraction reveal?",
+          "options": {
+            "A": "Embedded text such as URLs, commands, and suspicious messages",
+            "B": "The complete source code in every case",
+            "C": "The attacker's identity with certainty",
+            "D": "All runtime behavior"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q87",
+          "source_number": 87,
+          "difficulty": "intermediate",
+          "question": "What is a persistence mechanism?",
+          "options": {
+            "A": "A technique malware uses to survive reboot or user logoff",
+            "B": "A one-time network packet",
+            "C": "A hash algorithm",
+            "D": "A backup checksum"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q88",
+          "source_number": 88,
+          "difficulty": "intermediate",
+          "question": "What is dynamic analysis?",
+          "options": {
+            "A": "Observing a sample while it executes in a controlled environment",
+            "B": "Reading only its filename",
+            "C": "Checking a website's CSS",
+            "D": "Calculating file size only"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q89",
+          "source_number": 89,
+          "difficulty": "advanced",
+          "question": "Why is an isolated, instrumented lab important for dynamic analysis?",
+          "options": {
+            "A": "It limits unintended spread while capturing behavior",
+            "B": "It guarantees malware cannot detect the lab",
+            "C": "It makes samples harmless",
+            "D": "It removes the need for snapshots"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q90",
+          "source_number": 90,
+          "difficulty": "advanced",
+          "question": "What does process injection generally allow malware to do?",
+          "options": {
+            "A": "Execute code within another process's address space",
+            "B": "Change a domain's MX record",
+            "C": "Encrypt a backup tape only",
+            "D": "Reset a router"
+          },
+          "correct_option": "A"
+        }
+      ]
+    },
+    {
+      "quiz_id": "wireless-security",
+      "title": "Wireless Security",
+      "question_count": 10,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q91",
+          "source_number": 91,
+          "difficulty": "beginner",
+          "question": "Which Wi-Fi security standard is generally stronger than WPA2 when properly configured?",
+          "options": {
+            "A": "WEP",
+            "B": "WPA3",
+            "C": "Open authentication",
+            "D": "WPA"
+          },
+          "correct_option": "B"
+        },
+        {
+          "id": "q92",
+          "source_number": 92,
+          "difficulty": "beginner",
+          "question": "What does an SSID identify?",
+          "options": {
+            "A": "A wireless network name",
+            "B": "A router's private key",
+            "C": "An IP subnet mask",
+            "D": "A TLS certificate"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q93",
+          "source_number": 93,
+          "difficulty": "beginner",
+          "question": "What is the risk of using an open public Wi-Fi network?",
+          "options": {
+            "A": "Traffic may be exposed to local attackers, especially without end-to-end encryption",
+            "B": "It always installs malware",
+            "C": "It disables HTTPS",
+            "D": "It guarantees identity theft"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q94",
+          "source_number": 94,
+          "difficulty": "intermediate",
+          "question": "What is a rogue access point?",
+          "options": {
+            "A": "An unauthorized wireless access point connected to or impersonating a network",
+            "B": "A patched router",
+            "C": "A DNS server",
+            "D": "A network printer"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q95",
+          "source_number": 95,
+          "difficulty": "intermediate",
+          "question": "What is the purpose of 802.1X in enterprise Wi-Fi?",
+          "options": {
+            "A": "Port-based network access control and authentication",
+            "B": "Wireless encryption key recovery",
+            "C": "DNS resolution",
+            "D": "Packet compression"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q96",
+          "source_number": 96,
+          "difficulty": "intermediate",
+          "question": "What is an evil twin attack?",
+          "options": {
+            "A": "A fake access point impersonating a legitimate Wi-Fi network",
+            "B": "A duplicate hard drive",
+            "C": "A forged email signature",
+            "D": "A Bluetooth pairing update"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q97",
+          "source_number": 97,
+          "difficulty": "intermediate",
+          "question": "Which practice improves enterprise wireless security?",
+          "options": {
+            "A": "Use WPA2/WPA3-Enterprise with strong authentication and certificate validation",
+            "B": "Share one password publicly",
+            "C": "Disable encryption",
+            "D": "Use WEP"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q98",
+          "source_number": 98,
+          "difficulty": "advanced",
+          "question": "Why is certificate validation important in EAP-TLS/PEAP deployments?",
+          "options": {
+            "A": "It helps prevent clients from trusting a malicious authentication server",
+            "B": "It increases radio range",
+            "C": "It hides the SSID",
+            "D": "It replaces access control"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q99",
+          "source_number": 99,
+          "difficulty": "advanced",
+          "question": "What is the main security benefit of Protected Management Frames (802.11w)?",
+          "options": {
+            "A": "Protect certain management frames against spoofing and forgery",
+            "B": "Encrypt all application data",
+            "C": "Prevent every deauthentication attack in every configuration",
+            "D": "Replace WPA3"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q100",
+          "source_number": 100,
+          "difficulty": "advanced",
+          "question": "What is a key risk of Wi-Fi Protected Setup (WPS) PIN mode on poorly secured devices?",
+          "options": {
+            "A": "It may enable practical PIN-guessing attacks",
+            "B": "It disables DHCP",
+            "C": "It exposes TLS private keys",
+            "D": "It prevents firmware updates"
+          },
+          "correct_option": "A"
+        }
+      ]
+    },
+    {
+      "quiz_id": "grc-identity-security",
+      "title": "GRC & Identity Security",
+      "question_count": 10,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q101",
+          "source_number": 101,
+          "difficulty": "beginner",
+          "question": "What does MFA require?",
+          "options": {
+            "A": "Two or more distinct authentication factors",
+            "B": "Two passwords of the same type",
+            "C": "A username only",
+            "D": "A security question only"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q102",
+          "source_number": 102,
+          "difficulty": "beginner",
+          "question": "What is the CIA triad?",
+          "options": {
+            "A": "Confidentiality, Integrity, Availability",
+            "B": "Control, Inspection, Authorization",
+            "C": "Cybersecurity, Intelligence, Audit",
+            "D": "Confidentiality, Identification, Authentication"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q103",
+          "source_number": 103,
+          "difficulty": "beginner",
+          "question": "What is a vulnerability?",
+          "options": {
+            "A": "A weakness that could be exploited",
+            "B": "A confirmed attack in every case",
+            "C": "A security policy",
+            "D": "A backup schedule"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q104",
+          "source_number": 104,
+          "difficulty": "intermediate",
+          "question": "What is risk commonly assessed as a combination of?",
+          "options": {
+            "A": "Likelihood and impact",
+            "B": "CPU and RAM",
+            "C": "Cost and color",
+            "D": "Username and password"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q105",
+          "source_number": 105,
+          "difficulty": "intermediate",
+          "question": "What is the purpose of an access review?",
+          "options": {
+            "A": "Confirm users retain only appropriate access",
+            "B": "Increase all user privileges",
+            "C": "Delete audit records",
+            "D": "Disable SSO"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q106",
+          "source_number": 106,
+          "difficulty": "intermediate",
+          "question": "What does SSO provide?",
+          "options": {
+            "A": "One authentication event to access multiple trusted applications",
+            "B": "One password shared by all employees",
+            "C": "Anonymous access",
+            "D": "Automatic encryption of databases"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q107",
+          "source_number": 107,
+          "difficulty": "intermediate",
+          "question": "Which framework provides a widely used cybersecurity risk management structure?",
+          "options": {
+            "A": "NIST Cybersecurity Framework",
+            "B": "JPEG",
+            "C": "SMTP",
+            "D": "HTML5"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q108",
+          "source_number": 108,
+          "difficulty": "advanced",
+          "question": "What is the purpose of a threat model?",
+          "options": {
+            "A": "Identify assets, trust boundaries, threats, and mitigations",
+            "B": "Guarantee that no attack is possible",
+            "C": "Replace penetration testing",
+            "D": "Measure employee satisfaction"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q109",
+          "source_number": 109,
+          "difficulty": "advanced",
+          "question": "What is the principle of separation of duties?",
+          "options": {
+            "A": "Split sensitive tasks among multiple people or roles to reduce abuse and error",
+            "B": "Give one person all privileges",
+            "C": "Remove approval workflows",
+            "D": "Share administrator accounts"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q110",
+          "source_number": 110,
+          "difficulty": "advanced",
+          "question": "What is a compensating control?",
+          "options": {
+            "A": "An alternative safeguard used when a preferred control is infeasible",
+            "B": "A control that increases risk",
+            "C": "A control that is never documented",
+            "D": "A replacement for risk assessment"
+          },
+          "correct_option": "A"
+        }
+      ]
+    },
+    {
+      "quiz_id": "secure-development-containers",
+      "title": "Secure Development & Containers",
+      "question_count": 10,
+      "passing_score": 8,
+      "questions": [
+        {
+          "id": "q111",
+          "source_number": 111,
+          "difficulty": "beginner",
+          "question": "What is the purpose of code review?",
+          "options": {
+            "A": "Find defects and security issues before code is merged or released",
+            "B": "Increase binary size",
+            "C": "Replace testing entirely",
+            "D": "Hide vulnerabilities"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q112",
+          "source_number": 112,
+          "difficulty": "beginner",
+          "question": "What is a software dependency?",
+          "options": {
+            "A": "An external library or component used by an application",
+            "B": "A firewall rule",
+            "C": "A user account",
+            "D": "A network cable"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q113",
+          "source_number": 113,
+          "difficulty": "beginner",
+          "question": "Where should application secrets generally not be stored?",
+          "options": {
+            "A": "In source code repositories",
+            "B": "In a managed secret store",
+            "C": "In an approved vault",
+            "D": "In a protected runtime secret mechanism"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q114",
+          "source_number": 114,
+          "difficulty": "intermediate",
+          "question": "What is software composition analysis (SCA) used for?",
+          "options": {
+            "A": "Identify third-party components and known vulnerabilities/licenses",
+            "B": "Encrypt source code",
+            "C": "Monitor employee attendance",
+            "D": "Replace authentication"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q115",
+          "source_number": 115,
+          "difficulty": "intermediate",
+          "question": "What is the purpose of input validation on the server side?",
+          "options": {
+            "A": "Enforce expected formats and constraints on untrusted data",
+            "B": "Trust all browser checks",
+            "C": "Disable output encoding",
+            "D": "Make SQL queries dynamic"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q116",
+          "source_number": 116,
+          "difficulty": "intermediate",
+          "question": "What is a container image?",
+          "options": {
+            "A": "A packaged filesystem and metadata used to create containers",
+            "B": "A virtual machine hypervisor",
+            "C": "A network firewall",
+            "D": "A TLS certificate"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q117",
+          "source_number": 117,
+          "difficulty": "intermediate",
+          "question": "Why should containers run as non-root where possible?",
+          "options": {
+            "A": "Reduce impact if the application is compromised",
+            "B": "Increase image size",
+            "C": "Disable namespaces",
+            "D": "Make secrets public"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q118",
+          "source_number": 118,
+          "difficulty": "advanced",
+          "question": "What is the purpose of an SBOM?",
+          "options": {
+            "A": "Inventory software components and dependencies in a product",
+            "B": "Store user passwords",
+            "C": "Scan wireless channels",
+            "D": "Replace source control"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q119",
+          "source_number": 119,
+          "difficulty": "advanced",
+          "question": "What does a read-only container filesystem help reduce?",
+          "options": {
+            "A": "Unauthorized or unexpected modification of the container filesystem",
+            "B": "TLS handshake time",
+            "C": "DNS record count",
+            "D": "CPU instruction set"
+          },
+          "correct_option": "A"
+        },
+        {
+          "id": "q120",
+          "source_number": 120,
+          "difficulty": "advanced",
+          "question": "What is a secure CI/CD pipeline practice?",
+          "options": {
+            "A": "Protect pipeline credentials, restrict permissions, and verify build artifacts",
+            "B": "Give every workflow administrator access",
+            "C": "Print secrets in logs",
+            "D": "Skip dependency checks"
+          },
+          "correct_option": "A"
+        }
+      ]
+    }
+  ]
+}

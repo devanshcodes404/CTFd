@@ -1,8 +1,4 @@
 {
-  "assets/img/brooches/elite-operator.png": {
-    "file": "assets/elite-operator.7a482e2b.png",
-    "src": "assets/img/brooches/elite-operator.png"
-  },
   "assets/img/brooches/breach-runner.png": {
     "file": "assets/breach-runner.b12c400c.png",
     "src": "assets/img/brooches/breach-runner.png"
@@ -11,17 +7,21 @@
     "file": "assets/first-breach.d2768eff.png",
     "src": "assets/img/brooches/first-breach.png"
   },
+  "assets/img/brooches/elite-operator.png": {
+    "file": "assets/elite-operator.7a482e2b.png",
+    "src": "assets/img/brooches/elite-operator.png"
+  },
   "assets/img/brooches/crypto-specialist.png": {
     "file": "assets/crypto-specialist.2e63576c.png",
     "src": "assets/img/brooches/crypto-specialist.png"
   },
-  "assets/img/brooches/web-defender.png": {
-    "file": "assets/web-defender.5054cabe.png",
-    "src": "assets/img/brooches/web-defender.png"
-  },
   "assets/img/brooches/xp-hunter.png": {
     "file": "assets/xp-hunter.28eedeb9.png",
     "src": "assets/img/brooches/xp-hunter.png"
+  },
+  "assets/img/brooches/web-defender.png": {
+    "file": "assets/web-defender.5054cabe.png",
+    "src": "assets/img/brooches/web-defender.png"
   },
   "assets/img/brooches/mission-commander.png": {
     "file": "assets/mission-commander.e0744483.png",
@@ -99,6 +99,15 @@
       "assets/js/index.js",
       "_index.7276ae65.js",
       "_echarts.128204f2.js"
+    ]
+  },
+  "assets/js/quizzes.js": {
+    "file": "assets/quizzes.3896da07.js",
+    "src": "assets/js/quizzes.js",
+    "isEntry": true,
+    "imports": [
+      "assets/js/notifications.js",
+      "assets/js/index.js"
     ]
   },
   "assets/js/teams/public.js": {
